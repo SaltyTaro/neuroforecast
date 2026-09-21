@@ -1,0 +1,225 @@
+{
+  "version": "neuroforecast_gate_v1.1",
+  "status": "amended_after_development_results_and_before_any_reserve_scoring",
+  "written": "2026-09-21 IST",
+  "purpose": "Lock the measurement-quality display, warning decision, reliability estimate, nested selection estimate, comparators, operating points, and pass/fail criteria before the three reserved experiment dates are scored once.",
+  "builds_on": {
+    "selection_protocol": "experiments/neuroforecast_selection_protocol.json",
+    "representation_protocol": "experiments/neuroforecast_representation_protocol.json",
+    "frozen_cores": [
+      "tools/neuroforecast_data.py",
+      "tools/neuroforecast_benchmark.py",
+      "tools/neuroforecast_representation.py"
+    ],
+    "rule": "The frozen cores are imported unchanged; their hashes are recorded in every manifest. This protocol adds a separate gate module and never rewrites the completed neuroforecast_selection_v1 outputs."
+  },
+  "source_doi": "10.23719/1503191",
+  "archive_sha256": "fd92c1339bb764ee9b96c935bf31867c12640505e5c3f065ad5956a7eea08cfb",
+  "cohort": {
+    "development_dates": "The 12 non-reserved experiment dates with eligible cases, exactly as prepared by neuroforecast_selection_v1 (819 cases, 101 identities).",
+    "case_rule": "date/identity/positive dose with at least two usable replicate wells and a finite control-relative value at days 5, 7 and 12. On development this equals the day-7-plus-day-12 rule (checked 2026-09-21: both give 819 cases); day 5 is retained only because the activity/coordination comparator uses it.",
+    "identity_rules": "Unchanged: experimental-summary CAS or NOCAS identity, three aliases, three conflict exclusions, three unmapped exclusions. Zero-dose wells stay as plate controls regardless of assigned identity.",
+    "reserve": {
+      "dates": [
+        20170920,
+        20171004,
+        20171011
+      ],
+      "identity_purge": "Every reserved identity is absent from development, including repeats on earlier dates.",
+      "cohort_rule": "The same case rule applied to the reserve dates; no additional exclusion may be introduced after the outcomes are visible.",
+      "training_set_for_reserve": "All 12 development dates (819 cases)."
+    }
+  },
+  "target": {
+    "definition": "Unchanged: log2 of the replicate-mean of (ns.n + 1)/(same-plate same-DIV zero-dose median ns.n + 1) at day 12.",
+    "outcome_quality_sensitivity_subset": "Cases whose day-12 plate zero-dose median ns.n is at least 5. This uses a future observation, so it is a reporting subset for target reliability only; it never enters any feature, decision, or model.",
+    "large_change": "abs(target) >= 1",
+    "early_quiet": "abs(day-7 normalized network-spike value) < 0.5"
+  },
+  "inputs": {
+    "allowed": "Day-5 and day-7 measurements and same-plate same-day zero-dose controls, log10 concentration, and the day-7 reliability indicators below. The product model and its reliability estimate use day 7 only.",
+    "forbidden": "Identities, plate/date identifiers, day-9/day-12 measurements or controls, viability, author potency/trajectory labels, any reserve observation.",
+    "reliability_indicators_day7": {
+      "case_level": [
+        "rep_count_d7: usable replicate wells",
+        "rep_sd_log2_relative_ns_d7: standard deviation across replicate wells of log2((ns.n + 1)/(plate control median ns.n + 1))"
+      ],
+      "plate_level_from_zero_dose_wells": [
+        "plate_ctrl_count_d7: control wells with a non-missing ns.n",
+        "plate_ctrl_median_ns_d7: arcsinh of the control median ns.n",
+        "plate_ctrl_zero_ns_frac_d7: fraction of control wells with ns.n == 0",
+        "plate_ctrl_iqr_ratio_d7: (Q3 - Q1)/(median + 1) of control ns.n",
+        "plate_ctrl_silent_frac_d7: fraction of control wells with nAE == 0"
+      ]
+    }
+  },
+  "candidates": {
+    "trivial": [
+      "control_reference",
+      "persistence_day7",
+      "linear_trend"
+    ],
+    "learned": [
+      "extra_trees_all",
+      "ridge_all",
+      "extra_trees_target_only",
+      "ridge_target_only",
+      "extra_trees_relative",
+      "ridge_relative",
+      "extra_trees_activity_coordination",
+      "extra_trees_relative_day7",
+      "extra_trees_relative_day7_reliability"
+    ],
+    "new_in_this_protocol": "extra_trees_relative_day7_reliability = the day-7 control-relative feature set plus the seven day-7 reliability indicators. It is the only new forecasting candidate; no further candidate may be added after this protocol is hashed.",
+    "hyperparameters": "Unchanged and fixed: Extra Trees 256 trees, depth 12, min leaf 4, max_features 1.0, seed 20260920; Ridge alpha 10 with training-only median imputation and StandardScaler.",
+    "strongest_simple_comparator": "extra_trees_activity_coordination",
+    "product_model_rule": "The learned candidate with the lowest full-development date-macro MAE in this run. It is fixed by that rule before the reserve is scored and is not changed by reserve results. The tool always displays the product forecast beside the activity/coordination comparator and persistence."
+  },
+  "development_evaluation": {
+    "outer_split": "Unchanged: leave one development date out and purge its chemical identities from training (12 folds).",
+    "nested_selection_estimate": "Inside each outer training set, run the same leave-one-date-out purged split over the 11 training dates for every learned candidate; select the candidate with the lowest inner date-macro MAE; report its outer-date error. The nested date-macro MAE across the 12 outer dates estimates the selection procedure. Report which candidate was chosen in each outer fold.",
+    "primary_metric": "Unchanged date-macro MAE: mean absolute log2 error over doses within chemical, over chemicals within date, then equally over dates.",
+    "descriptive_uncertainty": "10000 paired resamples of the 12 date losses for each comparison; descriptive only, after selection, with correlated cases."
+  },
+  "warning_decision": {
+    "question": "At day 7, which conditions should a researcher prioritize for follow-up measurement or inspection because a large change in the day-12 network-spike readout is likely?",
+    "policy": "Rank cases within each experiment date by a score and flag the top ceil(budget * n_date) cases.",
+    "scores": {
+      "product_model": "abs(forecast)",
+      "activity_coordination": "abs(comparator forecast)",
+      "persistence_rank": "abs(day-7 normalized value)",
+      "random": "expected recall equals the budget; reported analytically"
+    },
+    "budgets": [
+      0.1,
+      0.2,
+      0.3
+    ],
+    "primary_budget": 0.2,
+    "subgroups": {
+      "all": "every case",
+      "early_quiet": "rank only within the early-quiet cases of the date; this is where a forecast adds information beyond what already changed"
+    },
+    "metrics": [
+      "detected large changes",
+      "missed large changes",
+      "false alerts",
+      "recall",
+      "precision",
+      "alerts per detected change; reported per date and pooled over dates"
+    ],
+    "primary_warning_metric": "Pooled recall of large changes among early-quiet cases at the 20% budget.",
+    "secondary_threshold_rule": "abs(forecast) >= 1, kept for continuity with the selection diagnostics; forecast magnitudes are not calibrated probabilities.",
+    "operating_point": "The 20% budget is fixed here, before any development curve is computed. Development curves at all budgets are reported; they do not move the primary budget."
+  },
+  "reliability": {
+    "method": "Split-conformal prediction intervals around the product forecast, calibrated on out-of-fold residuals from the inner purged leave-one-date-out loop, so every calibration residual comes from a model that never saw that case's date or chemical.",
+    "symmetric_variant": "interval = forecast +/- q_level(|residual|).",
+    "scaled_variant": "A difficulty model sigma(x) (Extra Trees, same fixed hyperparameters, floor 0.05) is fit on |residual| using the product features plus the day-7 reliability indicators. Calibration scores use out-of-fold sigma values from a purged leave-one-date-out loop over the calibration dates. interval = forecast +/- q_level(|residual|/sigma_oof) * sigma(x). Absolute residuals are rounded to 1e-9 before the difficulty model is fit; tree predictions are single-threaded so every number is bit-reproducible.",
+    "quantile": "Finite-sample corrected for nominal coverage level L: the ceil((n + 1) L)-th smallest score; if that exceeds n, the largest score.",
+    "nominal_levels": [
+      0.8,
+      0.9
+    ],
+    "primary_level": 0.8,
+    "reported": [
+      "observed coverage per date and pooled",
+      "mean interval width",
+      "retained-case counts"
+    ],
+    "abstention": "Rank development cases by out-of-fold sigma; the width threshold is the 80th percentile of sigma_oof over development cases and is locked in the development run. Cases above it are reported as 'unreliable forecast'. Report retained fraction, retained MAE, abstained MAE, and retained coverage.",
+    "reserve_calibration": "Residuals and sigma_oof from the full-development 12-fold loop calibrate the reserve intervals; the final sigma model is fit on all development residuals."
+  },
+  "measurement_quality_display": {
+    "purpose": "Show the researcher whether the day-7 reference and replicates are trustworthy. These flags are display and reporting elements; they are not used to select cases or alter metrics.",
+    "fixed_flags": {
+      "low_reference_activity": "plate control median ns.n at day 7 < 1 (the median control well shows no network spikes)",
+      "few_controls": "plate control wells with non-missing ns.n at day 7 < 4",
+      "replicates_disagree": "rep_sd_log2_relative_ns_d7 above the development 90th percentile, locked in the development run",
+      "controls_disagree": "plate_ctrl_iqr_ratio_d7 above the development 90th percentile, locked in the development run"
+    },
+    "reported": "Fraction of cases carrying each flag and the product model's MAE on flagged versus unflagged cases, per run. No pass/fail criterion; the honest finding may be that day-7 flags do not predict day-12 error.",
+    "limit": "Development data show only moderate association between day-7 and day-12 control activity (Spearman 0.42 across 77 plates), so no day-7 flag is claimed to predict later control failure."
+  },
+  "reserve_scoring": {
+    "authorized_by_this_protocol": true,
+    "preconditions": [
+      "development run complete with a hashed lock file",
+      "protocol, gate code, and frozen-core hashes unchanged since the lock",
+      "explicit --unseal flag",
+      "no existing reserve outputs"
+    ],
+    "runs": "Exactly once. Every reserve date is reported whatever its result. A rerun requires a new protocol version and a written explanation in the results document.",
+    "fits": "Product model, every learned candidate, and the trivial comparators fit on the 819 development cases; sigma and conformal calibration as specified; then predictions for every eligible reserve case.",
+    "reported": [
+      "per-date and mean-of-dates MAE for every candidate",
+      "warning metrics at every budget and both subgroups",
+      "coverage and width at both nominal levels, symmetric and scaled",
+      "abstention retained fraction and retained/abstained MAE",
+      "measurement flags",
+      "outcome-quality sensitivity subset",
+      "case-level predictions with intervals"
+    ]
+  },
+  "criteria": {
+    "C1a_forecast_vs_simple_baselines": {
+      "pass": "Product model mean-of-three-dates MAE is lower than persistence and the control reference, and lower than persistence on at least two of the three dates.",
+      "if_pass": "Claim lower forecast error than carrying day 7 forward or assuming no change, on three later, chemically disjoint batches from the same study; state the magnitude and that n = 3 batches.",
+      "if_fail": "State that the forecast did not beat trivial rules on the reserve; the report leads with that result and the tool's value rests on the reliability layer alone."
+    },
+    "C1b_forecast_vs_small_model": {
+      "pass": "Product mean-of-three-dates MAE is lower than the activity/coordination comparator, and lower on at least two of the three dates.",
+      "if_pass": "Claim that the day-7 control-relative representation beats the smaller activity/coordination model on the reserve, with n = 3 batches stated.",
+      "if_fail": "Do not claim an advantage over the smaller model; describe the two as indistinguishable or report which was better, and keep both in the tool."
+    },
+    "C2a_warning_vs_naive_rule": {
+      "pass": "At the 20% budget among early-quiet cases, pooled over the three reserve dates, product recall exceeds both persistence-rank recall and the random expectation.",
+      "if_pass": "Claim that the forecast prioritizes follow-up better than ranking by what has already changed, with the observed counts.",
+      "if_fail": "Do not claim a warning advantage; report the counts and present the ranking as a comparison tool."
+    },
+    "C2b_warning_vs_small_model": {
+      "pass": "At the same budget and subgroup, product recall is at least the activity/coordination recall.",
+      "if_pass": "State that the product forecast is no worse than the smaller model for prioritization on the reserve.",
+      "if_fail": "State that the smaller model detected more; keep both policies visible in the tool."
+    },
+    "C3_reliability": {
+      "pass": "Pooled observed coverage on the reserve is at least 0.70 at nominal 0.80 for the scaled intervals, and retained-case MAE is lower than all-case MAE under the locked abstention threshold.",
+      "if_pass": "Claim intervals with stated observed coverage under batch and chemical shift, and a usable unreliable-forecast flag.",
+      "if_fail": "Display intervals as development-calibrated only, print the observed shortfall, and do not claim reliable abstention."
+    },
+    "C4_measurement_display": {
+      "pass": "Not applicable; descriptive reporting only."
+    },
+    "general": "No criterion may be altered, no case excluded, and no comparator weakened after reserve outcomes are visible. A failed criterion narrows the claim; it does not trigger a second reserve evaluation."
+  },
+  "claims_not_supported_by_this_gate": [
+    "living-chip or clinical validity",
+    "toxicity, irreversibility, or washout recovery",
+    "saved experimental days, wells, or cost",
+    "a new learning algorithm",
+    "broad external validity: the reserve is three later batches from one public study"
+  ],
+  "outputs": {
+    "directory": "E:/kaggle/AI4S/experiments/neuroforecast_gate_v1_1",
+    "stages": [
+      "prepare",
+      "develop",
+      "reserve",
+      "audit"
+    ],
+    "lock_file": "development_lock.json with hashes of protocol, gate code, frozen cores, prepared data, development predictions, and locked thresholds",
+    "storage_rule": "All generated data on E:; code, protocol, and compact reports in the workspace.",
+    "superseded_development_run": "E:/kaggle/AI4S/experiments/neuroforecast_gate_v1 (v1 protocol; identical development numbers; never scored the reserve)"
+  },
+  "amendments": [
+    {
+      "version": "1.1",
+      "date": "2026-09-21 IST",
+      "before_reserve_scoring": true,
+      "informed_by": "The v1 development run (lock SHA-256 d96474db59eed33e690f428bcb76db1a51e5aa288e0da96697ced8cfc65d8177): the nested selection estimate (1.13295) showed that the product-versus-small-model difference is within selection noise, and the two learned warning policies detected 22 and 23 of 45 early-quiet later changes at the 20% budget. The original C1 and C2 each bundled the claim against trivial baselines with the claim against the team's own smaller model, so a comparator-driven FAIL would have hidden a real result.",
+      "change": "C1 is split into C1a (versus persistence and the control reference) and C1b (versus the activity/coordination model); C2 is split into C2a (versus persistence ranking and the random expectation) and C2b (versus the activity/coordination model). Every comparison is still computed and reported.",
+      "unchanged": "Cohort, target, inputs, candidates, product-model rule, budgets, nominal levels, locked thresholds, reliability method, measurement flags, sensitivity subset, reserve procedure, and C3. The development stage is re-run under this version into a new directory and must reproduce the v1 numbers exactly before the reserve is scored.",
+      "determinism_note": "A first v1.1 re-run reproduced every forecast to 3.6e-15 but not the difficulty model: floating-point summation order in multi-threaded tree prediction perturbed its absolute-residual targets by about 1e-15, which moved sigma by up to 0.069 and the locked abstention threshold from 1.5445 to 1.5433, while retained MAE (0.676 vs 0.675) and coverage (0.807 vs 0.811) were essentially unchanged. The gate therefore predicts single-threaded (identical trees and seeds; fixed summation order) and rounds absolute residuals to 1e-9 before fitting the difficulty model. The frozen cores and hyperparameters are unchanged. The nondeterministic run is kept as neuroforecast_gate_v1_1_nondeterministic_sigma; determinism is demonstrated by two independent development runs with identical output hashes."
+    }
+  ]
+}

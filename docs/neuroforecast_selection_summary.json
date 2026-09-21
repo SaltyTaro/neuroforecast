@@ -1,0 +1,157 @@
+{
+  "status": "working topic selected after development comparisons; independent validation pending",
+  "topic": "NeuroForecast: early warning for later changes in neuronal function",
+  "selected_model": "extra_trees_relative_day7",
+  "primary_mae": 0.9371103078215999,
+  "metrics": {
+    "extra_trees_relative_day7": 0.9371103078215999,
+    "extra_trees_activity_coordination": 0.9733880562597825,
+    "extra_trees_relative": 1.007252361676148,
+    "extra_trees_all": 1.0473648224115204,
+    "ridge_relative": 1.0956876310849684,
+    "control_reference": 1.1034489984694247,
+    "persistence_day7": 1.1048013905337972,
+    "extra_trees_target_only": 1.1172143998183048,
+    "ridge_target_only": 1.1483226651656044,
+    "ridge_all": 2.039208311699476,
+    "linear_trend": 2.91719927724869
+  },
+  "comparisons": [
+    {
+      "comparator": "control_reference",
+      "gain": 0.1507443396827136,
+      "descriptive_interval": [
+        -0.14489329461245534,
+        0.3726348931794967
+      ],
+      "dates_improved": 7
+    },
+    {
+      "comparator": "persistence_day7",
+      "gain": 0.1517839171357086,
+      "descriptive_interval": [
+        -0.22311960066607747,
+        0.3989516939808053
+      ],
+      "dates_improved": 9
+    },
+    {
+      "comparator": "extra_trees_activity_coordination",
+      "gain": 0.03726956397798742,
+      "descriptive_interval": [
+        -0.03517561399904425,
+        0.09763418217441011
+      ],
+      "dates_improved": 9
+    },
+    {
+      "comparator": "extra_trees_relative",
+      "gain": 0.06963702099226277,
+      "descriptive_interval": [
+        0.01901339539283955,
+        0.11231661946184247
+      ],
+      "dates_improved": 9
+    },
+    {
+      "comparator": "extra_trees_all",
+      "gain": 0.10526849119876258,
+      "descriptive_interval": [
+        -0.14236700085497025,
+        0.3609527640004778
+      ],
+      "dates_improved": 4
+    }
+  ],
+  "cohort": {
+    "physical_recordings": 17128,
+    "physical_wells": 4320,
+    "identified_substances": 136,
+    "eligible_substances": 133,
+    "development_cases": 819,
+    "development_substances": 101,
+    "development_dates": 12
+  },
+  "initial_primary_result": {
+    "primary_model": "extra_trees_all",
+    "relative_mae_reduction": 0.0508262512682488,
+    "paired_date_descriptive_interval_95": [
+      -0.4762689870986179,
+      0.40584225687886805
+    ]
+  },
+  "followup_primary_model": "extra_trees_relative",
+  "selected_model_was_a_followup_ablation": true,
+  "reserve_outcomes_scored": false,
+  "reserve_dates": [
+    20170920,
+    20171004,
+    20171011
+  ],
+  "uncertainty_note": "Paired bootstrap of 12 development date losses; descriptive, after model selection. These are not independent-study or clinical intervals.",
+  "diagnostic_classifications": [
+    {
+      "model": "extra_trees_activity_coordination",
+      "subset": "all",
+      "n": 819,
+      "positive": 175,
+      "tp": 108,
+      "fp": 35,
+      "fn": 67,
+      "tn": 609,
+      "precision": 0.7552447552447552,
+      "recall": 0.6171428571428571,
+      "auc": 0.8337843833185448,
+      "ap": 0.7237455218146726
+    },
+    {
+      "model": "extra_trees_activity_coordination",
+      "subset": "early_quiet",
+      "n": 427,
+      "positive": 45,
+      "tp": 23,
+      "fp": 8,
+      "fn": 22,
+      "tn": 374,
+      "precision": 0.7419354838709677,
+      "recall": 0.5111111111111111,
+      "auc": 0.8365619546247818,
+      "ap": 0.5446266162907791
+    },
+    {
+      "model": "extra_trees_relative_day7",
+      "subset": "all",
+      "n": 819,
+      "positive": 175,
+      "tp": 107,
+      "fp": 47,
+      "fn": 68,
+      "tn": 597,
+      "precision": 0.6948051948051948,
+      "recall": 0.6114285714285714,
+      "auc": 0.8409716060337179,
+      "ap": 0.7104708533599118
+    },
+    {
+      "model": "extra_trees_relative_day7",
+      "subset": "early_quiet",
+      "n": 427,
+      "positive": 45,
+      "tp": 24,
+      "fp": 13,
+      "fn": 21,
+      "tn": 369,
+      "precision": 0.6486486486486487,
+      "recall": 0.5333333333333333,
+      "auc": 0.78804537521815,
+      "ap": 0.5351625098746617
+    }
+  ],
+  "failure_audit": {
+    "worst_date": 20160921,
+    "zero_day12_control_median_development_cases": 42,
+    "zero_day12_control_median_early_quiet_later_large_changes": 3,
+    "interpretation": "A zero control median can inflate the pseudocount-regularized relative target. This association does not prove an assay failure or a chemical mechanism. Keep the original cases and results; evaluate control/replicate reliability prospectively in a separate protocol, using only available observations for any decision."
+  },
+  "report_sha256": "30af0ed71bc8bfaca4af34a407ead8a3715281481dc0952e50e4cb6cb9cdf6bc"
+}

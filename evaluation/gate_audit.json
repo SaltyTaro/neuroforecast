@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "reliability_rebuild_exact": true,
+  "future_mutation_invariance": true,
+  "past_only_invariance": true,
+  "outer_folds": 12,
+  "inner_folds_checked": 131,
+  "saved_product_model_replays": 12,
+  "maximum_replay_difference": 4.440892098500626e-16,
+  "lock_verified": true,
+  "reserve_outcomes_scored": true,
+  "reserve_hashes_verified": true,
+  "reserve_identity_and_date_disjointness": true,
+  "reserve_cases": 224
+}

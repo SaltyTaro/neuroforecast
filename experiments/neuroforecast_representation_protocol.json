@@ -1,0 +1,13 @@
+{
+  "version": "neuroforecast_representation_v1",
+  "status": "exploratory_followup_frozen_after_selection_v1_results",
+  "motivation": "The first model has large errors and many false alerts in some culture dates. Test whether control-relative features reduce sensitivity to batch-dependent absolute activity levels.",
+  "data_target_splits": "Exactly the prepared development cases, target, reserved identities, and purged culture-date splits of neuroforecast_selection_v1. No reserved outcomes are scored.",
+  "representation": "For each readout at days 5 and 7, contrast = (mean raw - mean control)/(abs(mean raw)+abs(mean control)). Both zero gives zero; unavailable values remain missing. Include the original missing fractions, two normalized network-spike readouts and log10 dose.",
+  "primary_model": "extra_trees_relative",
+  "models": ["extra_trees_relative", "ridge_relative", "extra_trees_activity_coordination", "extra_trees_relative_day7"],
+  "activity_coordination_baseline": "The same Extra Trees learner with day-5/day-7 contrasts for mean firing rate, mean correlation, active electrodes, actively bursting electrodes, and network-spike count; plus the two normalized network-spike readouts and concentration.",
+  "hyperparameters": "Unchanged from the first protocol: Extra Trees 256 trees, depth 12, leaf size 4, seed 20260920; Ridge alpha 10 with training-only imputation/scaling.",
+  "primary_metric": "Unchanged macro-culture-date MAE, with comparisons to every original baseline and the new ablations.",
+  "interpretation": "This is model development informed by the first result, not independent validation. Preserve and report the first result. One bounded representation comparison is planned; do not tune it using the reserved batches."
+}
