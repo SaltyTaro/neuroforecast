@@ -65,9 +65,10 @@ python -X utf8 -B tools/report_neuroforecast_gate.py --out runs/gate
 
 ```bash
 python -X utf8 -B -m unittest discover -s tests -v
+python -X utf8 -B tools/verify_published_numbers.py
 ```
 
-39 tests, including end-to-end checks that the shipped tool reproduces the audited reserve forecasts, intervals, trust verdicts and quality flags to 1e-12, and that removing day-5 rows changes none of them.
+26 tests, including end-to-end checks that the shipped tool reproduces the audited reserve forecasts, intervals, trust verdicts and quality flags to 1e-12, and that removing day-5 rows changes none of them. The second command recomputes all 33 headline numbers in this README and the reports directly from `evaluation/*.csv`, at the precision each is quoted to, and fails if any of them drifts from the evidence.
 
 ## How the evaluation was kept honest
 
@@ -102,6 +103,8 @@ Rat cortical cultures in multi-well plates are not perfused organ chips, human c
 | `models/` | Final models trained on the 819 development cases, the development lock, and the reserve summary |
 | `examples/` | Two real day-7 inputs from the sealed reserve |
 | `docs/` | Protocol, development results, reserve results, project brief, prior-art assessment |
+| `evaluation/` | Audited per-case predictions, intervals and flags for both stages, so every number recomputes without the source archive |
+| `tools/verify_published_numbers.py` | Recomputes every published number from those tables |
 | `docs/history/` | Two earlier approaches from this campaign that failed their own gates, kept for disclosure |
 
 ## Disclosure

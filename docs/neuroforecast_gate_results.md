@@ -1,4 +1,4 @@
-**NeuroForecast validation gate: development stage complete; the reserve is still sealed.** Run on September 21, 2026 IST under [the gate protocol](neuroforecast_gate_protocol.md) (JSON SHA-256 `af88d67486292dccaebdde3de1bbf7ba6b1c0190e23f8148d1bed3fb55c0b299`). The development lock is `experiments/neuroforecast_gate_v1/development_lock.json` (SHA-256 `d96474db59eed33e690f428bcb76db1a51e5aa288e0da96697ced8cfc65d8177`). All outputs are on E:; the workspace junction `experiments/neuroforecast_gate_v1` preserves the links below. Machine-readable values: [the compact summary](neuroforecast_gate_summary.json).
+**NeuroForecast validation gate: the development stage.** First run on September 21, 2026 IST under gate protocol v1; re-run unchanged under [the amended v1.1 protocol](neuroforecast_gate_protocol.md) (JSON SHA-256 `16679e20133841b0381a9e97c8184d8ed4b065e03cae1bbbebe03c042963947a`), which is the run whose artifacts are published. Its development lock has SHA-256 `e81011d946745fb96c8d3f5208e10e6ab73a0f9342b6553897df70c9f8eca4be`. Every forecast, error and warning count below is identical between the two runs; the determinism fix recorded in the protocol changed only the difficulty model and the quantities derived from it, which are quoted here from the published run. Machine-readable values: [the compact summary](neuroforecast_gate_summary.json).
 
 **Headline.** The forecast accuracy story did not get stronger: the day-7 control-relative model remains the best full-development candidate (MAE 0.93711) and reproduces the frozen selection numbers exactly, but a nested estimate of the selection procedure is 1.13295, no better than carrying day 7 forward (1.10480), and adding day-7 reliability indicators to the model does not help (0.94465). The reliability story is the strong result: a day-7 difficulty model separates cases whose forecasts should not be trusted (abstained-case MAE 2.216 versus retained-case MAE 0.676 at an 80% retention rate), conformal intervals reach their nominal coverage pooled across held-out dates (0.807 at nominal 0.80, 0.900 at 0.90), and the day-7 control-dispersion flag identifies every case of the plate group whose day-12 controls collapsed. Both learned forecasts roughly double the recall of the naive "rank by what already changed" rule at a 20% review budget among early-quiet conditions; they are indistinguishable from each other.
 
@@ -44,24 +44,25 @@ At 10% and 30% budgets the two learned policies also track each other (early-qui
 | Symmetric, nominal 0.80 | 0.795 | 2.73 | 0.45 to 1.00 |
 | Scaled by difficulty, nominal 0.80 | **0.807** | 2.99 | 0.50 to 0.96 |
 | Symmetric, nominal 0.90 | 0.886 | 5.83 | 0.46 to 1.00 |
-| Scaled by difficulty, nominal 0.90 | 0.900 | 4.11 | 0.65 to 0.99 |
+| Scaled by difficulty, nominal 0.90 | 0.899 | 4.11 | 0.65 to 0.99 |
 
 Pooled coverage is on target, but per-date coverage varies substantially because batches shift; the scaled intervals are more even across dates and narrower at 90%. Widths are large: a nominal-80% interval spans about three log2 units, an honest statement of how uncertain a day-12 forecast from day 7 is.
 
-The difficulty model (Extra Trees on out-of-fold absolute residuals with day-7 inputs only) was thresholded at the development 80th percentile of predicted difficulty, sigma = 1.545, locked before any reserve scoring:
+The difficulty model (Extra Trees on out-of-fold absolute residuals with day-7 inputs only) was thresholded at the development 80th percentile of predicted difficulty, sigma = 1.587, locked before any reserve scoring:
 
 | Quantity | Value |
 | --- | ---: |
 | Retained cases | 655 of 819 (80.0%) |
-| Retained-case MAE / abstained-case MAE | **0.676 / 2.216** |
+| Retained-case MAE / abstained-case MAE | **0.678 / 2.210** |
 | All-case MAE | 0.984 |
-| Retained date-macro MAE | 0.757 |
+| Retained date-macro MAE | 0.778 |
 | Retained observed coverage, scaled 0.80 | 0.785 |
-| Excluding the worst date 20160921: retained / abstained MAE | 0.579 / 1.786 |
+| Share of total absolute error in the abstained cases | 45% |
+| Excluding the worst date 20160921: retained / abstained MAE | 0.581 / 1.778 |
 
 ![Abstention](figures/gate_abstention_development.png)
 
-Retained-case MAE is below all-case MAE on 11 of 12 dates; on 20170412 it is 0.003 higher. The abstentions are not one bad plate: on 20170809 the tool abstains on 42 of 84 cases, where every plate's day-7 control median is between 0 and 2 network spikes (the networks had not developed by day 7) and the product model is worse than persistence (1.005 versus 0.698); retained MAE there is 0.679. On 20160907 it abstains on 22 of 56 and retained MAE falls from 1.017 to 0.421. These are held-out-date, held-out-chemical behaviours of a rule that reads only day-7 inputs.
+Retained-case MAE is below all-case MAE on 11 of 12 dates; on 20170412 it is 0.003 higher. The abstentions are not one bad plate: on 20170809 the tool abstains on 39 of 84 cases, where every plate's day-7 control median is between 0 and 2 network spikes (the networks had not developed by day 7) and the product model is worse than persistence (1.005 versus 0.698); retained MAE there is 0.650. On 20160907 it abstains on 22 of 56 and retained MAE falls from 1.017 to 0.421. These are held-out-date, held-out-chemical behaviours of a rule that reads only day-7 inputs.
 
 ![Coverage by date](figures/gate_coverage_development.png)
 
