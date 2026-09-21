@@ -4,3 +4,4 @@ experiments/*.json text eol=lf
 tools/requirements-neuroforecast.txt text eol=lf
 *.png binary
 *.joblib binary
+*.bin binary
