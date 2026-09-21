@@ -48,6 +48,10 @@ Batch 20171004: 84 conditions, day-7 reference activity 0.0 network spikes
 
 Day-5 rows are optional; day-9 and day-12 rows are **rejected** by the entry point, so a forecast cannot be made with information the researcher would not have. Write results with `--output table.csv --summary batch.json`.
 
+## Reproduce it in a notebook
+
+[`notebooks/neuroforecast_reproduction.ipynb`](notebooks/neuroforecast_reproduction.ipynb) walks through the whole result in nine cells: it clones this repository, checks every published number against the evidence, runs the tool on both sealed-reserve batches, reproduces the per-date comparison that the learned model lost, and shows what the trust verdict recovered. Parts 1–5 need no download. It runs on Kaggle with **Internet** enabled in the notebook settings, and locally in any Jupyter environment.
+
 ## Reproduce the evaluation
 
 Download the public EPA source archive (~160 MB) and verify its checksum, then run the four stages:
@@ -105,6 +109,7 @@ Rat cortical cultures in multi-well plates are not perfused organ chips, human c
 | `docs/` | Protocol, development results, reserve results, project brief, prior-art assessment |
 | `evaluation/` | Audited per-case predictions, intervals and flags for both stages, so every number recomputes without the source archive |
 | `tools/verify_published_numbers.py` | Recomputes every published number from those tables |
+| `notebooks/` | A nine-cell walkthrough that clones, verifies and runs everything |
 | `docs/history/` | Two earlier approaches from this campaign that failed their own gates, kept for disclosure |
 
 ## Disclosure
