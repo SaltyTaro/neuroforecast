@@ -1,0 +1,543 @@
+<meta charset="utf-8">
+<title>NeuroForecast Triage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap">
+<style>
+  :root {
+    --ground: #f4f6f9;
+    --surface: #ffffff;
+    --sunken: #eef1f6;
+    --ink: #141a22;
+    --muted: #5c6875;
+    --faint: #8794a3;
+    --line: #dce2ea;
+    --accent: #1d5fa8;
+    --accent-soft: #e7eff9;
+    --ok: #0e7c66;
+    --ok-soft: #e2f1ed;
+    --caution: #a25a00;
+    --caution-soft: #fbeedc;
+    --alert: #a32a22;
+    --alert-soft: #fbe9e7;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --serif: "IBM Plex Serif", Georgia, serif;
+    color-scheme: light;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --ground: #0e1319;
+      --surface: #161c25;
+      --sunken: #1b222c;
+      --ink: #e6ebf2;
+      --muted: #97a3b3;
+      --faint: #6f7d8e;
+      --line: #262f3b;
+      --accent: #6ba8e8;
+      --accent-soft: #17293d;
+      --ok: #3fae95;
+      --ok-soft: #122a26;
+      --caution: #d79338;
+      --caution-soft: #2e2415;
+      --alert: #e0706a;
+      --alert-soft: #301b1a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0e1319;
+    --surface: #161c25;
+    --sunken: #1b222c;
+    --ink: #e6ebf2;
+    --muted: #97a3b3;
+    --faint: #6f7d8e;
+    --line: #262f3b;
+    --accent: #6ba8e8;
+    --accent-soft: #17293d;
+    --ok: #3fae95;
+    --ok-soft: #122a26;
+    --caution: #d79338;
+    --caution-soft: #2e2415;
+    --alert: #e0706a;
+    --alert-soft: #301b1a;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; display: flex; flex-direction: column; gap: 22px; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 600; letter-spacing: -0.01em; }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.02rem; }
+  p { margin: 0; }
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  header.masthead { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
+  .eyebrow { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--faint); }
+  .masthead p { color: var(--muted); font-size: 0.9rem; max-width: 58ch; margin-top: 4px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, label.file {
+    font: inherit; font-size: 0.85rem; font-weight: 500;
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 7px;
+    padding: 7px 13px; cursor: pointer;
+  }
+  button:hover, label.file:hover { border-color: var(--accent); color: var(--accent); }
+  button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  :root[data-theme="dark"] button[aria-pressed="true"], :root:not([data-theme="light"]) button[aria-pressed="true"] { color: #0e1319; }
+  button:focus-visible, label.file:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+  input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+  .verdict { display: flex; gap: 0; border-radius: 10px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
+  .verdict .stripe { width: 6px; flex: none; background: var(--ok); }
+  .verdict.bad .stripe { background: var(--alert); }
+  .verdict .body { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .verdict .headline { font-size: 1.06rem; font-weight: 600; }
+  .verdict.bad .headline { color: var(--alert); }
+  .verdict.good .headline { color: var(--ok); }
+  .verdict .detail { color: var(--muted); font-size: 0.89rem; max-width: 76ch; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .stat { background: var(--surface); padding: 13px 15px; display: flex; flex-direction: column; gap: 2px; }
+  .stat .k { font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); }
+  .stat .v { font-family: var(--mono); font-size: 1.32rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .stat .note { font-size: 0.76rem; color: var(--muted); }
+  .stat.flag .v { color: var(--alert); }
+
+  section.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .panel-head { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; justify-content: space-between; }
+  .panel-head .hint { color: var(--muted); font-size: 0.82rem; max-width: 70ch; }
+
+  .plates { display: flex; flex-wrap: wrap; gap: 16px; }
+  .plate { display: flex; flex-direction: column; gap: 5px; }
+  .plate .id { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; }
+  .plate .grid { display: grid; grid-template-columns: repeat(8, 15px); grid-auto-rows: 15px; gap: 2px; }
+  .well { border-radius: 2.5px; background: var(--sunken); border: 1px solid transparent; }
+  .well.ctrl { border-color: var(--ink); }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.76rem; color: var(--muted); align-items: center; }
+  .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 2.5px; vertical-align: -1px; margin-right: 5px; }
+
+  .chartwrap { overflow-x: auto; }
+  svg { display: block; max-width: 100%; }
+  svg text { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
+  svg text.axis { font-size: 11px; fill: var(--muted); }
+
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--faint); font-weight: 500; }
+  td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.declined td { color: var(--muted); }
+  .pill { display: inline-block; font-family: var(--mono); font-size: 0.68rem; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.dec { background: var(--caution-soft); color: var(--caution); }
+  .pill.flag { background: var(--alert-soft); color: var(--alert); }
+  .interval { color: var(--muted); }
+
+  .evidence { border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+  .evidence h2 { font-family: var(--serif); font-weight: 400; font-size: 1.04rem; }
+  .evidence p { font-family: var(--serif); color: var(--ink); max-width: 72ch; font-size: 0.92rem; }
+  .evidence .row { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+  .evidence strong { font-family: var(--mono); font-weight: 500; color: var(--ink); }
+
+  footer { color: var(--faint); font-size: 0.78rem; display: flex; flex-direction: column; gap: 4px; }
+  footer a { color: var(--accent); }
+  .error { border-left: 3px solid var(--alert); background: var(--alert-soft); color: var(--alert); padding: 12px 15px; border-radius: 0 8px 8px 0; font-size: 0.87rem; }
+  .loading { color: var(--muted); font-size: 0.87rem; }
+  @media (prefers-reduced-motion: no-preference) { .well { transition: background-color 120ms ease; } }
+  @media (max-width: 560px) { .plate .grid { grid-template-columns: repeat(8, 12px); grid-auto-rows: 12px; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Microelectrode array · decision at day 7</div>
+      <h1>NeuroForecast Triage</h1>
+      <p>Reads day-7 wells and their plate controls, then answers three questions a researcher has to
+        answer that day: is the measurement usable, can this condition's day-12 outcome be forecast at
+        all, and where should a limited review budget go.</p>
+    </div>
+    <div class="controls" id="controls">
+      <span class="loading" id="status">Loading models…</span>
+    </div>
+  </header>
+
+  <div id="error" class="error" hidden></div>
+
+  <div id="verdict" class="verdict good" hidden>
+    <div class="stripe"></div>
+    <div class="body">
+      <div class="headline" id="verdict-headline"></div>
+      <p class="detail" id="verdict-detail"></p>
+    </div>
+  </div>
+
+  <div class="stats" id="stats" hidden></div>
+
+  <section class="panel" id="plate-panel" hidden>
+    <div class="panel-head">
+      <h2>Day-7 network activity by well</h2>
+      <p class="hint">Each square is a well; outlined squares are the untreated controls that every
+        normalized readout is divided by. If the controls are dark, the reference is degenerate.</p>
+    </div>
+    <div class="plates" id="plates"></div>
+    <div class="legend" id="plate-legend"></div>
+  </section>
+
+  <section class="panel" id="chart-panel" hidden>
+    <div class="panel-head">
+      <h2>Where the forecast departs from the simple rule</h2>
+      <p class="hint">The diagonal is “carry day 7 forward”, which beat this model on the sealed test
+        batches. Distance from it is what the model adds — trust it only where the point is filled.</p>
+    </div>
+    <div class="chartwrap"><svg id="chart" role="img" aria-label="Forecast against day-7 observation"></svg></div>
+  </section>
+
+  <section class="panel" id="table-panel" hidden>
+    <div class="panel-head">
+      <h2>Conditions to review</h2>
+      <div class="tabs" id="tabs"></div>
+    </div>
+    <p class="hint" id="table-hint"></p>
+    <div class="tablewrap"><table id="table"><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <div class="evidence" id="evidence" hidden>
+    <h2>What the held-out test actually showed</h2>
+    <p id="evidence-text"></p>
+    <div class="row" id="evidence-rows"></div>
+  </div>
+
+  <footer>
+    <div>Public EPA network formation assay, <span class="num">DOI 10.23719/1503191</span> (U.S. public domain), accompanying Shafer et al., 2019. Rat cortical cultures on microelectrode arrays — not organ chips, human cells, or clinical toxicity.</div>
+    <div>Models and intervals run entirely in this page; nothing is uploaded. Code, protocols and evaluation: <a href="https://github.com/SaltyTaro/neuroforecast">github.com/SaltyTaro/neuroforecast</a></div>
+  </footer>
+</div>
+
+<script type="module">
+import { parseCSV, prepareRows, buildFeatures, triage, Forest } from "./triage.js";
+
+const EXAMPLES = [
+  { date: 20170920, label: "Batch 20170920", file: "examples/reserve_20170920_usable_day5_day7.csv" },
+  { date: 20171004, label: "Batch 20171004", file: "examples/reserve_20171004_low_quality_day5_day7.csv" },
+  { date: 20171011, label: "Batch 20171011", file: "examples/reserve_20171011_usable_day5_day7.csv" },
+];
+
+const el = (id) => document.getElementById(id);
+const fmt = (x, d = 2) => (Number.isFinite(x) ? (x >= 0 ? "+" : "") + x.toFixed(d) : "—");
+const state = { models: null, constants: null, result: null, rows: null, tab: "early" };
+
+function showError(message) {
+  el("error").textContent = message;
+  el("error").hidden = false;
+}
+
+async function boot() {
+  try {
+    const manifest = await (await fetch("models/manifest.json")).json();
+    state.constants = manifest.constants;
+    state.models = {};
+    for (const [label, spec] of Object.entries(manifest.models)) {
+      const buffer = await (await fetch("models/" + spec.file)).arrayBuffer();
+      state.models[label] = new Forest(buffer, spec);
+    }
+    buildControls();
+    await loadExample(EXAMPLES[1]);   // open on the batch that fails quality control
+  } catch (error) {
+    el("status").textContent = "";
+    showError("Could not load the models: " + error.message);
+  }
+}
+
+function buildControls() {
+  const controls = el("controls");
+  controls.innerHTML = "";
+  for (const example of EXAMPLES) {
+    const button = document.createElement("button");
+    button.textContent = example.label;
+    button.id = "ex-" + example.date;
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener("click", () => loadExample(example));
+    controls.appendChild(button);
+  }
+  const label = document.createElement("label");
+  label.className = "file";
+  label.innerHTML = '<input type="file" id="upload" accept=".csv,text/csv"> Open your own day-7 CSV';
+  controls.appendChild(label);
+  label.querySelector("input").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      for (const example of EXAMPLES) el("ex-" + example.date).setAttribute("aria-pressed", "false");
+      run(reader.result, file.name);
+    };
+    reader.readAsText(file);
+  });
+}
+
+async function loadExample(example) {
+  for (const other of EXAMPLES) {
+    const button = el("ex-" + other.date);
+    if (button) button.setAttribute("aria-pressed", String(other.date === example.date));
+  }
+  const text = await (await fetch(example.file)).text();
+  run(text, example.label);
+}
+
+function run(text, source) {
+  el("error").hidden = true;
+  try {
+    const parsed = parseCSV(text);
+    const { rows } = prepareRows(parsed, state.constants.readouts);
+    const cases = buildFeatures(rows, state.constants);
+    if (!cases.length) throw new Error("No conditions with at least two usable replicate wells were found.");
+    state.rows = rows;
+    state.result = triage(cases, state.models, state.constants);
+    render(source);
+  } catch (error) {
+    showError(error.message);
+    for (const id of ["verdict", "stats", "plate-panel", "chart-panel", "table-panel", "evidence"]) el(id).hidden = true;
+  }
+}
+
+function render(source) {
+  const { conditions, batches } = state.result;
+  const batch = batches[0];
+  renderVerdict(batch, batches, source);
+  renderStats(batch, conditions);
+  renderPlates(batch);
+  renderChart(conditions);
+  renderTable();
+  renderEvidence();
+}
+
+function renderVerdict(batch, batches, source) {
+  const node = el("verdict");
+  node.hidden = false;
+  node.className = "verdict " + (batch.usable ? "good" : "bad");
+  el("verdict-headline").textContent = batch.verdict;
+  const extra = batches.length > 1 ? ` Showing batch ${batch.date} of ${batches.length} in this file.` : "";
+  el("verdict-detail").textContent =
+    `${source} · ${batch.conditions} dose conditions across ${batch.plates.length} plates. `
+    + `The untreated controls show a median of ${batch.referenceActivity.toFixed(1)} network spikes at day 7. `
+    + (batch.usable
+      ? `${batch.declined} forecast${batch.declined === 1 ? " is" : "s are"} still declined individually.`
+      : `Every condition here carries a quality flag, so the forecasts below are shown for inspection only.`)
+    + extra;
+}
+
+function renderStats(batch, conditions) {
+  const stats = [
+    ["Day-7 reference", batch.referenceActivity.toFixed(1), "network spikes, control median"],
+    ["Conditions", String(batch.conditions), `${batch.quiet} barely moved by day 7`],
+    ["Forecasts declined", String(batch.declined), `${Math.round(100 * batch.declined / batch.conditions)}% too uncertain to use`],
+    ["Early-warning list", String(batch.earlyWarningList), `top ${Math.round(100 * state.constants.budget)}% of quiet conditions`],
+    ["Quality flags", String(batch.flagged), batch.flagged ? "conditions with a measurement concern" : "no measurement concerns"],
+  ];
+  const node = el("stats");
+  node.hidden = false;
+  node.innerHTML = "";
+  for (const [key, value, note] of stats) {
+    const div = document.createElement("div");
+    div.className = "stat" + (key === "Quality flags" && batch.flagged ? " flag" : "");
+    div.innerHTML = `<span class="k"></span><span class="v"></span><span class="note"></span>`;
+    div.querySelector(".k").textContent = key;
+    div.querySelector(".v").textContent = value;
+    div.querySelector(".note").textContent = note;
+    node.appendChild(div);
+  }
+  void conditions;
+}
+
+/* A 48-well plate map: the assay's own unit of work. Colour encodes day-7 network spikes. */
+function renderPlates(batch) {
+  const day7 = state.rows.filter((r) => r.DIV === 7 && r.date === batch.date);
+  const byPlate = new Map();
+  for (const row of day7) {
+    if (!byPlate.has(row.plate)) byPlate.set(row.plate, []);
+    byPlate.get(row.plate).push(row);
+  }
+  const all = day7.map((r) => r.values["ns.n"]).filter(Number.isFinite);
+  const top = Math.max(1, ...all);
+  const shade = (value) => {
+    if (!Number.isFinite(value)) return "var(--sunken)";
+    const t = Math.min(1, Math.sqrt(value / top));
+    return `color-mix(in srgb, var(--accent) ${Math.round(8 + 92 * t)}%, var(--sunken))`;
+  };
+
+  const host = el("plates");
+  host.innerHTML = "";
+  for (const [plate, wells] of [...byPlate].sort((a, b) => a[0].localeCompare(b[0]))) {
+    const controls = wells.filter((w) => w.dose === 0).map((w) => w.values["ns.n"]);
+    const med = controls.length ? [...controls].sort((a, b) => a - b)[Math.floor(controls.length / 2)] : NaN;
+    const box = document.createElement("div");
+    box.className = "plate";
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    const seat = new Map(wells.map((w) => [w.well, w]));
+    for (const rowLetter of ["A", "B", "C", "D", "E", "F"]) {
+      for (let column = 1; column <= 8; column += 1) {
+        const well = seat.get(rowLetter + column);
+        const cell = document.createElement("div");
+        cell.className = "well" + (well && well.dose === 0 ? " ctrl" : "");
+        cell.style.background = shade(well ? well.values["ns.n"] : NaN);
+        if (well) cell.title = `${rowLetter}${column} · ${well.dose === 0 ? "control" : well.trt + " " + well.dose + " µM"} · ${well.values["ns.n"]} network spikes`;
+        grid.appendChild(cell);
+      }
+    }
+    const id = document.createElement("div");
+    id.className = "id";
+    id.innerHTML = `<span></span><span></span>`;
+    id.children[0].textContent = plate;
+    id.children[1].textContent = `ctrl ${Number.isFinite(med) ? med : "—"}`;
+    box.append(id, grid);
+    host.appendChild(box);
+  }
+  el("plate-panel").hidden = false;
+  el("plate-legend").innerHTML =
+    `<span><span class="swatch" style="background:${shade(0)}"></span>0 spikes</span>`
+    + `<span><span class="swatch" style="background:${shade(top / 4)}"></span>${Math.round(top / 4)}</span>`
+    + `<span><span class="swatch" style="background:${shade(top)}"></span>${Math.round(top)}</span>`
+    + `<span><span class="swatch ctrl" style="background:var(--sunken);border:1px solid var(--ink)"></span>untreated control well</span>`;
+}
+
+function renderChart(conditions) {
+  const W = 760, H = 380, P = { t: 18, r: 18, b: 44, l: 56 };
+  const values = conditions.flatMap((c) => [c.day7, c.forecast, c.low, c.high]).filter(Number.isFinite);
+  const lo = Math.min(-1, Math.floor(Math.min(...values)));
+  const hi = Math.max(1, Math.ceil(Math.max(...values)));
+  const x = (v) => P.l + ((v - lo) / (hi - lo)) * (W - P.l - P.r);
+  const y = (v) => H - P.b - ((v - lo) / (hi - lo)) * (H - P.t - P.b);
+  const ticks = [];
+  const step = hi - lo > 12 ? 4 : hi - lo > 6 ? 2 : 1;
+  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) ticks.push(v);
+
+  const quiet = state.constants.quiet_limit;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<rect x="${x(-quiet)}" y="${P.t}" width="${x(quiet) - x(-quiet)}" height="${H - P.t - P.b}" fill="var(--accent-soft)"></rect>`;
+  const bandLabelX = Math.min(Math.max(x(0), P.l + 62), W - P.r - 62);
+  svg += `<text x="${bandLabelX}" y="${H - P.b - 8}" text-anchor="middle">barely moved by day 7</text>`;
+  for (const v of ticks) {
+    svg += `<line x1="${x(v)}" y1="${P.t}" x2="${x(v)}" y2="${H - P.b}" stroke="var(--line)" stroke-width="1"></line>`;
+    svg += `<line x1="${P.l}" y1="${y(v)}" x2="${W - P.r}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"></line>`;
+    svg += `<text x="${x(v)}" y="${H - P.b + 15}" text-anchor="middle">${v}</text>`;
+    svg += `<text x="${P.l - 8}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
+  }
+  svg += `<line x1="${x(lo)}" y1="${y(lo)}" x2="${x(hi)}" y2="${y(hi)}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 4"></line>`;
+  svg += `<text class="axis" x="${(P.l + W - P.r) / 2}" y="${H - 8}" text-anchor="middle">observed at day 7 (log2 vs controls)</text>`;
+  svg += `<text class="axis" transform="translate(14 ${(P.t + H - P.b) / 2}) rotate(-90)" text-anchor="middle">forecast for day 12</text>`;
+
+  for (const c of conditions) {
+    if (!Number.isFinite(c.day7) || !Number.isFinite(c.forecast)) continue;
+    const cx = x(c.day7), cy = y(c.forecast);
+    const colour = c.trusted ? "var(--accent)" : "var(--caution)";
+    svg += `<line x1="${cx}" y1="${y(c.low)}" x2="${cx}" y2="${y(c.high)}" stroke="${colour}" stroke-width="1" opacity="0.28"></line>`;
+    svg += c.trusted
+      ? `<circle cx="${cx}" cy="${cy}" r="4" fill="${colour}" opacity="0.85"></circle>`
+      : `<circle cx="${cx}" cy="${cy}" r="4" fill="var(--surface)" stroke="${colour}" stroke-width="1.5"></circle>`;
+    svg += `<title>${c.name} ${c.dose} µM — forecast ${fmt(c.forecast)}, ${c.verdict}</title>`;
+  }
+  const trusted = conditions.filter((c) => c.trusted).length;
+  svg += `<text x="${W - P.r}" y="${P.t + 12}" text-anchor="end">● ${trusted} usable   ○ ${conditions.length - trusted} declined</text>`;
+  svg += `</svg>`;
+  el("chart").outerHTML = svg.replace("<svg ", '<svg id="chart" role="img" aria-label="Forecast against day-7 observation" ');
+  el("chart-panel").hidden = false;
+}
+
+function renderTable() {
+  const { conditions } = state.result;
+  const tabs = [
+    { id: "early", label: "Early warning", hint: "Conditions that have barely moved by day 7, ranked by forecast magnitude. This is the subgroup where the forecast beat ranking by the day-7 change on the sealed batches — 6 of 10 later large changes found, against 0." },
+    { id: "all", label: "Largest change overall", hint: "Ranked over every condition. This list fills with conditions that have already collapsed by day 7, which the day-7 column shows directly — no model needed." },
+    { id: "declined", label: "Declined", hint: "Conditions whose day-12 outcome the difficulty model judges unpredictable from day 7. On the sealed batches these carried 51% of all forecast error while making up 14% of conditions." },
+  ];
+  const host = el("tabs");
+  host.innerHTML = "";
+  for (const tab of tabs) {
+    const button = document.createElement("button");
+    button.textContent = tab.label;
+    button.setAttribute("aria-pressed", String(state.tab === tab.id));
+    button.addEventListener("click", () => { state.tab = tab.id; renderTable(); });
+    host.appendChild(button);
+  }
+  el("table-hint").textContent = tabs.find((t) => t.id === state.tab).hint;
+
+  let rows;
+  if (state.tab === "early") rows = conditions.filter((c) => c.earlyWarningFlagged).sort((a, b) => a.earlyWarningRank - b.earlyWarningRank);
+  else if (state.tab === "all") rows = conditions.filter((c) => c.reviewFlagged).sort((a, b) => a.reviewRank - b.reviewRank);
+  else rows = conditions.filter((c) => !c.trusted).sort((a, b) => b.difficulty - a.difficulty);
+
+  const head = el("table").tHead;
+  head.innerHTML = "<tr><th>#</th><th>Chemical</th><th>Dose</th><th>Day 7</th><th>Forecast</th><th>80% interval</th><th>Simple rule</th><th>Verdict</th></tr>";
+  const body = el("table").tBodies[0];
+  body.innerHTML = "";
+  if (!rows.length) {
+    body.innerHTML = `<tr><td colspan="8" style="color:var(--muted)">No conditions in this list for this batch.</td></tr>`;
+  }
+  rows.forEach((c, index) => {
+    const tr = document.createElement("tr");
+    if (!c.trusted) tr.className = "declined";
+    const rank = state.tab === "early" ? c.earlyWarningRank : state.tab === "all" ? c.reviewRank : index + 1;
+    const cells = [
+      ["n", String(rank)],
+      ["", c.name],
+      ["n", c.dose + " µM"],
+      ["n", fmt(c.day7)],
+      ["n", fmt(c.forecast)],
+      ["n interval", `${fmt(c.low)} … ${fmt(c.high)}`],
+      ["n", fmt(c.persistence)],
+    ];
+    for (const [cls, text] of cells) {
+      const td = document.createElement("td");
+      if (cls) td.className = cls;
+      td.textContent = text;
+      tr.appendChild(td);
+    }
+    const td = document.createElement("td");
+    const pill = document.createElement("span");
+    pill.className = "pill " + (c.trusted ? "ok" : "dec");
+    pill.textContent = c.trusted ? "usable" : "measure day 12";
+    td.appendChild(pill);
+    if (c.flags.low_reference_activity) {
+      const flag = document.createElement("span");
+      flag.className = "pill flag";
+      flag.style.marginLeft = "6px";
+      flag.textContent = "low reference";
+      td.appendChild(flag);
+    }
+    tr.appendChild(td);
+    body.appendChild(tr);
+  });
+  el("table-panel").hidden = false;
+}
+
+function renderEvidence() {
+  const e = state.constants.evidence;
+  el("evidence").hidden = false;
+  el("evidence-text").textContent =
+    "On three sealed experiment dates with 32 chemicals absent from training, carrying the day-7 reading "
+    + "forward was more accurate than this model. We make no claim that the forecast beats simple methods. "
+    + "What did transfer is the triage: declining the conditions it cannot predict removed about half of all "
+    + "forecast error, and the day-7 quality flag identified the whole failing batch before any day-12 data existed.";
+  el("evidence-rows").innerHTML = [
+    `forecast error <strong>${e.product_mean_mae.toFixed(3)}</strong> versus simple rule <strong>${e.persistence_mean_mae.toFixed(3)}</strong> — the simple rule won`,
+    `keeping only usable forecasts <strong>${e.retained_case_mae.toFixed(3)}</strong> versus <strong>${e.all_case_mae.toFixed(3)}</strong> for all conditions`,
+    `intervals observed <strong>${(100 * e.observed_coverage_at_nominal).toFixed(1)}%</strong> coverage at a nominal ${Math.round(100 * state.constants.interval_level)}% level`,
+  ].map((line) => `<div>${line}</div>`).join("");
+}
+
+boot();
+</script>

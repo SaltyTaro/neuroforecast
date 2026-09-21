@@ -25,7 +25,23 @@ What did generalize to those unseen batches and chemicals:
 
 **Technical report: [docs/technical_report.md](docs/technical_report.md)** — problem, data, method, protocol, both evaluations, the failure analysis, the tool, limitations and reproduction. Full reserve numbers per date: [docs/neuroforecast_reserve_results.md](docs/neuroforecast_reserve_results.md).
 
-## Run it
+## Use it in a browser
+
+**<https://saltytaro.github.io/neuroforecast/app/>** — no install, no account, no upload. The models run
+in the page: three Extra Trees forests are shipped as 2.7 MB of typed arrays and evaluated in JavaScript,
+so a batch is triaged entirely on your machine.
+
+Open with any of the three sealed-reserve batches, or drop in your own day-7 CSV. The page shows the
+batch quality verdict, a 48-well plate map of day-7 activity with the untreated controls outlined, a
+chart of the forecast against the "carry day 7 forward" diagonal, and the ranked review lists. Day-9 and
+day-12 rows are rejected on load.
+
+The browser port is not a reimplementation that can drift: `tests/test_web_triage.mjs` runs it over all
+224 sealed-reserve conditions and compares every forecast, difficulty score, interval bound, trust
+verdict and quality flag against the audited Python outputs — agreement to 8e-08, with the build failing
+above 1e-06.
+
+## Run it from the command line
 
 Python 3.14 on CPU; no GPU, no paid service, no account. Pinned packages in [tools/requirements-neuroforecast.txt](tools/requirements-neuroforecast.txt).
 
@@ -70,6 +86,7 @@ python -X utf8 -B tools/report_neuroforecast_gate.py --out runs/gate
 ```bash
 python -X utf8 -B -m unittest discover -s tests -v
 python -X utf8 -B tools/verify_published_numbers.py
+node tests/test_web_triage.mjs
 ```
 
 26 tests, including end-to-end checks that the shipped tool reproduces the audited reserve forecasts, intervals, trust verdicts and quality flags to 1e-12, and that removing day-5 rows changes none of them. The second command recomputes all 33 headline numbers in this README and the reports directly from `evaluation/*.csv`, at the precision each is quoted to, and fails if any of them drifts from the evidence.
@@ -110,6 +127,7 @@ Rat cortical cultures in multi-well plates are not perfused organ chips, human c
 | `docs/` | Protocol, development results, reserve results, project brief, prior-art assessment |
 | `evaluation/` | Audited per-case predictions, intervals and flags for both stages, so every number recomputes without the source archive |
 | `tools/verify_published_numbers.py` | Recomputes every published number from those tables |
+| `app/` | The browser tool: page, the ported pipeline, and the forests as typed arrays |
 | `notebooks/` | A nine-cell walkthrough that clones, verifies and runs everything |
 | `docs/history/` | Two earlier approaches from this campaign that failed their own gates, kept for disclosure |
 
