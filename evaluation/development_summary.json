@@ -1,0 +1,3276 @@
+{
+  "protocol": "neuroforecast_gate_v1.1",
+  "product_model": "extra_trees_relative_day7",
+  "product_model_rule": "The learned candidate with the lowest full-development date-macro MAE in this run. It is fixed by that rule before the reserve is scored and is not changed by reserve results. The tool always displays the product forecast beside the activity/coordination comparator and persistence.",
+  "strongest_simple_comparator": "extra_trees_activity_coordination",
+  "date_macro_mae": {
+    "extra_trees_relative_day7": 0.9371103078215999,
+    "extra_trees_relative_day7_reliability": 0.9446547759585097,
+    "extra_trees_activity_coordination": 0.9733880562597825,
+    "extra_trees_relative": 1.007252361676148,
+    "extra_trees_all": 1.0473648224115204,
+    "ridge_relative": 1.0956876310849681,
+    "control_reference": 1.103448998469425,
+    "persistence_day7": 1.1048013905337972,
+    "extra_trees_target_only": 1.1172143998183048,
+    "ridge_target_only": 1.1483226651656044,
+    "ridge_all": 2.039208311699476,
+    "linear_trend": 2.91719927724869
+  },
+  "per_date_losses": {
+    "control_reference": {
+      "20160720": 0.6561957733821809,
+      "20160803": 0.42569728221929387,
+      "20160907": 0.9810982707943949,
+      "20160921": 1.6944296655663325,
+      "20161013": 1.4211949516975635,
+      "20161109": 1.890616805908163,
+      "20170412": 0.6252855107034604,
+      "20170628": 1.9741729785113733,
+      "20170712": 1.9894724777019694,
+      "20170809": 0.4652499503791043,
+      "20170816": 0.5354400394525827,
+      "20170913": 0.5825342753166791
+    },
+    "persistence_day7": {
+      "20160720": 0.9685644420840614,
+      "20160803": 1.2321969158978567,
+      "20160907": 1.1117661814670443,
+      "20160921": 1.0107841026130155,
+      "20161013": 1.2109796198358307,
+      "20161109": 1.6610642495077492,
+      "20170412": 0.4683918106172159,
+      "20170628": 1.992066557427748,
+      "20170712": 1.7477023962651408,
+      "20170809": 0.6978120352544733,
+      "20170816": 0.5413321280074908,
+      "20170913": 0.614956247427939
+    },
+    "linear_trend": {
+      "20160720": 3.7500019134233544,
+      "20160803": 3.807760255033589,
+      "20160907": 2.0943496716153454,
+      "20160921": 3.015253519415852,
+      "20161013": 4.342925314845915,
+      "20161109": 4.009293726728412,
+      "20170412": 1.2253695336928607,
+      "20170628": 2.361042329557928,
+      "20170712": 2.9618152340256554,
+      "20170809": 2.1669476911155994,
+      "20170816": 2.6051645195055513,
+      "20170913": 2.666467618024217
+    },
+    "extra_trees_all": {
+      "20160720": 0.5699047237830789,
+      "20160803": 0.4671099024377117,
+      "20160907": 0.999455688689849,
+      "20160921": 2.8080824759792855,
+      "20161013": 0.5020580534696726,
+      "20161109": 0.6409772955935417,
+      "20170412": 0.3641428849898948,
+      "20170628": 1.0129165823369346,
+      "20170712": 1.3352198129341828,
+      "20170809": 0.8739985321548116,
+      "20170816": 2.499505964566172,
+      "20170913": 0.49500595200310926
+    },
+    "ridge_all": {
+      "20160720": 2.0465515558018956,
+      "20160803": 1.1435287983524862,
+      "20160907": 0.9260655301905175,
+      "20160921": 2.2556534257079757,
+      "20161013": 1.4908077442630647,
+      "20161109": 0.7973240068319724,
+      "20170412": 0.5822512265655972,
+      "20170628": 1.2817454936881496,
+      "20170712": 1.4269794388295782,
+      "20170809": 1.2020269022296646,
+      "20170816": 10.535312142682773,
+      "20170913": 0.7822534752500374
+    },
+    "extra_trees_target_only": {
+      "20160720": 0.9784787151272855,
+      "20160803": 1.0845788871153896,
+      "20160907": 1.0818995320743432,
+      "20160921": 1.4616712354362853,
+      "20161013": 1.2421258992293212,
+      "20161109": 1.5808549718338327,
+      "20170412": 0.7649885909925003,
+      "20170628": 1.9330115786445343,
+      "20170712": 1.6911533360606292,
+      "20170809": 0.5085786342067906,
+      "20170816": 0.5250466323666177,
+      "20170913": 0.5541847847321295
+    },
+    "ridge_target_only": {
+      "20160720": 1.053190165555344,
+      "20160803": 1.2140166386011904,
+      "20160907": 1.0753650732860762,
+      "20160921": 1.1572725640366148,
+      "20161013": 1.2001042595322196,
+      "20161109": 1.6606129975424329,
+      "20170412": 0.6466613937932975,
+      "20170628": 2.133732844203285,
+      "20170712": 1.7135100492531121,
+      "20170809": 0.6167219633589908,
+      "20170816": 0.7116600890777935,
+      "20170913": 0.5970239437468964
+    },
+    "extra_trees_relative": {
+      "20160720": 0.8140378816441537,
+      "20160803": 0.47315908329815004,
+      "20160907": 0.9702244192620794,
+      "20160921": 2.8570097213564014,
+      "20161013": 0.8264242292179294,
+      "20161109": 0.920724223370914,
+      "20170412": 0.42684476102366214,
+      "20170628": 1.139649846876824,
+      "20170712": 1.725581823122953,
+      "20170809": 0.9302102360470217,
+      "20170816": 0.6472325095719587,
+      "20170913": 0.35592960532172896
+    },
+    "ridge_relative": {
+      "20160720": 1.3156181246394272,
+      "20160803": 0.8372069984308181,
+      "20160907": 1.0796097048515971,
+      "20160921": 2.3316528574567434,
+      "20161013": 0.9202064176339317,
+      "20161109": 1.084837086242225,
+      "20170412": 0.5349072115952873,
+      "20170628": 1.0332408783963143,
+      "20170712": 1.7339713959750458,
+      "20170809": 0.9136621024944072,
+      "20170816": 0.8729202101929563,
+      "20170913": 0.49041858511086545
+    },
+    "extra_trees_activity_coordination": {
+      "20160720": 0.6794124362739602,
+      "20160803": 0.5859787194348917,
+      "20160907": 0.8642135062441733,
+      "20160921": 2.824320299243636,
+      "20161013": 0.702657728647062,
+      "20161109": 0.9900992767935235,
+      "20170412": 0.4229146430169838,
+      "20170628": 1.1346885585916182,
+      "20170712": 1.5473463130366099,
+      "20170809": 0.8564214032737553,
+      "20170816": 0.686622990669143,
+      "20170913": 0.38598079989203504
+    },
+    "extra_trees_relative_day7": {
+      "20160720": 0.6511979921098394,
+      "20160803": 0.4543036001403389,
+      "20160907": 1.0166661733548792,
+      "20160921": 2.5612839169207113,
+      "20161013": 0.6543268814602758,
+      "20161109": 0.830688513199405,
+      "20170412": 0.392940503175559,
+      "20170628": 1.0282539325959243,
+      "20170712": 1.6484694701954308,
+      "20170809": 1.0049002158860365,
+      "20170816": 0.616815045669147,
+      "20170913": 0.3854774491516492
+    },
+    "extra_trees_relative_day7_reliability": {
+      "20160720": 0.6508767393496021,
+      "20160803": 0.4524118562712221,
+      "20160907": 0.8720494194956452,
+      "20160921": 2.7867326289526484,
+      "20161013": 0.5798502461173289,
+      "20161109": 0.7953270023809886,
+      "20170412": 0.38316563437164375,
+      "20170628": 0.8635209515276735,
+      "20170712": 1.6893782398345607,
+      "20170809": 1.2002558221537305,
+      "20170816": 0.6442440180407322,
+      "20170913": 0.41804475300633925
+    }
+  },
+  "comparisons_product_vs": {
+    "control_reference": {
+      "relative_mae_reduction": 0.1507443396827135,
+      "descriptive_paired_date_interval_95": [
+        -0.14489329461245534,
+        0.3726348931794967
+      ],
+      "dates_improved": 7,
+      "date_groups": 12
+    },
+    "persistence_day7": {
+      "relative_mae_reduction": 0.1517839171357085,
+      "descriptive_paired_date_interval_95": [
+        -0.22311960066607747,
+        0.3989516939808053
+      ],
+      "dates_improved": 9,
+      "date_groups": 12
+    },
+    "linear_trend": {
+      "relative_mae_reduction": 0.678763698068162,
+      "descriptive_paired_date_interval_95": [
+        0.533169134912344,
+        0.7883681220529605
+      ],
+      "dates_improved": 12,
+      "date_groups": 12
+    },
+    "extra_trees_all": {
+      "relative_mae_reduction": 0.10526849119876247,
+      "descriptive_paired_date_interval_95": [
+        -0.14236700085497048,
+        0.3609527640004776
+      ],
+      "dates_improved": 4,
+      "date_groups": 12
+    },
+    "ridge_all": {
+      "relative_mae_reduction": 0.5404538602333313,
+      "descriptive_paired_date_interval_95": [
+        0.08068753989733463,
+        0.7831062000489762
+      ],
+      "dates_improved": 8,
+      "date_groups": 12
+    },
+    "extra_trees_target_only": {
+      "relative_mae_reduction": 0.16120817277864996,
+      "descriptive_paired_date_interval_95": [
+        -0.13313270244679823,
+        0.38599373349938787
+      ],
+      "dates_improved": 9,
+      "date_groups": 12
+    },
+    "ridge_target_only": {
+      "relative_mae_reduction": 0.18393119264396363,
+      "descriptive_paired_date_interval_95": [
+        -0.15882202809243248,
+        0.4201631963409022
+      ],
+      "dates_improved": 10,
+      "date_groups": 12
+    },
+    "extra_trees_relative": {
+      "relative_mae_reduction": 0.06963702099226265,
+      "descriptive_paired_date_interval_95": [
+        0.019013395392839985,
+        0.11231661946184247
+      ],
+      "dates_improved": 9,
+      "date_groups": 12
+    },
+    "ridge_relative": {
+      "relative_mae_reduction": 0.1447285875686507,
+      "descriptive_paired_date_interval_95": [
+        0.028352039949568208,
+        0.28767950299296025
+      ],
+      "dates_improved": 10,
+      "date_groups": 12
+    },
+    "extra_trees_activity_coordination": {
+      "relative_mae_reduction": 0.03726956397798731,
+      "descriptive_paired_date_interval_95": [
+        -0.03517561399904426,
+        0.0976341821744101
+      ],
+      "dates_improved": 9,
+      "date_groups": 12
+    },
+    "extra_trees_relative_day7_reliability": {
+      "relative_mae_reduction": 0.007986481759174602,
+      "descriptive_paired_date_interval_95": [
+        -0.0698438900550696,
+        0.06225142562456869
+      ],
+      "dates_improved": 5,
+      "date_groups": 12
+    }
+  },
+  "nested_selection": {
+    "nested_date_macro_mae": 1.1329515787251994,
+    "product_plain_date_macro_mae": 0.9371103078215999,
+    "optimism_estimate": -0.19584127090359948,
+    "chosen_by_outer_fold": {
+      "20160720": "extra_trees_relative_day7_reliability",
+      "20160803": "extra_trees_relative_day7",
+      "20160907": "extra_trees_relative_day7",
+      "20160921": "extra_trees_all",
+      "20161013": "extra_trees_relative_day7",
+      "20161109": "extra_trees_relative_day7",
+      "20170412": "extra_trees_relative_day7",
+      "20170628": "extra_trees_all",
+      "20170712": "extra_trees_relative_day7_reliability",
+      "20170809": "extra_trees_relative_day7_reliability",
+      "20170816": "extra_trees_all",
+      "20170913": "extra_trees_relative_day7"
+    },
+    "details": [
+      {
+        "outer_date": 20160720,
+        "chosen": "extra_trees_relative_day7_reliability",
+        "inner_macro_mae": {
+          "control_reference": 1.144108382568265,
+          "persistence_day7": 1.1171865676655914,
+          "linear_trend": 2.8414899466873567,
+          "extra_trees_all": 1.2671239591300034,
+          "ridge_all": 2.2712406172321944,
+          "extra_trees_target_only": 1.1486924636511229,
+          "ridge_target_only": 1.278409027824803,
+          "extra_trees_relative": 1.0290575759701235,
+          "ridge_relative": 1.4048831308867038,
+          "extra_trees_activity_coordination": 1.0030293247360538,
+          "extra_trees_relative_day7": 0.953711324484892,
+          "extra_trees_relative_day7_reliability": 0.949279101333511
+        },
+        "outer_loss_of_chosen": 0.6508767393496021,
+        "outer_loss_of_product": 0.6511979921098394
+      },
+      {
+        "outer_date": 20160803,
+        "chosen": "extra_trees_relative_day7",
+        "inner_macro_mae": {
+          "control_reference": 1.1686132905851705,
+          "persistence_day7": 1.0941065776155992,
+          "linear_trend": 2.842228946913718,
+          "extra_trees_all": 1.100051711670917,
+          "ridge_all": 1.9257060756634952,
+          "extra_trees_target_only": 1.144164270270071,
+          "ridge_target_only": 1.1822172684463554,
+          "extra_trees_relative": 1.078938054007657,
+          "ridge_relative": 1.158467720697313,
+          "extra_trees_activity_coordination": 1.0280224074859758,
+          "extra_trees_relative_day7": 0.9871843846852197,
+          "extra_trees_relative_day7_reliability": 1.0164524842812643
+        },
+        "outer_loss_of_chosen": 0.4543036001403389,
+        "outer_loss_of_product": 0.4543036001403389
+      },
+      {
+        "outer_date": 20160907,
+        "chosen": "extra_trees_relative_day7",
+        "inner_macro_mae": {
+          "control_reference": 1.0919350699695938,
+          "persistence_day7": 1.100028653715591,
+          "linear_trend": 2.936608079061232,
+          "extra_trees_all": 1.0962687510456361,
+          "ridge_all": 2.220074710803898,
+          "extra_trees_target_only": 1.1202357019232585,
+          "ridge_target_only": 1.1295090774584773,
+          "extra_trees_relative": 1.0560326085201768,
+          "ridge_relative": 1.1395913224130885,
+          "extra_trees_activity_coordination": 1.031875050660181,
+          "extra_trees_relative_day7": 0.9403332499454469,
+          "extra_trees_relative_day7_reliability": 1.0141180137577483
+        },
+        "outer_loss_of_chosen": 1.0166661733548792,
+        "outer_loss_of_product": 1.0166661733548792
+      },
+      {
+        "outer_date": 20160921,
+        "chosen": "extra_trees_all",
+        "inner_macro_mae": {
+          "control_reference": 0.9572785337555393,
+          "persistence_day7": 1.0254766026364803,
+          "linear_trend": 2.96300954780105,
+          "extra_trees_all": 0.6792957713057045,
+          "ridge_all": 0.9356577769475776,
+          "extra_trees_target_only": 0.9784476406087247,
+          "ridge_target_only": 1.0301777399434024,
+          "extra_trees_relative": 0.7493444869851854,
+          "ridge_relative": 1.012863690489777,
+          "extra_trees_activity_coordination": 0.7233181566953963,
+          "extra_trees_relative_day7": 0.7565457934843962,
+          "extra_trees_relative_day7_reliability": 0.7720342369403225
+        },
+        "outer_loss_of_chosen": 2.8080824759792855,
+        "outer_loss_of_product": 2.5612839169207113
+      },
+      {
+        "outer_date": 20161013,
+        "chosen": "extra_trees_relative_day7",
+        "inner_macro_mae": {
+          "control_reference": 1.0630478756992228,
+          "persistence_day7": 1.0767200024967132,
+          "linear_trend": 2.788479683041375,
+          "extra_trees_all": 1.1225140887986582,
+          "ridge_all": 1.5610871361692633,
+          "extra_trees_target_only": 1.0966238904143595,
+          "ridge_target_only": 1.1329022344289037,
+          "extra_trees_relative": 1.017443510821976,
+          "ridge_relative": 1.132819100820373,
+          "extra_trees_activity_coordination": 0.998161451361744,
+          "extra_trees_relative_day7": 0.9563327618867639,
+          "extra_trees_relative_day7_reliability": 0.9915984768486734
+        },
+        "outer_loss_of_chosen": 0.6543268814602758,
+        "outer_loss_of_product": 0.6543268814602758
+      },
+      {
+        "outer_date": 20161109,
+        "chosen": "extra_trees_relative_day7",
+        "inner_macro_mae": {
+          "control_reference": 1.0304187738860642,
+          "persistence_day7": 1.0698306612580841,
+          "linear_trend": 2.866690456734983,
+          "extra_trees_all": 1.1240714001365824,
+          "ridge_all": 2.1013363866979615,
+          "extra_trees_target_only": 1.0854591226261834,
+          "ridge_target_only": 1.0864498466876737,
+          "extra_trees_relative": 1.0478477076313244,
+          "ridge_relative": 1.1321162609157371,
+          "extra_trees_activity_coordination": 1.0125158069283193,
+          "extra_trees_relative_day7": 0.9551793824112587,
+          "extra_trees_relative_day7_reliability": 0.9798668150089661
+        },
+        "outer_loss_of_chosen": 0.830688513199405,
+        "outer_loss_of_product": 0.830688513199405
+      },
+      {
+        "outer_date": 20170412,
+        "chosen": "extra_trees_relative_day7",
+        "inner_macro_mae": {
+          "control_reference": 1.147421058168183,
+          "persistence_day7": 1.1663268834713614,
+          "linear_trend": 3.085062020500818,
+          "extra_trees_all": 1.0970102305511995,
+          "ridge_all": 2.2553582437591326,
+          "extra_trees_target_only": 1.169751553942161,
+          "ridge_target_only": 1.215511928193051,
+          "extra_trees_relative": 1.0742793287352688,
+          "ridge_relative": 1.1679882830189028,
+          "extra_trees_activity_coordination": 1.0415606960083061,
+          "extra_trees_relative_day7": 0.990763142849768,
+          "extra_trees_relative_day7_reliability": 1.0094155222041166
+        },
+        "outer_loss_of_chosen": 0.392940503175559,
+        "outer_loss_of_product": 0.392940503175559
+      },
+      {
+        "outer_date": 20170628,
+        "chosen": "extra_trees_all",
+        "inner_macro_mae": {
+          "control_reference": 0.9168740866946558,
+          "persistence_day7": 0.9721076148562477,
+          "linear_trend": 2.869764477038368,
+          "extra_trees_all": 0.6700929740160567,
+          "ridge_all": 0.8103093518763953,
+          "extra_trees_target_only": 0.9170649172252837,
+          "ridge_target_only": 0.975193866320149,
+          "extra_trees_relative": 0.7297364260099168,
+          "ridge_relative": 0.9520363472171062,
+          "extra_trees_activity_coordination": 0.7097576132877933,
+          "extra_trees_relative_day7": 0.7312041108777184,
+          "extra_trees_relative_day7_reliability": 0.7494717887055574
+        },
+        "outer_loss_of_chosen": 1.0129165823369346,
+        "outer_loss_of_product": 1.0282539325959243
+      },
+      {
+        "outer_date": 20170712,
+        "chosen": "extra_trees_relative_day7_reliability",
+        "inner_macro_mae": {
+          "control_reference": 1.0229014094482844,
+          "persistence_day7": 1.0463558445582206,
+          "linear_trend": 2.9131432811780567,
+          "extra_trees_all": 0.9740953218163149,
+          "ridge_all": 1.987954408434161,
+          "extra_trees_target_only": 1.0548561221420518,
+          "ridge_target_only": 1.0554333301311436,
+          "extra_trees_relative": 0.9394608771954555,
+          "ridge_relative": 1.0118463239860491,
+          "extra_trees_activity_coordination": 0.9037407158899544,
+          "extra_trees_relative_day7": 0.8408244786675606,
+          "extra_trees_relative_day7_reliability": 0.7957057110549681
+        },
+        "outer_loss_of_chosen": 1.6893782398345607,
+        "outer_loss_of_product": 1.6484694701954308
+      },
+      {
+        "outer_date": 20170809,
+        "chosen": "extra_trees_relative_day7_reliability",
+        "inner_macro_mae": {
+          "control_reference": 1.161467093750363,
+          "persistence_day7": 1.1418004228319176,
+          "linear_trend": 2.9854039668971524,
+          "extra_trees_all": 1.025783902579665,
+          "ridge_all": 2.1156102103002428,
+          "extra_trees_target_only": 1.1813503769034037,
+          "ridge_target_only": 1.200403800542976,
+          "extra_trees_relative": 0.9920364366213099,
+          "ridge_relative": 1.2001393912989977,
+          "extra_trees_activity_coordination": 0.9686189736503404,
+          "extra_trees_relative_day7": 0.9939943219310599,
+          "extra_trees_relative_day7_reliability": 0.9501317557747673
+        },
+        "outer_loss_of_chosen": 1.2002558221537305,
+        "outer_loss_of_product": 1.0049002158860365
+      },
+      {
+        "outer_date": 20170816,
+        "chosen": "extra_trees_all",
+        "inner_macro_mae": {
+          "control_reference": 1.162467877511758,
+          "persistence_day7": 1.1612392822201898,
+          "linear_trend": 2.9504519288935707,
+          "extra_trees_all": 0.9482661516328761,
+          "ridge_all": 1.4241311313799685,
+          "extra_trees_target_only": 1.1930651031287989,
+          "ridge_target_only": 1.2344105957111642,
+          "extra_trees_relative": 1.0320883940412438,
+          "ridge_relative": 1.3767095015407167,
+          "extra_trees_activity_coordination": 0.9985512116914275,
+          "extra_trees_relative_day7": 0.9487330988043648,
+          "extra_trees_relative_day7_reliability": 0.9576337626357123
+        },
+        "outer_loss_of_chosen": 2.499505964566172,
+        "outer_loss_of_product": 0.616815045669147
+      },
+      {
+        "outer_date": 20170913,
+        "chosen": "extra_trees_relative_day7",
+        "inner_macro_mae": {
+          "control_reference": 1.08488425345242,
+          "persistence_day7": 1.1264541973178246,
+          "linear_trend": 2.9069957148055434,
+          "extra_trees_all": 1.065164945605693,
+          "ridge_all": 2.236280390803145,
+          "extra_trees_target_only": 1.135683994979621,
+          "ridge_target_only": 1.1754856323641736,
+          "extra_trees_relative": 1.0158612641730835,
+          "ridge_relative": 1.1496516136408284,
+          "extra_trees_activity_coordination": 0.9909445741206213,
+          "extra_trees_relative_day7": 0.9474477719586448,
+          "extra_trees_relative_day7_reliability": 0.996043822376545
+        },
+        "outer_loss_of_chosen": 0.3854774491516492,
+        "outer_loss_of_product": 0.3854774491516492
+      }
+    ]
+  },
+  "warning": {
+    "product_model": [
+      {
+        "subgroup": "all",
+        "budget": 0.1,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 88,
+          "detected": 59,
+          "false_alerts": 29,
+          "missed": 116,
+          "recall": 0.33714285714285713,
+          "precision": 0.6704545454545454,
+          "alerts_per_detection": 1.4915254237288136,
+          "random_expected_recall": 0.10812121212121212
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 8,
+            "detected": 3,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 9,
+            "detected": 0,
+            "false_alerts": 9,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 6,
+            "detected": 4,
+            "false_alerts": 2,
+            "missed": 5
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 37
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 6,
+            "detected": 6,
+            "false_alerts": 0,
+            "missed": 6
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 14
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 7,
+            "detected": 4,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 5,
+            "detected": 5,
+            "false_alerts": 0,
+            "missed": 10
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 39
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 9,
+            "detected": 4,
+            "false_alerts": 5,
+            "missed": 3
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 4,
+            "detected": 1,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 7,
+            "detected": 5,
+            "false_alerts": 2,
+            "missed": 1
+          }
+        ]
+      },
+      {
+        "subgroup": "all",
+        "budget": 0.2,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 168,
+          "detected": 94,
+          "false_alerts": 74,
+          "missed": 81,
+          "recall": 0.5371428571428571,
+          "precision": 0.5595238095238095,
+          "alerts_per_detection": 1.7872340425531914,
+          "random_expected_recall": 0.2049907235621522
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 16,
+            "detected": 3,
+            "false_alerts": 13,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 17,
+            "detected": 0,
+            "false_alerts": 17,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 12,
+            "detected": 8,
+            "false_alerts": 4,
+            "missed": 1
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 17,
+            "detected": 17,
+            "false_alerts": 0,
+            "missed": 29
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 12,
+            "detected": 11,
+            "false_alerts": 1,
+            "missed": 1
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 17,
+            "detected": 17,
+            "false_alerts": 0,
+            "missed": 6
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 14,
+            "detected": 4,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 6
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 17,
+            "detected": 15,
+            "false_alerts": 2,
+            "missed": 33
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 17,
+            "detected": 4,
+            "false_alerts": 13,
+            "missed": 3
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 7,
+            "detected": 1,
+            "false_alerts": 6,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 13,
+            "detected": 5,
+            "false_alerts": 8,
+            "missed": 1
+          }
+        ]
+      },
+      {
+        "subgroup": "all",
+        "budget": 0.3,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 252,
+          "detected": 117,
+          "false_alerts": 135,
+          "missed": 58,
+          "recall": 0.6685714285714286,
+          "precision": 0.4642857142857143,
+          "alerts_per_detection": 2.1538461538461537,
+          "random_expected_recall": 0.30838404452690166
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 24,
+            "detected": 3,
+            "false_alerts": 21,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 26,
+            "detected": 1,
+            "false_alerts": 25,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 17,
+            "detected": 9,
+            "false_alerts": 8,
+            "missed": 0
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 26,
+            "detected": 26,
+            "false_alerts": 0,
+            "missed": 20
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 17,
+            "detected": 11,
+            "false_alerts": 6,
+            "missed": 1
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 26,
+            "detected": 20,
+            "false_alerts": 6,
+            "missed": 3
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 21,
+            "detected": 4,
+            "false_alerts": 17,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 13,
+            "detected": 13,
+            "false_alerts": 0,
+            "missed": 2
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 26,
+            "detected": 20,
+            "false_alerts": 6,
+            "missed": 28
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 26,
+            "detected": 4,
+            "false_alerts": 22,
+            "missed": 3
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 11,
+            "detected": 1,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 19,
+            "detected": 5,
+            "false_alerts": 14,
+            "missed": 1
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.1,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 48,
+          "detected": 13,
+          "false_alerts": 35,
+          "missed": 32,
+          "recall": 0.28888888888888886,
+          "precision": 0.2708333333333333,
+          "alerts_per_detection": 3.6923076923076925,
+          "random_expected_recall": 0.11321500721500721
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 4,
+            "detected": 0,
+            "false_alerts": 4,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 3,
+            "detected": 3,
+            "false_alerts": 0,
+            "missed": 4
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 4,
+            "detected": 1,
+            "false_alerts": 3,
+            "missed": 2
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 1
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 6,
+            "detected": 0,
+            "false_alerts": 6,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 4,
+            "detected": 4,
+            "false_alerts": 0,
+            "missed": 11
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 4,
+            "detected": 2,
+            "false_alerts": 2,
+            "missed": 12
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 5,
+            "detected": 3,
+            "false_alerts": 2,
+            "missed": 2
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 4,
+            "detected": 0,
+            "false_alerts": 4,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.2,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 89,
+          "detected": 22,
+          "false_alerts": 67,
+          "missed": 23,
+          "recall": 0.4888888888888889,
+          "precision": 0.24719101123595505,
+          "alerts_per_detection": 4.045454545454546,
+          "random_expected_recall": 0.21168350168350172
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 10,
+            "detected": 0,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 7,
+            "detected": 0,
+            "false_alerts": 7,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 6,
+            "detected": 6,
+            "false_alerts": 0,
+            "missed": 1
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 7,
+            "detected": 1,
+            "false_alerts": 6,
+            "missed": 2
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 1
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 12,
+            "detected": 0,
+            "false_alerts": 12,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 8,
+            "detected": 8,
+            "false_alerts": 0,
+            "missed": 7
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 7,
+            "detected": 3,
+            "false_alerts": 4,
+            "missed": 11
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 9,
+            "detected": 4,
+            "false_alerts": 5,
+            "missed": 1
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.3,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 132,
+          "detected": 28,
+          "false_alerts": 104,
+          "missed": 17,
+          "recall": 0.6222222222222222,
+          "precision": 0.21212121212121213,
+          "alerts_per_detection": 4.714285714285714,
+          "random_expected_recall": 0.3062116402116402
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 15,
+            "detected": 0,
+            "false_alerts": 15,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 10,
+            "detected": 0,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 9,
+            "detected": 7,
+            "false_alerts": 2,
+            "missed": 0
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 11,
+            "detected": 1,
+            "false_alerts": 10,
+            "missed": 2
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 1
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 18,
+            "detected": 0,
+            "false_alerts": 18,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 11,
+            "detected": 11,
+            "false_alerts": 0,
+            "missed": 4
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 10,
+            "detected": 5,
+            "false_alerts": 5,
+            "missed": 9
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 14,
+            "detected": 4,
+            "false_alerts": 10,
+            "missed": 1
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 7,
+            "detected": 0,
+            "false_alerts": 7,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 11,
+            "detected": 0,
+            "false_alerts": 11,
+            "missed": 0
+          }
+        ]
+      }
+    ],
+    "extra_trees_activity_coordination": [
+      {
+        "subgroup": "all",
+        "budget": 0.1,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 88,
+          "detected": 57,
+          "false_alerts": 31,
+          "missed": 118,
+          "recall": 0.32571428571428573,
+          "precision": 0.6477272727272727,
+          "alerts_per_detection": 1.543859649122807,
+          "random_expected_recall": 0.10812121212121212
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 8,
+            "detected": 3,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 9,
+            "detected": 0,
+            "false_alerts": 9,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 6,
+            "detected": 3,
+            "false_alerts": 3,
+            "missed": 6
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 37
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 6,
+            "detected": 6,
+            "false_alerts": 0,
+            "missed": 6
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 14
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 7,
+            "detected": 4,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 5,
+            "detected": 5,
+            "false_alerts": 0,
+            "missed": 10
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 39
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 9,
+            "detected": 4,
+            "false_alerts": 5,
+            "missed": 3
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 4,
+            "detected": 1,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 7,
+            "detected": 4,
+            "false_alerts": 3,
+            "missed": 2
+          }
+        ]
+      },
+      {
+        "subgroup": "all",
+        "budget": 0.2,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 168,
+          "detected": 94,
+          "false_alerts": 74,
+          "missed": 81,
+          "recall": 0.5371428571428571,
+          "precision": 0.5595238095238095,
+          "alerts_per_detection": 1.7872340425531914,
+          "random_expected_recall": 0.2049907235621522
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 16,
+            "detected": 3,
+            "false_alerts": 13,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 17,
+            "detected": 0,
+            "false_alerts": 17,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 12,
+            "detected": 9,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 17,
+            "detected": 17,
+            "false_alerts": 0,
+            "missed": 29
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 12,
+            "detected": 11,
+            "false_alerts": 1,
+            "missed": 1
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 17,
+            "detected": 17,
+            "false_alerts": 0,
+            "missed": 6
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 14,
+            "detected": 4,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 6
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 17,
+            "detected": 14,
+            "false_alerts": 3,
+            "missed": 34
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 17,
+            "detected": 4,
+            "false_alerts": 13,
+            "missed": 3
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 7,
+            "detected": 1,
+            "false_alerts": 6,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 13,
+            "detected": 5,
+            "false_alerts": 8,
+            "missed": 1
+          }
+        ]
+      },
+      {
+        "subgroup": "all",
+        "budget": 0.3,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 252,
+          "detected": 117,
+          "false_alerts": 135,
+          "missed": 58,
+          "recall": 0.6685714285714286,
+          "precision": 0.4642857142857143,
+          "alerts_per_detection": 2.1538461538461537,
+          "random_expected_recall": 0.30838404452690166
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 24,
+            "detected": 3,
+            "false_alerts": 21,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 26,
+            "detected": 0,
+            "false_alerts": 26,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 17,
+            "detected": 9,
+            "false_alerts": 8,
+            "missed": 0
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 26,
+            "detected": 26,
+            "false_alerts": 0,
+            "missed": 20
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 17,
+            "detected": 11,
+            "false_alerts": 6,
+            "missed": 1
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 26,
+            "detected": 21,
+            "false_alerts": 5,
+            "missed": 2
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 21,
+            "detected": 4,
+            "false_alerts": 17,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 13,
+            "detected": 13,
+            "false_alerts": 0,
+            "missed": 2
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 26,
+            "detected": 20,
+            "false_alerts": 6,
+            "missed": 28
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 26,
+            "detected": 4,
+            "false_alerts": 22,
+            "missed": 3
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 11,
+            "detected": 1,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 19,
+            "detected": 5,
+            "false_alerts": 14,
+            "missed": 1
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.1,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 48,
+          "detected": 12,
+          "false_alerts": 36,
+          "missed": 33,
+          "recall": 0.26666666666666666,
+          "precision": 0.25,
+          "alerts_per_detection": 4.0,
+          "random_expected_recall": 0.11321500721500721
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 4,
+            "detected": 0,
+            "false_alerts": 4,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 3,
+            "detected": 3,
+            "false_alerts": 0,
+            "missed": 4
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 4,
+            "detected": 0,
+            "false_alerts": 4,
+            "missed": 3
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 3,
+            "detected": 1,
+            "false_alerts": 2,
+            "missed": 0
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 6,
+            "detected": 0,
+            "false_alerts": 6,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 4,
+            "detected": 4,
+            "false_alerts": 0,
+            "missed": 11
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 4,
+            "detected": 1,
+            "false_alerts": 3,
+            "missed": 13
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 5,
+            "detected": 3,
+            "false_alerts": 2,
+            "missed": 2
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 4,
+            "detected": 0,
+            "false_alerts": 4,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.2,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 89,
+          "detected": 23,
+          "false_alerts": 66,
+          "missed": 22,
+          "recall": 0.5111111111111111,
+          "precision": 0.25842696629213485,
+          "alerts_per_detection": 3.869565217391304,
+          "random_expected_recall": 0.21168350168350172
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 10,
+            "detected": 0,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 7,
+            "detected": 0,
+            "false_alerts": 7,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 6,
+            "detected": 6,
+            "false_alerts": 0,
+            "missed": 1
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 7,
+            "detected": 2,
+            "false_alerts": 5,
+            "missed": 1
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 5,
+            "detected": 1,
+            "false_alerts": 4,
+            "missed": 0
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 12,
+            "detected": 0,
+            "false_alerts": 12,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 8,
+            "detected": 8,
+            "false_alerts": 0,
+            "missed": 7
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 7,
+            "detected": 2,
+            "false_alerts": 5,
+            "missed": 12
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 9,
+            "detected": 4,
+            "false_alerts": 5,
+            "missed": 1
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.3,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 132,
+          "detected": 28,
+          "false_alerts": 104,
+          "missed": 17,
+          "recall": 0.6222222222222222,
+          "precision": 0.21212121212121213,
+          "alerts_per_detection": 4.714285714285714,
+          "random_expected_recall": 0.3062116402116402
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 15,
+            "detected": 0,
+            "false_alerts": 15,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 10,
+            "detected": 0,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 9,
+            "detected": 7,
+            "false_alerts": 2,
+            "missed": 0
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 11,
+            "detected": 2,
+            "false_alerts": 9,
+            "missed": 1
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 8,
+            "detected": 1,
+            "false_alerts": 7,
+            "missed": 0
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 18,
+            "detected": 0,
+            "false_alerts": 18,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 11,
+            "detected": 11,
+            "false_alerts": 0,
+            "missed": 4
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 10,
+            "detected": 3,
+            "false_alerts": 7,
+            "missed": 11
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 14,
+            "detected": 4,
+            "false_alerts": 10,
+            "missed": 1
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 7,
+            "detected": 0,
+            "false_alerts": 7,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 11,
+            "detected": 0,
+            "false_alerts": 11,
+            "missed": 0
+          }
+        ]
+      }
+    ],
+    "persistence_rank": [
+      {
+        "subgroup": "all",
+        "budget": 0.1,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 88,
+          "detected": 43,
+          "false_alerts": 45,
+          "missed": 132,
+          "recall": 0.24571428571428572,
+          "precision": 0.48863636363636365,
+          "alerts_per_detection": 2.046511627906977,
+          "random_expected_recall": 0.10812121212121212
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 8,
+            "detected": 3,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 9,
+            "detected": 0,
+            "false_alerts": 9,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 6,
+            "detected": 0,
+            "false_alerts": 6,
+            "missed": 9
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 9,
+            "detected": 9,
+            "false_alerts": 0,
+            "missed": 37
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 6,
+            "detected": 5,
+            "false_alerts": 1,
+            "missed": 7
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 9,
+            "detected": 8,
+            "false_alerts": 1,
+            "missed": 15
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 7,
+            "detected": 4,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 15
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 9,
+            "detected": 8,
+            "false_alerts": 1,
+            "missed": 40
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 9,
+            "detected": 0,
+            "false_alerts": 9,
+            "missed": 7
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 4,
+            "detected": 1,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 7,
+            "detected": 5,
+            "false_alerts": 2,
+            "missed": 1
+          }
+        ]
+      },
+      {
+        "subgroup": "all",
+        "budget": 0.2,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 168,
+          "detected": 67,
+          "false_alerts": 101,
+          "missed": 108,
+          "recall": 0.38285714285714284,
+          "precision": 0.39880952380952384,
+          "alerts_per_detection": 2.5074626865671643,
+          "random_expected_recall": 0.2049907235621522
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 16,
+            "detected": 3,
+            "false_alerts": 13,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 17,
+            "detected": 0,
+            "false_alerts": 17,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 12,
+            "detected": 0,
+            "false_alerts": 12,
+            "missed": 9
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 17,
+            "detected": 17,
+            "false_alerts": 0,
+            "missed": 29
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 12,
+            "detected": 9,
+            "false_alerts": 3,
+            "missed": 3
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 17,
+            "detected": 14,
+            "false_alerts": 3,
+            "missed": 9
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 14,
+            "detected": 4,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 9,
+            "detected": 2,
+            "false_alerts": 7,
+            "missed": 13
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 17,
+            "detected": 11,
+            "false_alerts": 6,
+            "missed": 37
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 17,
+            "detected": 0,
+            "false_alerts": 17,
+            "missed": 7
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 7,
+            "detected": 1,
+            "false_alerts": 6,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 13,
+            "detected": 6,
+            "false_alerts": 7,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "all",
+        "budget": 0.3,
+        "pooled": {
+          "cases": 819,
+          "positives": 175,
+          "flagged": 252,
+          "detected": 100,
+          "false_alerts": 152,
+          "missed": 75,
+          "recall": 0.5714285714285714,
+          "precision": 0.3968253968253968,
+          "alerts_per_detection": 2.52,
+          "random_expected_recall": 0.30838404452690166
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 77,
+            "positives": 3,
+            "flagged": 24,
+            "detected": 3,
+            "false_alerts": 21,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 84,
+            "positives": 1,
+            "flagged": 26,
+            "detected": 0,
+            "false_alerts": 26,
+            "missed": 1
+          },
+          {
+            "date": 20160907,
+            "cases": 56,
+            "positives": 9,
+            "flagged": 17,
+            "detected": 2,
+            "false_alerts": 15,
+            "missed": 7
+          },
+          {
+            "date": 20160921,
+            "cases": 84,
+            "positives": 46,
+            "flagged": 26,
+            "detected": 26,
+            "false_alerts": 0,
+            "missed": 20
+          },
+          {
+            "date": 20161013,
+            "cases": 56,
+            "positives": 12,
+            "flagged": 17,
+            "detected": 12,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 84,
+            "positives": 23,
+            "flagged": 26,
+            "detected": 21,
+            "false_alerts": 5,
+            "missed": 2
+          },
+          {
+            "date": 20170412,
+            "cases": 70,
+            "positives": 4,
+            "flagged": 21,
+            "detected": 4,
+            "false_alerts": 17,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 42,
+            "positives": 15,
+            "flagged": 13,
+            "detected": 5,
+            "false_alerts": 8,
+            "missed": 10
+          },
+          {
+            "date": 20170712,
+            "cases": 84,
+            "positives": 48,
+            "flagged": 26,
+            "detected": 19,
+            "false_alerts": 7,
+            "missed": 29
+          },
+          {
+            "date": 20170809,
+            "cases": 84,
+            "positives": 7,
+            "flagged": 26,
+            "detected": 1,
+            "false_alerts": 25,
+            "missed": 6
+          },
+          {
+            "date": 20170816,
+            "cases": 35,
+            "positives": 1,
+            "flagged": 11,
+            "detected": 1,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 63,
+            "positives": 6,
+            "flagged": 19,
+            "detected": 6,
+            "false_alerts": 13,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.1,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 48,
+          "detected": 6,
+          "false_alerts": 42,
+          "missed": 39,
+          "recall": 0.13333333333333333,
+          "precision": 0.125,
+          "alerts_per_detection": 8.0,
+          "random_expected_recall": 0.11321500721500721
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 4,
+            "detected": 0,
+            "false_alerts": 4,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 7
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 4,
+            "detected": 1,
+            "false_alerts": 3,
+            "missed": 2
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 1
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 6,
+            "detected": 0,
+            "false_alerts": 6,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 4,
+            "detected": 3,
+            "false_alerts": 1,
+            "missed": 12
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 4,
+            "detected": 2,
+            "false_alerts": 2,
+            "missed": 12
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 5
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 3,
+            "detected": 0,
+            "false_alerts": 3,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 4,
+            "detected": 0,
+            "false_alerts": 4,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.2,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 89,
+          "detected": 10,
+          "false_alerts": 79,
+          "missed": 35,
+          "recall": 0.2222222222222222,
+          "precision": 0.11235955056179775,
+          "alerts_per_detection": 8.9,
+          "random_expected_recall": 0.21168350168350172
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 10,
+            "detected": 0,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 7,
+            "detected": 0,
+            "false_alerts": 7,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 6,
+            "detected": 0,
+            "false_alerts": 6,
+            "missed": 7
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 7,
+            "detected": 1,
+            "false_alerts": 6,
+            "missed": 2
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 1
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 12,
+            "detected": 0,
+            "false_alerts": 12,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 8,
+            "detected": 5,
+            "false_alerts": 3,
+            "missed": 10
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 7,
+            "detected": 4,
+            "false_alerts": 3,
+            "missed": 10
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 9,
+            "detected": 0,
+            "false_alerts": 9,
+            "missed": 5
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 5,
+            "detected": 0,
+            "false_alerts": 5,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 0
+          }
+        ]
+      },
+      {
+        "subgroup": "early_quiet",
+        "budget": 0.3,
+        "pooled": {
+          "cases": 427,
+          "positives": 45,
+          "flagged": 132,
+          "detected": 14,
+          "false_alerts": 118,
+          "missed": 31,
+          "recall": 0.3111111111111111,
+          "precision": 0.10606060606060606,
+          "alerts_per_detection": 9.428571428571429,
+          "random_expected_recall": 0.3062116402116402
+        },
+        "per_date": [
+          {
+            "date": 20160720,
+            "cases": 49,
+            "positives": 0,
+            "flagged": 15,
+            "detected": 0,
+            "false_alerts": 15,
+            "missed": 0
+          },
+          {
+            "date": 20160803,
+            "cases": 31,
+            "positives": 0,
+            "flagged": 10,
+            "detected": 0,
+            "false_alerts": 10,
+            "missed": 0
+          },
+          {
+            "date": 20160907,
+            "cases": 30,
+            "positives": 7,
+            "flagged": 9,
+            "detected": 0,
+            "false_alerts": 9,
+            "missed": 7
+          },
+          {
+            "date": 20160921,
+            "cases": 35,
+            "positives": 3,
+            "flagged": 11,
+            "detected": 1,
+            "false_alerts": 10,
+            "missed": 2
+          },
+          {
+            "date": 20161013,
+            "cases": 25,
+            "positives": 0,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 0
+          },
+          {
+            "date": 20161109,
+            "cases": 25,
+            "positives": 1,
+            "flagged": 8,
+            "detected": 0,
+            "false_alerts": 8,
+            "missed": 1
+          },
+          {
+            "date": 20170412,
+            "cases": 60,
+            "positives": 0,
+            "flagged": 18,
+            "detected": 0,
+            "false_alerts": 18,
+            "missed": 0
+          },
+          {
+            "date": 20170628,
+            "cases": 36,
+            "positives": 15,
+            "flagged": 11,
+            "detected": 8,
+            "false_alerts": 3,
+            "missed": 7
+          },
+          {
+            "date": 20170712,
+            "cases": 33,
+            "positives": 14,
+            "flagged": 10,
+            "detected": 5,
+            "false_alerts": 5,
+            "missed": 9
+          },
+          {
+            "date": 20170809,
+            "cases": 44,
+            "positives": 5,
+            "flagged": 14,
+            "detected": 0,
+            "false_alerts": 14,
+            "missed": 5
+          },
+          {
+            "date": 20170816,
+            "cases": 23,
+            "positives": 0,
+            "flagged": 7,
+            "detected": 0,
+            "false_alerts": 7,
+            "missed": 0
+          },
+          {
+            "date": 20170913,
+            "cases": 36,
+            "positives": 0,
+            "flagged": 11,
+            "detected": 0,
+            "false_alerts": 11,
+            "missed": 0
+          }
+        ]
+      }
+    ]
+  },
+  "threshold_rule_diagnostics": {
+    "extra_trees_relative_day7": {
+      "all": {
+        "cases": 819,
+        "positives": 175,
+        "detected": 107,
+        "false_alerts": 47,
+        "missed": 68
+      },
+      "early_quiet": {
+        "cases": 427,
+        "positives": 45,
+        "detected": 24,
+        "false_alerts": 13,
+        "missed": 21
+      }
+    },
+    "extra_trees_activity_coordination": {
+      "all": {
+        "cases": 819,
+        "positives": 175,
+        "detected": 108,
+        "false_alerts": 35,
+        "missed": 67
+      },
+      "early_quiet": {
+        "cases": 427,
+        "positives": 45,
+        "detected": 23,
+        "false_alerts": 8,
+        "missed": 22
+      }
+    }
+  },
+  "coverage": {
+    "symmetric_0.8": {
+      "pooled_observed_coverage": 0.7948717948717948,
+      "mean_width": 2.726577167654601,
+      "per_date": {
+        "20160720": {
+          "cases": 77,
+          "observed_coverage": 0.948051948051948
+        },
+        "20160803": {
+          "cases": 84,
+          "observed_coverage": 0.9880952380952381
+        },
+        "20160907": {
+          "cases": 56,
+          "observed_coverage": 0.7857142857142857
+        },
+        "20160921": {
+          "cases": 84,
+          "observed_coverage": 0.4523809523809524
+        },
+        "20161013": {
+          "cases": 56,
+          "observed_coverage": 0.8571428571428571
+        },
+        "20161109": {
+          "cases": 84,
+          "observed_coverage": 0.7738095238095238
+        },
+        "20170412": {
+          "cases": 70,
+          "observed_coverage": 1.0
+        },
+        "20170628": {
+          "cases": 42,
+          "observed_coverage": 0.6666666666666666
+        },
+        "20170712": {
+          "cases": 84,
+          "observed_coverage": 0.4880952380952381
+        },
+        "20170809": {
+          "cases": 84,
+          "observed_coverage": 0.7976190476190477
+        },
+        "20170816": {
+          "cases": 35,
+          "observed_coverage": 0.9714285714285714
+        },
+        "20170913": {
+          "cases": 63,
+          "observed_coverage": 0.9523809523809523
+        }
+      }
+    },
+    "symmetric_0.9": {
+      "pooled_observed_coverage": 0.8864468864468864,
+      "mean_width": 5.826950395735221,
+      "per_date": {
+        "20160720": {
+          "cases": 77,
+          "observed_coverage": 0.961038961038961
+        },
+        "20160803": {
+          "cases": 84,
+          "observed_coverage": 1.0
+        },
+        "20160907": {
+          "cases": 56,
+          "observed_coverage": 0.9107142857142857
+        },
+        "20160921": {
+          "cases": 84,
+          "observed_coverage": 0.4642857142857143
+        },
+        "20161013": {
+          "cases": 56,
+          "observed_coverage": 0.9821428571428571
+        },
+        "20161109": {
+          "cases": 84,
+          "observed_coverage": 0.9880952380952381
+        },
+        "20170412": {
+          "cases": 70,
+          "observed_coverage": 1.0
+        },
+        "20170628": {
+          "cases": 42,
+          "observed_coverage": 0.6904761904761905
+        },
+        "20170712": {
+          "cases": 84,
+          "observed_coverage": 0.7976190476190477
+        },
+        "20170809": {
+          "cases": 84,
+          "observed_coverage": 0.9166666666666666
+        },
+        "20170816": {
+          "cases": 35,
+          "observed_coverage": 0.9714285714285714
+        },
+        "20170913": {
+          "cases": 63,
+          "observed_coverage": 1.0
+        }
+      }
+    },
+    "scaled_0.8": {
+      "pooled_observed_coverage": 0.8070818070818071,
+      "mean_width": 2.9921657756691045,
+      "per_date": {
+        "20160720": {
+          "cases": 77,
+          "observed_coverage": 0.6883116883116883
+        },
+        "20160803": {
+          "cases": 84,
+          "observed_coverage": 0.8095238095238095
+        },
+        "20160907": {
+          "cases": 56,
+          "observed_coverage": 0.8928571428571429
+        },
+        "20160921": {
+          "cases": 84,
+          "observed_coverage": 0.7380952380952381
+        },
+        "20161013": {
+          "cases": 56,
+          "observed_coverage": 0.7857142857142857
+        },
+        "20161109": {
+          "cases": 84,
+          "observed_coverage": 0.9642857142857143
+        },
+        "20170412": {
+          "cases": 70,
+          "observed_coverage": 0.9
+        },
+        "20170628": {
+          "cases": 42,
+          "observed_coverage": 0.9523809523809523
+        },
+        "20170712": {
+          "cases": 84,
+          "observed_coverage": 0.5
+        },
+        "20170809": {
+          "cases": 84,
+          "observed_coverage": 0.9285714285714286
+        },
+        "20170816": {
+          "cases": 35,
+          "observed_coverage": 0.6857142857142857
+        },
+        "20170913": {
+          "cases": 63,
+          "observed_coverage": 0.8888888888888888
+        }
+      }
+    },
+    "scaled_0.9": {
+      "pooled_observed_coverage": 0.8986568986568987,
+      "mean_width": 4.107796284559276,
+      "per_date": {
+        "20160720": {
+          "cases": 77,
+          "observed_coverage": 0.8961038961038961
+        },
+        "20160803": {
+          "cases": 84,
+          "observed_coverage": 0.9523809523809523
+        },
+        "20160907": {
+          "cases": 56,
+          "observed_coverage": 0.9821428571428571
+        },
+        "20160921": {
+          "cases": 84,
+          "observed_coverage": 0.7738095238095238
+        },
+        "20161013": {
+          "cases": 56,
+          "observed_coverage": 0.9107142857142857
+        },
+        "20161109": {
+          "cases": 84,
+          "observed_coverage": 0.9880952380952381
+        },
+        "20170412": {
+          "cases": 70,
+          "observed_coverage": 0.9857142857142858
+        },
+        "20170628": {
+          "cases": 42,
+          "observed_coverage": 0.9761904761904762
+        },
+        "20170712": {
+          "cases": 84,
+          "observed_coverage": 0.6547619047619048
+        },
+        "20170809": {
+          "cases": 84,
+          "observed_coverage": 0.9761904761904762
+        },
+        "20170816": {
+          "cases": 35,
+          "observed_coverage": 0.8
+        },
+        "20170913": {
+          "cases": 63,
+          "observed_coverage": 0.9206349206349206
+        }
+      }
+    }
+  },
+  "abstention": {
+    "sigma_threshold": 1.5867561866297288,
+    "retained_fraction": 0.7997557997557998,
+    "retained_cases": 655,
+    "abstained_cases": 164,
+    "all_case_mae": 0.9844373662040534,
+    "retained_case_mae": 0.6776863774279966,
+    "abstained_case_mae": 2.2095708884498904,
+    "retained_observed_coverage": 0.7847328244274809,
+    "retained_macro_mae": 0.777976189304271
+  },
+  "fold_quantiles": [
+    {
+      "outer_date": 20160720,
+      "calibration_cases": 742,
+      "symmetric_q_0.8": 1.3947080420473101,
+      "scaled_q_0.8": 1.4950925973797242,
+      "symmetric_q_0.9": 3.0656074073103157,
+      "scaled_q_0.9": 2.0814230262235593
+    },
+    {
+      "outer_date": 20160803,
+      "calibration_cases": 728,
+      "symmetric_q_0.8": 1.5626432457363826,
+      "scaled_q_0.8": 1.4675042380499075,
+      "symmetric_q_0.9": 3.2262123809103542,
+      "scaled_q_0.9": 2.016243403397469
+    },
+    {
+      "outer_date": 20160907,
+      "calibration_cases": 742,
+      "symmetric_q_0.8": 1.4248068793526634,
+      "scaled_q_0.8": 1.518684232644037,
+      "symmetric_q_0.9": 3.1425465117873097,
+      "scaled_q_0.9": 2.1213301271511043
+    },
+    {
+      "outer_date": 20160921,
+      "calibration_cases": 693,
+      "symmetric_q_0.8": 1.0548263966299358,
+      "scaled_q_0.8": 1.5413445555930525,
+      "symmetric_q_0.9": 1.763324639946808,
+      "scaled_q_0.9": 2.1482407916567174
+    },
+    {
+      "outer_date": 20161013,
+      "calibration_cases": 714,
+      "symmetric_q_0.8": 1.414887516298112,
+      "scaled_q_0.8": 1.5568249398488683,
+      "symmetric_q_0.9": 3.17361267595499,
+      "scaled_q_0.9": 2.095823496455316
+    },
+    {
+      "outer_date": 20161109,
+      "calibration_cases": 707,
+      "symmetric_q_0.8": 1.4577210734683135,
+      "scaled_q_0.8": 1.5613301531809278,
+      "symmetric_q_0.9": 3.3257478158389464,
+      "scaled_q_0.9": 2.186858850050334
+    },
+    {
+      "outer_date": 20170412,
+      "calibration_cases": 742,
+      "symmetric_q_0.8": 1.5718383860808964,
+      "scaled_q_0.8": 1.496348427530024,
+      "symmetric_q_0.9": 3.16720188455893,
+      "scaled_q_0.9": 2.1365218781382134
+    },
+    {
+      "outer_date": 20170628,
+      "calibration_cases": 735,
+      "symmetric_q_0.8": 1.0789666185874067,
+      "scaled_q_0.8": 1.5247502842500467,
+      "symmetric_q_0.9": 1.75420379303656,
+      "scaled_q_0.9": 2.0596896486805685
+    },
+    {
+      "outer_date": 20170712,
+      "calibration_cases": 735,
+      "symmetric_q_0.8": 1.0542648376289576,
+      "scaled_q_0.8": 1.5220121857769342,
+      "symmetric_q_0.9": 2.8467756862869935,
+      "scaled_q_0.9": 1.9818890761350474
+    },
+    {
+      "outer_date": 20170809,
+      "calibration_cases": 735,
+      "symmetric_q_0.8": 1.4145466454906588,
+      "scaled_q_0.8": 1.6589336773101997,
+      "symmetric_q_0.9": 3.0342876579717837,
+      "scaled_q_0.9": 2.2869192139874412
+    },
+    {
+      "outer_date": 20170816,
+      "calibration_cases": 777,
+      "symmetric_q_0.8": 1.3710672443323058,
+      "scaled_q_0.8": 1.5271331925335259,
+      "symmetric_q_0.9": 3.0425579435695034,
+      "scaled_q_0.9": 2.151652325992511
+    },
+    {
+      "outer_date": 20170913,
+      "calibration_cases": 707,
+      "symmetric_q_0.8": 1.5410971665135191,
+      "scaled_q_0.8": 1.5554771518807422,
+      "symmetric_q_0.9": 3.2066037416715303,
+      "scaled_q_0.9": 2.0464625004964603
+    }
+  ],
+  "measurement_flags": {
+    "low_reference_activity": {
+      "flagged_cases": 112,
+      "flagged_fraction": 0.13675213675213677,
+      "flagged_mae": 1.0552614370163365,
+      "unflagged_mae": 0.9732177114219097
+    },
+    "few_controls": {
+      "flagged_cases": 0,
+      "flagged_fraction": 0.0,
+      "flagged_mae": null,
+      "unflagged_mae": 0.9844373662040534
+    },
+    "replicates_disagree": {
+      "flagged_cases": 82,
+      "flagged_fraction": 0.10012210012210013,
+      "flagged_mae": 0.7649060602911795,
+      "unflagged_mae": 1.0088628303626093
+    },
+    "controls_disagree": {
+      "flagged_cases": 42,
+      "flagged_fraction": 0.05128205128205128,
+      "flagged_mae": 4.644628769834211,
+      "unflagged_mae": 0.7865891822240451
+    },
+    "any_flag": {
+      "flagged_cases": 224,
+      "flagged_fraction": 0.27350427350427353,
+      "flagged_mae": 1.5760249991897344,
+      "unflagged_mae": 0.761722022021209
+    }
+  },
+  "outcome_quality_sensitivity": {
+    "rule": "Cases whose day-12 plate zero-dose median ns.n is at least 5. This uses a future observation, so it is a reporting subset for target reliability only; it never enters any feature, decision, or model.",
+    "retained_cases": 777,
+    "date_macro_mae": {
+      "extra_trees_relative_day7_reliability": 0.7542571673316473,
+      "extra_trees_relative_day7": 0.7634982367454749,
+      "extra_trees_activity_coordination": 0.7762389453751251,
+      "extra_trees_relative": 0.8089109216257375,
+      "extra_trees_all": 0.8529060170079251,
+      "ridge_relative": 0.9459268940717639,
+      "control_reference": 1.0049823276793826,
+      "extra_trees_target_only": 1.0275718330091543,
+      "persistence_day7": 1.0571041934038727,
+      "ridge_target_only": 1.0937325313981603,
+      "ridge_all": 1.8909993114787003,
+      "linear_trend": 2.827370964748331
+    }
+  },
+  "selection_v1_consistency": {
+    "selection_v1": {
+      "available": true,
+      "compared_rows": 5733,
+      "models": [
+        "control_reference",
+        "extra_trees_all",
+        "extra_trees_target_only",
+        "linear_trend",
+        "persistence_day7",
+        "ridge_all",
+        "ridge_target_only"
+      ],
+      "max_abs_prediction_difference": 1.7763568394002505e-15,
+      "max_abs_target_difference": 8.881784197001252e-16
+    },
+    "representation_followup": {
+      "available": true,
+      "compared_rows": 3276,
+      "models": [
+        "extra_trees_activity_coordination",
+        "extra_trees_relative",
+        "extra_trees_relative_day7",
+        "ridge_relative"
+      ],
+      "max_abs_prediction_difference": 1.7763568394002505e-15,
+      "max_abs_target_difference": 8.881784197001252e-16
+    }
+  },
+  "locked_thresholds": {
+    "rep_sd_log2_ns_d7_p90": 1.7144704121674073,
+    "plate_ctrl_iqr_ratio_d7_p90": 1.4805555555555554,
+    "abstention_sigma_p80": 1.5867561866297288
+  },
+  "cases": 819,
+  "seconds": 502.7920449999983,
+  "reserve_outcomes_scored": false
+}

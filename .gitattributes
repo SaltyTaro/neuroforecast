@@ -1,0 +1,6 @@
+# Hashed protocols and pinned requirements must survive checkout byte for byte.
+* text=auto eol=lf
+experiments/*.json text eol=lf
+tools/requirements-neuroforecast.txt text eol=lf
+*.png binary
+*.joblib binary

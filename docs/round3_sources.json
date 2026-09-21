@@ -1,0 +1,634 @@
+{
+  "created_utc": "2026-09-19T20:48:03.836977+00:00",
+  "round": 3,
+  "publication_cutoff": "2026-09-19",
+  "dataset_candidates": 3,
+  "query_count": 6,
+  "query_scope": "Bounded Europe PMC title/abstract searches plus targeted dataset and primary-source retrieval. No exhaustive novelty or competitor-overlap claim.",
+  "data_root": "E:\\kaggle\\AI4S\\raw\\research\\round3",
+  "fetched_resources": 50,
+  "resources": [
+    {
+      "file": "raw/research/round3/deephys_external_training.m",
+      "url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/Classes/@CellTypeClassifier/classifyUnitsWithExternalTrain.m",
+      "final_url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/Classes/@CellTypeClassifier/classifyUnitsWithExternalTrain.m",
+      "retrieved_at_utc": "2026-09-19T19:31:21.873286+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 12169,
+      "sha256": "6ac83c87cbe8470438d0f8090a69e4ef36cf859238920695084633b7e5d15054",
+      "role": "author_repository_snapshot"
+    },
+    {
+      "file": "raw/research/round3/deephys_qp_predictions.mat",
+      "url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/Figures/Data/Figure5/qp_activity_prediction.mat",
+      "final_url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/Figures/Data/Figure5/qp_activity_prediction.mat",
+      "retrieved_at_utc": "2026-09-19T19:31:21.874337+00:00",
+      "content_type": "application/octet-stream",
+      "bytes": 101893,
+      "sha256": "4d879fec97e91136b0d2b67d39cd61006ca9e7019be63ee1ce244312de5ec8ce",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/deephys_quinpirole.mat",
+      "url": "https://zenodo.org/api/records/7876371/files/Quinpirole.mat/content",
+      "final_url": "https://zenodo.org/api/records/7876371/files/Quinpirole.mat/content",
+      "retrieved_at_utc": "2026-09-19T19:29:02.784757+00:00",
+      "content_type": "application/octet-stream",
+      "bytes": 119563063,
+      "sha256": "42097e6aaceb2f1defebdf656ad6e82990811c5b391d539a8dc8dd723bf822d1",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/deephys_readme.md",
+      "url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/README.md",
+      "final_url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/README.md",
+      "retrieved_at_utc": "2026-09-19T19:25:35.818809+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 3815,
+      "sha256": "479817c243fc5ab4c10179e8d0e91b95c6377ec8849ee705a980c9a0151f9ada",
+      "role": "author_repository_snapshot"
+    },
+    {
+      "file": "raw/research/round3/deephys_repository.json",
+      "url": "https://api.github.com/repos/hornauerp/DeePhys",
+      "final_url": "https://api.github.com/repos/hornauerp/DeePhys",
+      "retrieved_at_utc": "2026-09-19T19:22:46.104343+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 5197,
+      "sha256": "aca6d031e8b5cc8dead78cbd624cbbb935c93ded302f069b034578bc994a8f91",
+      "role": "author_repository_snapshot"
+    },
+    {
+      "file": "raw/research/round3/deephys_response_method.m",
+      "url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/Classes/@CellTypeClassifier/identifyResponsiveUnits.m",
+      "final_url": "https://raw.githubusercontent.com/hornauerp/DeePhys/c9a034c24a779bdf3e298c74c03db6dcd568da82/Classes/@CellTypeClassifier/identifyResponsiveUnits.m",
+      "retrieved_at_utc": "2026-09-19T19:31:21.869947+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 31296,
+      "sha256": "2907391b05e352f0c09b1a6c83e866fb28d4f6aa879e4d7c83b4ac6f024c9fc5",
+      "role": "author_repository_snapshot"
+    },
+    {
+      "file": "raw/research/round3/deephys_tree.json",
+      "url": "https://api.github.com/repos/hornauerp/DeePhys/git/trees/main?recursive=1",
+      "final_url": "https://api.github.com/repos/hornauerp/DeePhys/git/trees/main?recursive=1",
+      "retrieved_at_utc": "2026-09-19T19:22:46.999476+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 241360,
+      "sha256": "6f70863acf0d8ef3e9d6147e0071d829410c48df618226d55988f3d07c3f589f",
+      "role": "author_repository_snapshot"
+    },
+    {
+      "file": "raw/research/round3/early_neural_prediction2021.html",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8516856/",
+      "final_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8516856/",
+      "retrieved_at_utc": "2026-09-19T19:31:21.874419+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 227536,
+      "sha256": "f2a768b863be9e27bcf0b26d1dae08699e3cc291f9f36a0ab1d0fc5a578234c6",
+      "role": "primary_paper_fulltext"
+    },
+    {
+      "file": "raw/research/round3/epa_datacite_acute.json",
+      "url": "https://api.datacite.org/dois?query=prefix%3A10.23719+AND+titles.title%3A%28%22microelectrode%22+OR+%22neural+network%22%29&page%5Bsize%5D=50",
+      "final_url": "https://api.datacite.org/dois?query=prefix%3A10.23719+AND+titles.title%3A%28%22microelectrode%22+OR+%22neural+network%22%29&page%5Bsize%5D=50",
+      "retrieved_at_utc": "2026-09-19T19:26:35.983238+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 12012,
+      "sha256": "28b6625e2f7dc32bf643e5afa29e4e289dbd7f40652f1ead6fd4a5fc8c2609f2",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/epa_datacite_network.json",
+      "url": "https://api.datacite.org/dois?query=%22network+formation%22+AND+%28%22neural%22+OR+%22neuronal%22+OR+%22cortical%22%29&page%5Bsize%5D=25",
+      "final_url": "https://api.datacite.org/dois?query=%22network+formation%22+AND+%28%22neural%22+OR+%22neuronal%22+OR+%22cortical%22%29&page%5Bsize%5D=25",
+      "retrieved_at_utc": "2026-09-19T19:25:35.821450+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 1102437,
+      "sha256": "0ef7dae6e39a4177347bb6aacda6590aef81bb43506b5906784c6cf9a8c3b575",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/epa_datacite_tipping.json",
+      "url": "https://api.datacite.org/dois?query=%22toxicological+tipping%22&page%5Bsize%5D=25",
+      "final_url": "https://api.datacite.org/dois?query=%22toxicological+tipping%22&page%5Bsize%5D=25",
+      "retrieved_at_utc": "2026-09-19T19:25:35.819638+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 38198,
+      "sha256": "60085bf2b6de7a0817f8380e105d8099afb73065c717e5befddf08b5afc4f3f3",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/epa_datacite_title.json",
+      "url": "https://api.datacite.org/dois?query=prefix%3A10.23719+AND+titles.title%3A%28%22network+formation%22+OR+%22toxicological+tipping%22%29&page%5Bsize%5D=50",
+      "final_url": "https://api.datacite.org/dois?query=prefix%3A10.23719+AND+titles.title%3A%28%22network+formation%22+OR+%22toxicological+tipping%22%29&page%5Bsize%5D=50",
+      "retrieved_at_utc": "2026-09-19T19:26:35.966866+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 5292,
+      "sha256": "e3adc345de4fd2ac35d0317b90aff0d344ac3cd4f989bac4403cd189057f1536",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/epa_network_data.json",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%22network+formation%22+AND+%28%22screening%22+OR+%22chemical%22%29+AND+%28%22microelectrode%22+OR+%22MEA%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%22network+formation%22+AND+%28%22screening%22+OR+%22chemical%22%29+AND+%28%22microelectrode%22+OR+%22MEA%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "retrieved_at_utc": "2026-09-19T19:24:49.080241+00:00",
+      "content_type": "application/json;charset=UTF-8",
+      "bytes": 123759,
+      "sha256": "2516c30a63b441577668d212f88361775d775350b55800ab7dc74024eaa3b80e",
+      "role": "literature_search",
+      "query": "TITLE_ABS:(\"network formation\" AND (\"screening\" OR \"chemical\") AND (\"microelectrode\" OR \"MEA\"))",
+      "total_hits": 17,
+      "archived_results": 17,
+      "requested_page_size": [
+        "35"
+      ]
+    },
+    {
+      "file": "raw/research/round3/epa_nfa_doi.json",
+      "url": "https://api.datacite.org/dois/10.23719/1503191",
+      "final_url": "https://api.datacite.org/dois/10.23719/1503191",
+      "retrieved_at_utc": "2026-09-19T19:27:30.674401+00:00",
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 7438,
+      "sha256": "7068a4ab438daddf314cb86d1a6d637e0a7f2295416a2777923d34e555722ced",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/epa_nfa_raw.zip",
+      "url": "https://pasteur.epa.gov/uploads/10.23719/1503191/NTP_TC_Analysis.zip",
+      "final_url": "https://pasteur.epa.gov/uploads/10.23719/1503191/NTP_TC_Analysis.zip",
+      "retrieved_at_utc": "2026-09-19T19:30:01.895438+00:00",
+      "content_type": "application/zip",
+      "status": 200,
+      "expected_md5": null,
+      "bytes": 159560650,
+      "sha256": "fd92c1339bb764ee9b96c935bf31867c12640505e5c3f065ad5956a7eea08cfb",
+      "md5": "66034279904562b066d3b17446d6e7a1",
+      "seconds": 36.09051290000207,
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/epa_nfa_record.html",
+      "url": "https://catalog.data.gov/dataset/data-for-evaluation-of-chemical-effects-on-network-formation-in-cortical-neurons-grown-on-",
+      "final_url": "https://catalog.data.gov/dataset/data-for-evaluation-of-chemical-effects-on-network-formation-in-cortical-neurons-grown-on-",
+      "retrieved_at_utc": "2026-09-19T19:27:30.674466+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 129089,
+      "sha256": "e4804cbdece49d4bacde43541130ca3239023f254de226e5aed687c8c4ee78ea",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/epa_sciencehub_license.html",
+      "url": "https://pasteur.epa.gov/license/sciencehub-license.html",
+      "final_url": "https://pasteur.epa.gov/license/sciencehub-license.html",
+      "retrieved_at_utc": "2026-09-19T19:30:04.989555+00:00",
+      "content_type": "text/html",
+      "bytes": 2662,
+      "sha256": "5a92f2b7af009d5dea272a6701ad2a63f22e5f772d0f89f50255e994433fdd11",
+      "role": "data_license"
+    },
+    {
+      "file": "raw/research/round3/epa_tipping_data.json",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%22Defining+toxicological+tipping+points%22+OR+%2286+compounds%22+OR+%221055+chemicals%22%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%22Defining+toxicological+tipping+points%22+OR+%2286+compounds%22+OR+%221055+chemicals%22%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "retrieved_at_utc": "2026-09-19T19:24:49.079811+00:00",
+      "content_type": "application/json;charset=UTF-8",
+      "bytes": 263909,
+      "sha256": "57c54d2992b1c22a0427dc220d67a56ac886bb45b073d69c786572851d0b9918",
+      "role": "literature_search",
+      "query": "TITLE_ABS:(\"Defining toxicological tipping points\" OR \"86 compounds\" OR \"1055 chemicals\")",
+      "total_hits": 72,
+      "archived_results": 35,
+      "requested_page_size": [
+        "35"
+      ]
+    },
+    {
+      "file": "raw/research/round3/neural_chemical_forecasting.json",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%28%22network+formation%22+OR+%22developmental+neurotoxicity%22%29+AND+%28%22forecast%22+OR+%22early+prediction%22+OR+%22time+series%22+OR+%22machine+learning%22%29+AND+%28%22microelectrode%22+OR+%22neuronal%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%28%22network+formation%22+OR+%22developmental+neurotoxicity%22%29+AND+%28%22forecast%22+OR+%22early+prediction%22+OR+%22time+series%22+OR+%22machine+learning%22%29+AND+%28%22microelectrode%22+OR+%22neuronal%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "retrieved_at_utc": "2026-09-19T19:50:24.894527+00:00",
+      "content_type": "application/json;charset=UTF-8",
+      "bytes": 13398,
+      "sha256": "051887e5a612d956849b52d7563dd99a7516776f0e3fa6e6a121352ac3cb7983",
+      "role": "literature_search",
+      "query": "TITLE_ABS:((\"network formation\" OR \"developmental neurotoxicity\") AND (\"forecast\" OR \"early prediction\" OR \"time series\" OR \"machine learning\") AND (\"microelectrode\" OR \"neuronal\"))",
+      "total_hits": 2,
+      "archived_results": 2,
+      "requested_page_size": [
+        "35"
+      ]
+    },
+    {
+      "file": "raw/research/round3/neural_early_prediction.json",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%28%22microelectrode%22+OR+%22neuronal+network%22%29+AND+%28%22early+prediction%22+OR+%22forecasting%22+OR+%22predicting+recovery%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%28%22microelectrode%22+OR+%22neuronal+network%22%29+AND+%28%22early+prediction%22+OR+%22forecasting%22+OR+%22predicting+recovery%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "retrieved_at_utc": "2026-09-19T19:24:49.078763+00:00",
+      "content_type": "application/json;charset=UTF-8",
+      "bytes": 47224,
+      "sha256": "608d2d75536c95ea98e6ec9c74cb6e03437bce2591282324cb77cf27e03e22e1",
+      "role": "literature_search",
+      "query": "TITLE_ABS:((\"microelectrode\" OR \"neuronal network\") AND (\"early prediction\" OR \"forecasting\" OR \"predicting recovery\"))",
+      "total_hits": 8,
+      "archived_results": 8,
+      "requested_page_size": [
+        "35"
+      ]
+    },
+    {
+      "file": "raw/research/round3/neural_response_forecasting.json",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%28%22chemical%22+OR+%22toxicant%22+OR+%22drug%22%29+AND+%28%22neuronal+network%22+OR+%22microelectrode+array%22%29+AND+%28%22early+prediction%22+OR+%22forecasting%22+OR+%22predicting+response%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%28%22chemical%22+OR+%22toxicant%22+OR+%22drug%22%29+AND+%28%22neuronal+network%22+OR+%22microelectrode+array%22%29+AND+%28%22early+prediction%22+OR+%22forecasting%22+OR+%22predicting+response%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "retrieved_at_utc": "2026-09-19T19:50:24.893347+00:00",
+      "content_type": "application/json;charset=UTF-8",
+      "bytes": 390,
+      "sha256": "812cfe5c559376890c58d90cd20501aeac75947530f678cf119a4acdd45d5dad",
+      "role": "literature_search",
+      "query": "TITLE_ABS:((\"chemical\" OR \"toxicant\" OR \"drug\") AND (\"neuronal network\" OR \"microelectrode array\") AND (\"early prediction\" OR \"forecasting\" OR \"predicting response\"))",
+      "total_hits": 0,
+      "archived_results": 0,
+      "requested_page_size": [
+        "35"
+      ]
+    },
+    {
+      "file": "raw/research/round3/neural_tipping_prior.json",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%22tipping+points%22+AND+%28%22neuronal%22+OR+%22network%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28TITLE_ABS%3A%28%22tipping+points%22+AND+%28%22neuronal%22+OR+%22network%22%29%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=35&resultType=core",
+      "retrieved_at_utc": "2026-09-19T19:50:24.891724+00:00",
+      "content_type": "application/json;charset=UTF-8",
+      "bytes": 205849,
+      "sha256": "298f3142533aab444ee4b2d6ed86008b8c9c538bd8ad2e0e0fb5dd1d31cc35ad",
+      "role": "literature_search",
+      "query": "TITLE_ABS:(\"tipping points\" AND (\"neuronal\" OR \"network\"))",
+      "total_hits": 138,
+      "archived_results": 35,
+      "requested_page_size": [
+        "35"
+      ]
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_baseline_bursts_per_min.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_bursts_per_min.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_bursts_per_min.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.004157+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 820,
+      "sha256": "f09694a0ddc1d3a5cc19c5fe5477bbfc8a0bbec97ba81dc06ee686ad2855f345",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_baseline_explog.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_spikes_noise_explogs/hPSC_120618_MEA3Baseline_DIV29_expLog.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_spikes_noise_explogs/hPSC_120618_MEA3Baseline_DIV29_expLog.csv",
+      "retrieved_at_utc": "2026-09-19T19:30:04.987100+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 2444,
+      "sha256": "90a32d3eed619a4dd08a452c4a258a6eaaed84d6b68bdf25d6f8b8d9f4085096",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_baseline_meanfiringrate_by_active_electordes.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_meanfiringrate_by_active_electordes.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_meanfiringrate_by_active_electordes.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.004027+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 938,
+      "sha256": "c8721431438f06634195b3710f123206548ddbac00b2b0f104b0513ab7671225",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_baseline_nae.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_nae.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_nae.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.004088+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 606,
+      "sha256": "d989d52e935958807b1a1474f8e17ee6ff469f2666ebb9093793a8e6ac220581",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_baseline_output.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output",
+      "retrieved_at_utc": "2026-09-19T19:30:04.990110+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 26275,
+      "sha256": "1bbe3babd1dda0271277ccf95a43c7cf377b5774b98d4a2c8acd735991c5c895",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_baseline_spikes_noise_explogs.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_spikes_noise_explogs",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_spikes_noise_explogs",
+      "retrieved_at_utc": "2026-09-19T19:27:30.673501+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 22614,
+      "sha256": "d127246190f6bbd0c96780c7e385c2010250c3c0bd894d3322aa14202346d69b",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_baseline_sttc.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_STTC.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Baseline_DIV29/hPSC_MEA3Baseline_DIV29_meaRtools_output/hPSC_120618_MEA3Baseline_STTC.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.003359+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 963,
+      "sha256": "749f9ccef8c2aa8be485ba2f944835d3e5ed374f9502f19d066380d4795ef7ff",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_pharma_bursts_per_min.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_bursts_per_min.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_bursts_per_min.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.799669+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 615,
+      "sha256": "4aca83aff7a91460eba990bf9a678332f8dcce77659fd4230f4815097903a868",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_pharma_explog.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_spikes_noise_explogs/hPSC_120618_MEA3Pharma_DIV29_expLog.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_spikes_noise_explogs/hPSC_120618_MEA3Pharma_DIV29_expLog.csv",
+      "retrieved_at_utc": "2026-09-19T19:30:05.718794+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 2312,
+      "sha256": "a06ac6b3673e71548d2159c6c299786480299d020d7a6fe7d8c4227eeb4367c0",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_pharma_meanfiringrate_by_active_electordes.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_meanfiringrate_by_active_electordes.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_meanfiringrate_by_active_electordes.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.961273+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 831,
+      "sha256": "9a77ec7ec622ce0d61f2e833847500b994c4e190b470cb8f3763e882d7e5f1a8",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_pharma_nae.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_nae.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_nae.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.958455+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 493,
+      "sha256": "106a77f467edb74b44f9d16fdaad83dceb4ce0ebebc3c9bc295510fa3a76f353",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_pharma_output.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output",
+      "retrieved_at_utc": "2026-09-19T19:30:04.990015+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 26059,
+      "sha256": "daa73bac187c49a41595987e758607b516108fc041363967f46fe3c3b1a2d5dd",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_pharma_spikes_noise_explogs.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_spikes_noise_explogs",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_spikes_noise_explogs",
+      "retrieved_at_utc": "2026-09-19T19:27:30.670964+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 22438,
+      "sha256": "751c1f7aa36d8b6aff989fbc5ce9ec06bb0510c93edfc7c41f7b490284046caa",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_hpsc_pharma_sttc.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_STTC.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/hPSC_MEA3_Pharmacology/hPSC_MEA3Pharma_DIV29/hPSC_MEA3Pharma_DIV29_meaRtools_output/hPSC_120618_MEA3Pharma_STTC.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:38.969745+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 876,
+      "sha256": "c68de207eddb2a92bfb34f00dd1ee7e21975ba911b4af0c5b3e9f2dcde8907ad",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_baseline_bursts_per_min.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_bursts_per_min.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_bursts_per_min.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:39.691107+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 1289,
+      "sha256": "551a9c12d5ed8ce8069e4ec1a5767e9a02883e6c97db601cdaeba44c37105ae3",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_baseline_explog.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_spikes_noise_explogs/Rat_50618_MEA2Baseline_DIV22_expLog.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_spikes_noise_explogs/Rat_50618_MEA2Baseline_DIV22_expLog.csv",
+      "retrieved_at_utc": "2026-09-19T19:30:05.927640+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 2330,
+      "sha256": "5d8fa6a80670aae140fb9d4648e46dd599630e849cebd5043d92e6edc29e19d1",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_baseline_meanfiringrate_by_active_electordes.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_meanfiringrate_by_active_electordes.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_meanfiringrate_by_active_electordes.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:39.950017+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 1626,
+      "sha256": "7c5c270013bd8c63dc90164bc9a0ab5618cf4eb9d9389bcc685774eb1607b68b",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_baseline_nae.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_nae.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_nae.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:39.947601+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 1028,
+      "sha256": "73db6ff364f7b0c3cebe266d4a0791c29480d3950fecc9bab42a7cc69fbeec20",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_baseline_output.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output",
+      "retrieved_at_utc": "2026-09-19T19:30:06.386269+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 26103,
+      "sha256": "bfe51badf48789e21868116b54464821c62a34472e62ada62f29a2c8ffa2fec1",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_baseline_spikes_noise_explogs.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_spikes_noise_explogs",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_spikes_noise_explogs",
+      "retrieved_at_utc": "2026-09-19T19:27:31.654326+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 22479,
+      "sha256": "372dcff796b101b260fc629cbb48fd433dd730f07485af0d9065801407cea3d7",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_baseline_sttc.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_STTC.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Baseline_DIV22/Rat_MEA2Baseline_DIV22_meaRtools_output/Rat_50618_MEA2Baseline_STTC.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:39.544505+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 1693,
+      "sha256": "392cf12858f7e7be8dcbd97a5523aaacdeda09cccc4925907a7b312f6593c634",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_pharma_bursts_per_min.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_bursts_per_min.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_bursts_per_min.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:40.498732+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 918,
+      "sha256": "0a48f0818b1970d75db40be8708c525788788a627115c3f44eaaec348d90c9a8",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_pharma_explog.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_spikes_noise_explogs/Rat_50618_MEA2Pharma_DIV22_expLog.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_spikes_noise_explogs/Rat_50618_MEA2Pharma_DIV22_expLog.csv",
+      "retrieved_at_utc": "2026-09-19T19:30:06.690360+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 2164,
+      "sha256": "c80d5585238da6263409511ec3e7244a920c2a560fa9c4e01ea773ec54a6c03f",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_pharma_meanfiringrate_by_active_electordes.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_meanfiringrate_by_active_electordes.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_meanfiringrate_by_active_electordes.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:40.950181+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 1310,
+      "sha256": "e68e92697d98461cbc9dd64bf61c7ae3178f1c3dcf329ef0b57c0a65548a5dbe",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_pharma_nae.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_nae.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_nae.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:40.875407+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 746,
+      "sha256": "eb3d629d8176a2f8a710d7fd151cded9788caae5c2db30ae099ca17020ee4970",
+      "role": "public_data_or_author_analysis"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_pharma_output.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output",
+      "retrieved_at_utc": "2026-09-19T19:30:06.086281+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 25887,
+      "sha256": "cbf97b9abb69d22fcab48757b94193e32935a64e6f9e41620b94d456a469cbb8",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_pharma_spikes_noise_explogs.html",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_spikes_noise_explogs",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/src/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_spikes_noise_explogs",
+      "retrieved_at_utc": "2026-09-19T19:27:31.905133+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 22303,
+      "sha256": "ff7065e00cdde414e8f1e9f7c2801ccc89cd2a77c287591aa096cce2dd7cf539",
+      "role": "metadata_or_source_page"
+    },
+    {
+      "file": "raw/research/round3/tuni_rat_pharma_sttc.csv",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_STTC.csv",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/Data/Rat_MEA2_Pharmacology/Rat_MEA2Pharma_DIV22/Rat_MEA2Pharma_DIV22_meaRtools_output/Rat_50618_MEA2Pharma_STTC.csv",
+      "retrieved_at_utc": "2026-09-19T19:34:40.262849+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 1276,
+      "sha256": "86fe4fc7edd2a3fae2ecc3209f8c3be2c08a3ef1cbcc8b1b4f460aaf72bb0ab4",
+      "role": "public_data_or_author_analysis"
+    }
+  ],
+  "previously_archived_sources_reused": [
+    {
+      "file": "raw/research/topic_hunt/neural_deephys.xml",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10874850/fullTextXML",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10874850/fullTextXML",
+      "retrieved_at_utc": "2026-09-19T10:57:25.200500+00:00",
+      "content_type": "application/xml",
+      "bytes": 102054,
+      "sha256": "7eb164f462ec7244f71cfd8c0b70ea749e0f344b883e70c9201d06afcdfa1a2e"
+    },
+    {
+      "file": "raw/research/topic_hunt/deephys_record.json",
+      "url": "https://zenodo.org/api/records/7876371",
+      "final_url": "https://zenodo.org/api/records/7876371",
+      "retrieved_at_utc": "2026-09-19T10:58:46.397499+00:00",
+      "content_type": "application/json",
+      "bytes": 5349,
+      "sha256": "269a26ed5a49e02b68e1a12ac3837c6418de14b5c59b86bfaef9adf0f6129943"
+    },
+    {
+      "file": "raw/research/topic_hunt/neural_reversibility.json",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28%28TITLE_ABS%3A%22microelectrode+array%22+OR+TITLE_ABS%3A%22multielectrode+array%22+OR+TITLE_ABS%3A%22brain-on-a-chip%22%29+AND+%28TITLE_ABS%3Arecovery+OR+TITLE_ABS%3Awashout+OR+TITLE_ABS%3Areversible%29+AND+%28TITLE_ABS%3Adrug+OR+TITLE_ABS%3Aneurotoxicity+OR+TITLE_ABS%3Achemical%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=100&resultType=core",
+      "final_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28%28TITLE_ABS%3A%22microelectrode+array%22+OR+TITLE_ABS%3A%22multielectrode+array%22+OR+TITLE_ABS%3A%22brain-on-a-chip%22%29+AND+%28TITLE_ABS%3Arecovery+OR+TITLE_ABS%3Awashout+OR+TITLE_ABS%3Areversible%29+AND+%28TITLE_ABS%3Adrug+OR+TITLE_ABS%3Aneurotoxicity+OR+TITLE_ABS%3Achemical%29%29+AND+FIRST_PDATE%3A%5B1900-01-01+TO+2026-09-19%5D&format=json&pageSize=100&resultType=core",
+      "retrieved_at_utc": "2026-09-19T10:53:55.084537+00:00",
+      "content_type": "application/json;charset=UTF-8",
+      "bytes": 111278,
+      "sha256": "ef6561d847aaaa0ed88d24588bb4f8ac93e4022123253e2464aae2306f7ab97f"
+    },
+    {
+      "file": "raw/research/round2/tuni_readme.md",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/README.md",
+      "final_url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset/raw/master/README.md",
+      "retrieved_at_utc": "2026-09-19T17:59:36.852178+00:00",
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 12881,
+      "sha256": "5ab21aacc0b0c82eecdacd2a12ef67ac152f0e5d80d614601227ac958d1dc7f9"
+    }
+  ],
+  "primary_data": [
+    {
+      "name": "EPA network formation assay",
+      "doi": "10.23719/1503191",
+      "paper_doi": "10.1093/toxsci/kfz052",
+      "file": "epa_nfa_raw.zip",
+      "license": "EPA-produced data are U.S. public domain unless otherwise specified",
+      "license_url": "https://pasteur.epa.gov/license/sciencehub-license.html",
+      "selected": true
+    },
+    {
+      "name": "DeePhys Quinpirole",
+      "doi": "10.5281/zenodo.7876371",
+      "paper_doi": "10.1016/j.stemcr.2023.12.008",
+      "file": "deephys_quinpirole.mat",
+      "published_md5": "7d1dedaf44ad18d7bd5612b6f06d26ba",
+      "data_license": "CC BY 4.0",
+      "code_license_note": "No license returned by GitHub API at the archived repository snapshot; do not infer the code license from the data license",
+      "selected": false
+    },
+    {
+      "name": "TUNI comparative MEA",
+      "url": "https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset",
+      "paper_doi": "10.1038/s41597-022-01242-4",
+      "data_license": "CC BY 4.0",
+      "code_license_note": "Repository's own analysis code BSD 3-Clause; listed third-party analysis dependencies include GPL code",
+      "selected": false
+    }
+  ],
+  "access_limits": [
+    {
+      "resource": "Europe PMC fullTextXML for PMC8516856",
+      "status": "HTTP 503 on attempted XML retrieval; the public PMC HTML article was retrieved and read"
+    },
+    {
+      "url": "https://academic.oup.com/toxsci/article-pdf/160/1/121/21348991/kfx169.pdf",
+      "status": "HTTP 403; use of the archived abstract is identified in the report"
+    },
+    {
+      "resource": "Legacy catalog.data.gov CKAN API route",
+      "status": "HTTP 404; the current dataset HTML record was retrieved"
+    }
+  ],
+  "interpretation": "Fetches are public research material with source-specific licenses. Derived audits, queries, and experiment outputs are separately inventoried; no secret credentials or unpublished competitor materials are included."
+}

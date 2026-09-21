@@ -1,0 +1,10 @@
+# Verified on Python 3.14.2, Windows x64; CPU only.
+# Includes source audits and figures as well as the benchmark and demo.
+numpy==2.4.2
+pandas==3.0.0
+scipy==1.17.1
+scikit-learn==1.9.0
+openpyxl==3.1.5
+matplotlib==3.10.8
+threadpoolctl==3.6.0
+joblib==1.5.3
