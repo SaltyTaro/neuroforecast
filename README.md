@@ -23,7 +23,7 @@ What did generalize to those unseen batches and chemicals:
 | **Early-warning ranking** | Among conditions still quiet at day 7, a 20% review budget found **6 of 10** later large changes; ranking by the day-7 change found **0**; chance is 2.1. |
 | **Prediction intervals** | Observed **71.4%** coverage at a nominal 80% level — a real shortfall under batch shift, reported as one. |
 
-Full numbers, every reserved date, and the failure analysis: [docs/neuroforecast_reserve_results.md](docs/neuroforecast_reserve_results.md).
+**Technical report: [docs/technical_report.md](docs/technical_report.md)** — problem, data, method, protocol, both evaluations, the failure analysis, the tool, limitations and reproduction. Full reserve numbers per date: [docs/neuroforecast_reserve_results.md](docs/neuroforecast_reserve_results.md).
 
 ## Run it
 
@@ -106,6 +106,7 @@ Rat cortical cultures in multi-well plates are not perfused organ chips, human c
 | `experiments/*.json` | The three hashed protocols |
 | `models/` | Final models trained on the 819 development cases, the development lock, and the reserve summary |
 | `examples/` | Two real day-7 inputs from the sealed reserve |
+| `docs/technical_report.md` | The technical report |
 | `docs/` | Protocol, development results, reserve results, project brief, prior-art assessment |
 | `evaluation/` | Audited per-case predictions, intervals and flags for both stages, so every number recomputes without the source archive |
 | `tools/verify_published_numbers.py` | Recomputes every published number from those tables |
