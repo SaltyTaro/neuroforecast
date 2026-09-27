@@ -1,0 +1,635 @@
+{
+  "note": "Post-hoc analyses of the locked v2 tool: what drives the forecast, where it beats carry-forward, and how the",
+  "development": {
+    "folds": "17 development batches, purged leave-one-batch-out (as in development)",
+    "product_replay_max_abs_difference": 8.881784197001252e-16,
+    "date_macro_mae": {
+      "small_refit": 0.7257715460523856,
+      "ols": 0.9492734799822554,
+      "lad": 0.9137158480838027,
+      "persistence": 1.0637501025046976
+    },
+    "permutation_importance": [
+      {
+        "input": "all day-7 inputs",
+        "mae_increase": 0.881245877224402,
+        "sd_over_repeats": 0.0446189666114785
+      },
+      {
+        "input": "contrast__nAE__d7",
+        "mae_increase": 0.2255429258234838,
+        "sd_over_repeats": 0.018764104949137377
+      },
+      {
+        "input": "contrast__ns.n__d7",
+        "mae_increase": 0.14380951358376803,
+        "sd_over_repeats": 0.01261152509302679
+      },
+      {
+        "input": "contrast__meanfiringrate__d7",
+        "mae_increase": 0.08098958505076892,
+        "sd_over_repeats": 0.007349843713049885
+      },
+      {
+        "input": "contrast__nABE__d7",
+        "mae_increase": 0.03507869199865066,
+        "sd_over_repeats": 0.002916604690910474
+      },
+      {
+        "input": "normalized_ns_d7",
+        "mae_increase": 0.024220335556075723,
+        "sd_over_repeats": 0.004195207208273155
+      },
+      {
+        "input": "contrast__r__d7",
+        "mae_increase": 0.008577661742747988,
+        "sd_over_repeats": 0.00266502961261054
+      },
+      {
+        "input": "contrast__meanfiringrate__d5",
+        "mae_increase": 0.005544251765672081,
+        "sd_over_repeats": 0.00257875300121736
+      },
+      {
+        "input": "contrast__nAE__d5",
+        "mae_increase": 0.005129201752430812,
+        "sd_over_repeats": 0.0022378830289671594
+      },
+      {
+        "input": "contrast__r__d5",
+        "mae_increase": 0.00318780661915663,
+        "sd_over_repeats": 0.004641922483443016
+      },
+      {
+        "input": "contrast__nABE__d5",
+        "mae_increase": 0.0005697282116321478,
+        "sd_over_repeats": 0.0012508910143118864
+      },
+      {
+        "input": "log10_dose",
+        "mae_increase": -4.1184048668152506e-05,
+        "sd_over_repeats": 0.000912830174427698
+      },
+      {
+        "input": "normalized_ns_d5",
+        "mae_increase": -0.0025966816232982914,
+        "sd_over_repeats": 0.001056501790075421
+      },
+      {
+        "input": "all day-5 inputs",
+        "mae_increase": -0.0028973874726928583,
+        "sd_over_repeats": 0.005702731500742353
+      },
+      {
+        "input": "contrast__ns.n__d5",
+        "mae_increase": -0.014457820883005512,
+        "sd_over_repeats": 0.0015488973661460196
+      }
+    ],
+    "permutation_repeats": 5,
+    "seed": 20260928,
+    "by_day7_state": [
+      {
+        "state": "strongly suppressed (day 7 <= -1)",
+        "conditions": 288,
+        "forecast_mae": 1.3916580580745326,
+        "persistence_mae": 2.151839242348059,
+        "mean_observed_change": 0.056863970440249524,
+        "mean_forecast_change": 0.31849228648357575
+      },
+      {
+        "state": "suppressed (-1 < day 7 <= -0.5)",
+        "conditions": 167,
+        "forecast_mae": 0.7048212938253655,
+        "persistence_mae": 1.159346138289522,
+        "mean_observed_change": 0.04182259004217291,
+        "mean_forecast_change": -0.08882836351010624
+      },
+      {
+        "state": "near control (|day 7| < 0.5)",
+        "conditions": 729,
+        "forecast_mae": 0.5234886626518265,
+        "persistence_mae": 0.5807647565130127,
+        "mean_observed_change": -0.10379915107751585,
+        "mean_forecast_change": -0.15562567993823645
+      },
+      {
+        "state": "raised (0.5 <= day 7 < 1)",
+        "conditions": 51,
+        "forecast_mae": 0.41973229090912684,
+        "persistence_mae": 0.6216568103525899,
+        "mean_observed_change": -0.5515248600336049,
+        "mean_forecast_change": -0.6523003101314836
+      },
+      {
+        "state": "hyperactive (day 7 >= 1)",
+        "conditions": 25,
+        "forecast_mae": 0.3715530311507688,
+        "persistence_mae": 1.3737956581810031,
+        "mean_observed_change": -1.3669953774248598,
+        "mean_forecast_change": -1.480369869899211
+      }
+    ]
+  },
+  "external": {
+    "by_day7_state": [
+      {
+        "state": "strongly suppressed (day 7 <= -1)",
+        "conditions": 207,
+        "forecast_mae": 1.594799823186818,
+        "persistence_mae": 2.270718307214811,
+        "mean_observed_change": -0.8649101906836211,
+        "mean_forecast_change": -0.045634687783196265
+      },
+      {
+        "state": "suppressed (-1 < day 7 <= -0.5)",
+        "conditions": 90,
+        "forecast_mae": 0.6522606567668093,
+        "persistence_mae": 0.5444809890716452,
+        "mean_observed_change": 0.22923154138509957,
+        "mean_forecast_change": 0.6607614527792155
+      },
+      {
+        "state": "near control (|day 7| < 0.5)",
+        "conditions": 570,
+        "forecast_mae": 0.47585474005149353,
+        "persistence_mae": 0.4848504015840121,
+        "mean_observed_change": -0.20498918492883522,
+        "mean_forecast_change": 0.05115751865103998
+      },
+      {
+        "state": "raised (0.5 <= day 7 < 1)",
+        "conditions": 47,
+        "forecast_mae": 0.43790682137055875,
+        "persistence_mae": 0.8713433116341428,
+        "mean_observed_change": -0.8650490229676114,
+        "mean_forecast_change": -0.6432328389359305
+      },
+      {
+        "state": "hyperactive (day 7 >= 1)",
+        "conditions": 13,
+        "forecast_mae": 0.5720011608500226,
+        "persistence_mae": 2.1100430664546144,
+        "mean_observed_change": -2.1100430664546144,
+        "mean_forecast_change": -1.8648780675515495
+      }
+    ],
+    "trust_vs_extremity_same_count": {
+      "declined": 135,
+      "kept_mae_trust_verdict": 0.5412958346788145,
+      "kept_mae_decline_most_extreme_forecasts": 0.5405378502203502,
+      "declined_both_ways": 102,
+      "declined_max_day7": -1.2996730443855118,
+      "declined_share_day7_at_or_below_minus1": 1.0
+    },
+    "recalibration_nominal": 0.8,
+    "locked_quantile": 1.5063963748385074,
+    "recalibration": [
+      {
+        "calibration_batches": 4,
+        "calibration_conditions": 103,
+        "remaining_batches": 20,
+        "remaining_conditions": 824,
+        "recalibrated_quantile": 2.4535048381377607,
+        "coverage_locked": 0.7111650485436893,
+        "coverage_recalibrated": 0.8762135922330098,
+        "mean_width_locked": 1.8682202858444796,
+        "mean_width_recalibrated": 3.0428163440833647
+      },
+      {
+        "calibration_batches": 8,
+        "calibration_conditions": 241,
+        "remaining_batches": 16,
+        "remaining_conditions": 686,
+        "recalibrated_quantile": 2.8795040476688487,
+        "coverage_locked": 0.7696793002915452,
+        "coverage_recalibrated": 0.9314868804664723,
+        "mean_width_locked": 1.8430980031207376,
+        "mean_width_recalibrated": 3.5231153293272452
+      },
+      {
+        "calibration_batches": 12,
+        "calibration_conditions": 444,
+        "remaining_batches": 12,
+        "remaining_conditions": 483,
+        "recalibrated_quantile": 2.7983719390439163,
+        "coverage_locked": 0.855072463768116,
+        "coverage_recalibrated": 0.9751552795031055,
+        "mean_width_locked": 1.8825148207399551,
+        "mean_width_recalibrated": 3.4970720437094327
+      }
+    ]
+  },
+  "batch_rule": [
+    {
+      "set": "development",
+      "batch": 20160720,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.675467221690221,
+      "persistence_mae": 0.9209371062446521
+    },
+    {
+      "set": "development",
+      "batch": 20160803,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.5998464222414938,
+      "persistence_mae": 1.2310712891384863
+    },
+    {
+      "set": "development",
+      "batch": 20160907,
+      "conditions": 84,
+      "low_reference_fraction": 0.5,
+      "rule_fires": true,
+      "scored_conditions": 84,
+      "forecast_mae": 0.8811200675664326,
+      "persistence_mae": 1.8523512714296866
+    },
+    {
+      "set": "development",
+      "batch": 20160921,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.4424411120157991,
+      "persistence_mae": 0.4377128239902211
+    },
+    {
+      "set": "development",
+      "batch": 20161013,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.5438185073395847,
+      "persistence_mae": 1.3885493543530405
+    },
+    {
+      "set": "development",
+      "batch": 20161109,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.8479668768012334,
+      "persistence_mae": 1.6584067260441675
+    },
+    {
+      "set": "development",
+      "batch": 20170201,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.8024255924232725,
+      "persistence_mae": 0.9635996118746584
+    },
+    {
+      "set": "development",
+      "batch": 20170222,
+      "conditions": 7,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 7,
+      "forecast_mae": 0.8006597969261333,
+      "persistence_mae": 1.4315319034829859
+    },
+    {
+      "set": "development",
+      "batch": 20170412,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.5288894564582669,
+      "persistence_mae": 0.8539032823917315
+    },
+    {
+      "set": "development",
+      "batch": 20170628,
+      "conditions": 42,
+      "low_reference_fraction": 1.0,
+      "rule_fires": true,
+      "scored_conditions": 42,
+      "forecast_mae": 0.528954321841089,
+      "persistence_mae": 1.9868681524372347
+    },
+    {
+      "set": "development",
+      "batch": 20170712,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 1.7005196199745714,
+      "persistence_mae": 1.7948956003001728
+    },
+    {
+      "set": "development",
+      "batch": 20170809,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.9789963858287227,
+      "persistence_mae": 0.691121152125148
+    },
+    {
+      "set": "development",
+      "batch": 20170816,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.42348527471062053,
+      "persistence_mae": 0.5197438705413754
+    },
+    {
+      "set": "development",
+      "batch": 20170913,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.424311089481541,
+      "persistence_mae": 0.6505724065682904
+    },
+    {
+      "set": "development",
+      "batch": 20170920,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 0.6141760110877864,
+      "persistence_mae": 0.4238924884959083
+    },
+    {
+      "set": "development",
+      "batch": 20171004,
+      "conditions": 84,
+      "low_reference_fraction": 1.0,
+      "rule_fires": true,
+      "scored_conditions": 84,
+      "forecast_mae": 1.0977141415198757,
+      "persistence_mae": 0.677539613522006
+    },
+    {
+      "set": "development",
+      "batch": 20171011,
+      "conditions": 77,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 77,
+      "forecast_mae": 0.44732438498390964,
+      "persistence_mae": 0.6010550896400958
+    },
+    {
+      "set": "external",
+      "batch": 20140716,
+      "conditions": 13,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 13,
+      "forecast_mae": 0.9140683740770753,
+      "persistence_mae": 1.3446158076637964
+    },
+    {
+      "set": "external",
+      "batch": 20140730,
+      "conditions": 13,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 13,
+      "forecast_mae": 0.9049165775275281,
+      "persistence_mae": 2.444735115771696
+    },
+    {
+      "set": "external",
+      "batch": 20140827,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 35,
+      "forecast_mae": 1.0823466356623004,
+      "persistence_mae": 1.5191836235449485
+    },
+    {
+      "set": "external",
+      "batch": 20140910,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 1.0592430350067235,
+      "persistence_mae": 1.1758804013296935
+    },
+    {
+      "set": "external",
+      "batch": 20140924,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.9588819865269428,
+      "persistence_mae": 0.7249339176613484
+    },
+    {
+      "set": "external",
+      "batch": 20141015,
+      "conditions": 33,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 26,
+      "forecast_mae": 0.6620254288069378,
+      "persistence_mae": 0.6187146627465308
+    },
+    {
+      "set": "external",
+      "batch": 20141029,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 35,
+      "forecast_mae": 1.3264948957822618,
+      "persistence_mae": 1.5907243419446737
+    },
+    {
+      "set": "external",
+      "batch": 20141112,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 35,
+      "forecast_mae": 1.083383028415492,
+      "persistence_mae": 0.9154461160209666
+    },
+    {
+      "set": "external",
+      "batch": 20141203,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.7612785782290993,
+      "persistence_mae": 0.670658190576762
+    },
+    {
+      "set": "external",
+      "batch": 20141231,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.6778361550853705,
+      "persistence_mae": 1.0921719112112174
+    },
+    {
+      "set": "external",
+      "batch": 20150128,
+      "conditions": 84,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 84,
+      "forecast_mae": 1.1896879695764584,
+      "persistence_mae": 1.0397901092458122
+    },
+    {
+      "set": "external",
+      "batch": 20150401,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 35,
+      "forecast_mae": 0.4784053968117597,
+      "persistence_mae": 0.5390379443524602
+    },
+    {
+      "set": "external",
+      "batch": 20150805,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 35,
+      "forecast_mae": 0.6222279642348606,
+      "persistence_mae": 0.7975206179561871
+    },
+    {
+      "set": "external",
+      "batch": 20150819,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.7084575306331446,
+      "persistence_mae": 0.8648217759125095
+    },
+    {
+      "set": "external",
+      "batch": 20150909,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.48048108220239,
+      "persistence_mae": 0.85753302537158
+    },
+    {
+      "set": "external",
+      "batch": 20151014,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 35,
+      "forecast_mae": 0.46687723948651616,
+      "persistence_mae": 0.8172765064096026
+    },
+    {
+      "set": "external",
+      "batch": 20151125,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.37582485053707076,
+      "persistence_mae": 0.4015336276326836
+    },
+    {
+      "set": "external",
+      "batch": 20151209,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.3363206835071863,
+      "persistence_mae": 0.6144873523842079
+    },
+    {
+      "set": "external",
+      "batch": 20160120,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.28591163669660696,
+      "persistence_mae": 0.6216870378740816
+    },
+    {
+      "set": "external",
+      "batch": 20160217,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 1.0129653896030602,
+      "persistence_mae": 1.5818927863799364
+    },
+    {
+      "set": "external",
+      "batch": 20160330,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.5442498241848658,
+      "persistence_mae": 0.6437082439493393
+    },
+    {
+      "set": "external",
+      "batch": 20160413,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.46741462967830155,
+      "persistence_mae": 0.8381099857690216
+    },
+    {
+      "set": "external",
+      "batch": 20160511,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 35,
+      "forecast_mae": 0.5090264567080309,
+      "persistence_mae": 0.7479438491913672
+    },
+    {
+      "set": "external",
+      "batch": 20160601,
+      "conditions": 42,
+      "low_reference_fraction": 0.0,
+      "rule_fires": false,
+      "scored_conditions": 42,
+      "forecast_mae": 0.7208657193541899,
+      "persistence_mae": 1.0600062567503346
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 **Submission category: Tool & Platform.** AI4S Open Innovation: AI for Life Science (5th Pazhou Algorithm Competition). · [中文说明](README.zh.md)
 
-Neuronal networks grown on microelectrode arrays (MEAs) are recorded at days 5, 7, 9 and 12 while a chemical acts on them. This is the functional assay of the OECD developmental-neurotoxicity in-vitro battery, and the readout that neural organ chips produce.
+Neuronal networks grown on microelectrode arrays (MEAs) are recorded at days 5, 7, 9 and 12 while a chemical acts on them. This is the functional assay of the OECD developmental-neurotoxicity in-vitro battery, and neural organ chips record the same kind of multi-electrode data.
 
 At the **day-7** recording, this tool answers three questions from day-5 and day-7 wells alone:
 
@@ -10,21 +10,28 @@ At the **day-7** recording, this tool answers three questions from day-5 and day
 2. **What will day 12 show?** A forecast with an 80% interval, always printed beside the "carry day 7 forward" value.
 3. **Can that forecast be trusted?** A per-condition verdict that declines the conditions it cannot predict.
 
+**What is new** is not the learner (Extra Trees, conformal intervals and abstention are standard). It is:
+- a day-7 decision that shows a forecast only beside the carry-forward alternative;
+- an evaluation that holds out batch and chemical together, sealed twice;
+- what that evaluation found, post hoc:
+  - Raised activity at day 7 is transient. On those 60 external conditions the forecast's error was 0.47, against 1.14 for carrying day 7 forward, while near-control conditions tie.
+  - The forecast reads mostly the day-7 active electrodes; day-5 inputs and concentration add nothing.
+
 ## Two sealed tests
 
 Each test was sealed before modelling, with the criteria hashed in advance, and scored once:
 
 | Sealed test | Batches | Conditions | Forecast MAE | Carry day 7 forward |
 | --- | ---: | ---: | ---: | ---: |
-| 1. Three later batches, v1 model | 3 | 224 | 0.7716 | **0.6088**: the forecast **lost** |
-| 2. Earlier batches (2014–2016), 105 chemicals never seen, v2 model | 24 | 927 | **0.735**: the forecast **won** | 0.980 |
+| Test 2, external: earlier batches (2014–2016), 105 chemicals never seen (**v2, the shipped model**) | 24 | 927 | **0.735**: the forecast **won** | 0.980 |
+| Test 1, reserve: three later batches (v1, retired) | 3 | 224 | 0.7716 | **0.6088**: the forecast **lost** |
 
 In test 2, the v2 forecast had 25% lower error than carrying day 7 forward, and was better on 19 of 24 batches. The paired batch interval runs from −0.40 to −0.12.
 
 | Component | Held-out evidence |
 | --- | --- |
-| **Trust verdict** | Declining the least predictable 15% of conditions cut error on the rest by **27%** for the forecast and **30%** for carry-forward. Declined conditions had 3.5 times the error of kept ones. In test 1 it declined 14% of conditions, which carried 51% of the error. |
-| **Batch quality verdict** | In test 1, every plate of one batch had silent day-7 controls. A threshold fixed on development flagged all 84 of that batch's conditions, and no others, before any day-12 data existed. No batch in test 2 had silent controls, so the flag rests on this one event. |
+| **Trust verdict** | Declining the least predictable 15% of conditions cut error on the rest by **27%** for the forecast and **30%** for carry-forward. Declined conditions had 3.5 times the error of kept ones. In test 1 it declined 14% of conditions, which carried 51% of the error. At the shipped threshold, declining the most extreme forecasts instead does about as well, so abstention, not the learned score, is the robust result. Every declined condition was already strongly suppressed at day 7; what is undetermined is recovery or progression. |
+| **Batch quality verdict** | In test 1, every plate of one batch had silent day-7 controls. A threshold fixed on development flagged all 84 of that batch's conditions, and no others, before any day-12 data existed. Across all 41 batches v2 has seen, the batch rule fires on 3, and on 2 of them the forecast still beat carry-forward. It marks a degenerate reference, not a failed forecast. |
 | **Intervals** | Coverage was 70% at a nominal 80% in test 2 (71% in test 1). This is a stated shortfall under batch shift. |
 | **Withdrawn** | Test 1 showed an early-warning ranking for conditions still quiet at day 7; test 2 did not replicate it. A day-7 chemical-level call reached 89.1% agreement with EPA's final call, short of its pre-registered 90%. |
 
@@ -37,11 +44,11 @@ In test 2, the v2 forecast had 25% lower error than carrying day 7 forward, and 
 
 **<https://saltytaro.github.io/neuroforecast/app/>**. There is no install, no account and no upload. The forests are shipped as typed arrays and run on your machine.
 
-Open a held-out batch from 2016, or the collapsed batch, or drop in your own CSV of day-5 and day-7 wells. `tests/test_web_triage_v2.mjs` replays every sealed condition through the JavaScript port and fails if any output differs from Python by more than 1e-6.
+Open a held-out batch from 2016, or the batch whose controls were still silent at day 7, or drop in your own CSV of day-5 and day-7 wells ([input schema and template](docs/input_schema.md)). `tests/test_web_triage_v2.mjs` replays 1,228 conditions (the 983 external ones and the 245 reserve-batch ones, now v2 training data) through the JavaScript port and fails if any output differs from Python by more than 1e-6.
 
 ## Run it from the command line
 
-Python 3.14 on CPU, with no GPU, paid service or account. Pinned packages are in [tools/requirements-neuroforecast.txt](tools/requirements-neuroforecast.txt).
+Python 3.14 on CPU, with no GPU, paid service or account. Pinned packages are in [tools/requirements-neuroforecast.txt](tools/requirements-neuroforecast.txt). The external test ran with the exact versions in [tools/requirements-external-test.txt](tools/requirements-external-test.txt).
 
 ```bash
 pip install -r tools/requirements-neuroforecast.txt
@@ -53,8 +60,8 @@ The first example is a batch from test 2 that the model never saw. The second is
 
 ```
 Batch 20171004: 84 conditions, day-7 reference activity 0.0 network spikes
-  measurement quality: day-7 reference activity is too low for this batch;
-  forecasts here are unreliable and a day-12 measurement is recommended
+  measurement quality: day-7 reference activity is too low to normalize against;
+  this batch's day-7 values and forecasts are unverified, so measure day 12 directly
 ```
 
 Day-9 and day-12 rows are **rejected**, so a forecast cannot use information the researcher would not have at day 7. Write results with `--output table.csv --summary batch.json`.
@@ -64,18 +71,18 @@ The v1 tool that was scored in test 1 is kept unchanged as `tools/neuroforecast_
 ## Verify and reproduce
 
 ```bash
-python -X utf8 -B tools/verify_published_numbers.py        # recomputes all 148 published numbers from the evidence tables
+python -X utf8 -B tools/verify_published_numbers.py        # recomputes all 209 published numbers from the evidence tables
 python -X utf8 -B -m unittest discover -s tests -v         # exact replays of both sealed tests, input rules, cohort separation
-node tests/test_web_triage_v2.mjs                          # browser port against Python on every sealed condition
+node tests/test_web_triage_v2.mjs                          # browser port against Python on 1,228 conditions
 ```
 
 To re-run test 2 from source, start with `tools/fetch_epa_refinement.py`, which downloads the pinned EPA files (about 3 MB) and verifies their checksums. Then run `tools/reproduce_external.py` with the stages `prepare`, `develop`, `freeze`, `external --unseal` and `audit`.
 
-`develop` takes about three minutes. It is **byte-reproducible**: a fresh run from this repository reproduced every prepared file, every out-of-fold prediction and all five models exactly. That was verified on Windows with Python 3.14; on other systems the CSV line endings differ, so compare contents there.
+`develop` takes about three minutes. It is **byte-reproducible**: a fresh run from this repository reproduced every prepared file, every out-of-fold prediction and all five models exactly. That was verified on Windows with Python 3.14, under both the pinned versions and the newer numpy and pandas the test itself ran with. On other systems the CSV line endings differ, so compare contents there.
 
 To re-run test 1, use `tools/fetch_epa_data.py` and `tools/neuroforecast_gate.py`. The stages are `prepare`, `develop`, `reserve --unseal` and `audit`.
 
-[`notebooks/neuroforecast_reproduction.ipynb`](notebooks/neuroforecast_reproduction.ipynb) walks through the v1 result in nine cells.
+[`notebooks/neuroforecast_v2_walkthrough.ipynb`](notebooks/neuroforecast_v2_walkthrough.ipynb) runs these checks and both sealed tests in about a minute, with its outputs saved. [`notebooks/neuroforecast_reproduction.ipynb`](notebooks/neuroforecast_reproduction.ipynb) covers the retired v1 model.
 
 ## How the evaluation was kept honest
 
@@ -97,6 +104,8 @@ Both releases are rat cortical cultures on 48-well MEA plates. Our code is MIT l
 
 This work does not establish performance on perfused organ chips, human cells, or clinical toxicity. It validates no saved recording days, wells or cost. The two tests come from one EPA program and one laboratory, and dates are not verified independent donors.
 
+The batch rule is a quality-control rule for a degenerate reference, not a validated predictor of forecast error. The analyses of what the forecast reads and where it wins are post hoc (`tools/posthoc_signal_analysis.py`).
+
 The v2 gain over v1 comes from refitting on more batches, not from a new model class: the v1 architecture refit on the same data did as well. Forecast magnitudes are not probabilities. Extra Trees, control normalization, conformal intervals and abstention are standard methods; the contribution is the day-7 triage workflow and the evaluation around it.
 
 ## Repository map
@@ -113,6 +122,9 @@ The v2 gain over v1 comes from refitting on more batches, not from a new model c
 | `models/v2/`, `models/` | The v2 models (test 2), and the v1 bundle (test 1) |
 | `evaluation/` | Per-case evidence for both tests, the v2 lock files, and the prepared inputs, so every number recomputes without a download |
 | `tools/verify_published_numbers.py` | Recomputes every published number from those tables |
+| `tools/posthoc_signal_analysis.py`, `tools/control_subsampling.py` | Post hoc analyses of the locked tool: linear baselines, input importance, errors by day-7 state, the batch rule on every batch, recalibration, fewer controls |
+| `docs/input_schema.md`, `examples/v2/template_day5_day7.csv` | The input columns and a template for your own wells |
+| `notebooks/` | A v2 walkthrough with saved outputs, and the retired v1 walkthrough |
 | `app/` | The browser tool |
 | `examples/v2/`, `examples/` | Real day-5/7 inputs for the v2 and v1 tools |
 | `docs/` | Technical report, protocols and results for both tests, prior-art assessment |

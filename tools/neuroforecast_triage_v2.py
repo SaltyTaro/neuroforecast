@@ -42,7 +42,8 @@ EVIDENCE = {
 LIMITS = [
     "Validated on EPA rat cortical cultures on 48-well microelectrode arrays; not on organ chips, human cells, or clinical toxicity.",
     "Intervals covered 70% of external outcomes at a nominal 80% level; read them as approximate.",
-    "The day-7 quality flag rests on one collapsed batch; no external batch tested it.",
+    "The batch rule marks a degenerate day-7 reference, not a failed forecast: it fired on 3 of 41 batches, and on 2 of them the forecast still beat carrying day 7 forward.",
+    "Every externally declined condition was already strongly suppressed at day 7; a decline means recovery or progression is undetermined, not that there is no effect.",
     "Forecast magnitudes are not probabilities. Units are log2 of the same-plate control-relative network-spike count.",
 ]
 
@@ -87,6 +88,9 @@ def triage(observed: pd.DataFrame, bundle: dict) -> tuple[pd.DataFrame, dict]:
     cfg = v2.v2_config()
     raw = normalize(observed, cfg["feature_readouts"])
     features = v2.features_from(raw, cfg)
+    if features.empty:
+        raise ValueError(f"No treated condition has at least {cfg['min_replicates_per_case_day']} replicate wells on both day 5 and day 7; "
+                         "replicates may sit on different plates of the same batch, each with its own zero-dose controls")
     with threadpool_limits(limits=1):
         forecast = bundle["product"]["model"].predict(features[bundle["product"]["columns"]])
         sigma = np.maximum(bundle["sigma"]["model"].predict(features[bundle["sigma"]["columns"]]), gate.SIGMA_FLOOR)
@@ -107,7 +111,7 @@ def triage(observed: pd.DataFrame, bundle: dict) -> tuple[pd.DataFrame, dict]:
     out["quality_low_reference_activity"] = np.sinh(features["rel__plate_ctrl_median_ns_d7"].to_numpy()) < 1
     out["quality_few_controls"] = features["rel__plate_ctrl_count_d7"].to_numpy() < 4
     out["fold_change_estimate"] = 2 ** out.forecast_log2
-    # Display rule: when most of a batch has a silent day-7 reference, no condition in it is shown as usable.
+    # Display rule: when half or more of a batch's conditions have a silent day-7 reference, none is shown as usable.
     # forecast_trusted keeps the validated difficulty verdict; only the printed verdict is overridden.
     low_batch = out.groupby("date").quality_low_reference_activity.transform("mean") >= 0.5
     out.loc[low_batch, "verdict"] = "batch reference unusable: measure day 12 directly"
@@ -119,7 +123,7 @@ def triage(observed: pd.DataFrame, bundle: dict) -> tuple[pd.DataFrame, dict]:
             "day7_reference_activity_network_spikes": float(np.sinh(features.loc[features.index.get_level_values("date") == date, "rel__plate_ctrl_median_ns_d7"]).median()),
             "forecasts_declined": int((~group.forecast_trusted).sum()),
             "low_reference_activity_fraction": low,
-            "batch_verdict": ("day-7 reference activity is too low for this batch; forecasts here are unreliable and a day-12 measurement is recommended"
+            "batch_verdict": ("day-7 reference activity is too low to normalize against; this batch's day-7 values and forecasts are unverified, so measure day 12 directly"
                               if low >= 0.5 else "day-7 measurement quality is usable"),
         })
     summary = {"decision_day": 7, "conditions": int(len(out)), "batches": batches, "interval_nominal_level": float(LEVEL),

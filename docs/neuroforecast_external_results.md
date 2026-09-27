@@ -100,6 +100,14 @@ The per-batch v2 advantage correlates only weakly with batch persistence (r = �
 
 Large changes were also twice as common externally (27.5% of conditions against 13.8% on the reserve).
 
+## Post hoc addendum (September 28, 2026)
+
+After scoring, a separate script analysed the locked tool: `tools/posthoc_signal_analysis.py`, with outputs in `evaluation/v2_posthoc/`. It was not pre-registered, refits nothing on external outcomes and selects nothing. Details are in the technical report, §7.4 and §7.7–7.8.
+- **Point 2 above, qualified.** At the shipped threshold, declining the 135 most extreme forecasts keeps an MAE of 0.5405, against 0.5413 for the trust verdict. On the 56-condition secondary cohort the extremity rule won on the whole curve (0.634 against 0.668). Abstention transfers; the learned score's edge over that simple rule does not.
+- **Point 6 above, extended.** The tool's batch rule fires on 3 of the 41 batches v2 has seen, all in development. On two of them the forecast beat carrying day 7 forward (0.88 against 1.85, and 0.53 against 1.99). The rule marks a degenerate reference, not a failed forecast, and the tool now says so.
+- **Where v2 wins.** On the 60 conditions with raised activity at day 7, v2's error was 0.47 against 1.14. Near-control conditions tie (0.476 against 0.485).
+- **Intervals.** Recalibrating on the first 4 batches in time order raised coverage on the other 20 from 0.711 to 0.876, with wider intervals.
+
 ## Files
 
 In this repository:

@@ -219,7 +219,8 @@
     "limits": [
       "Validated on EPA rat cortical cultures on 48-well microelectrode arrays; not on organ chips, human cells, or clinical toxicity.",
       "Intervals covered 70% of external outcomes at a nominal 80% level; read them as approximate.",
-      "The day-7 quality flag rests on one collapsed batch; no external batch tested it.",
+      "The batch rule marks a degenerate day-7 reference, not a failed forecast: it fired on 3 of 41 batches, and on 2 of them the forecast still beat carrying day 7 forward.",
+      "Every externally declined condition was already strongly suppressed at day 7; a decline means recovery or progression is undetermined, not that there is no effect.",
       "Forecast magnitudes are not probabilities. Units are log2 of the same-plate control-relative network-spike count."
     ]
   },

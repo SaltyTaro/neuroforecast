@@ -465,7 +465,7 @@ export const V2_VERDICTS = {
   batchUnusable: "batch reference unusable: measure day 12 directly",
 };
 export const V2_BATCH_VERDICTS = {
-  low: "day-7 reference activity is too low for this batch; forecasts here are unreliable and a day-12 measurement is recommended",
+  low: "day-7 reference activity is too low to normalize against; this batch's day-7 values and forecasts are unverified, so measure day 12 directly",
   usable: "day-7 measurement quality is usable",
 };
 
