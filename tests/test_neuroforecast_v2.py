@@ -109,6 +109,20 @@ class InputRules(unittest.TestCase):
         _, healthy = t2.triage(self.wells, t2.load_bundle())
         self.assertIn("usable", healthy["batches"][0]["batch_verdict"])
 
+    def test_template_has_the_documented_columns_and_runs(self):
+        template = pd.read_csv(ROOT / "examples/v2/template_day5_day7.csv")
+        self.assertEqual(list(template.columns), t2.REQUIRED + v2.v2_config()["feature_readouts"])
+        table, _ = t2.triage(template, t2.load_bundle())
+        full, _ = t2.triage(read("examples/v2/external_20160120_day5_day7.csv"), t2.load_bundle())
+        merged = table.merge(full, on=["name", "dose"], suffixes=("", "_full"))
+        self.assertEqual(len(merged), len(full))
+        np.testing.assert_array_equal(merged.forecast_log2, merged.forecast_log2_full)
+
+    def test_single_replicate_input_gets_a_clear_error(self):
+        one_plate = self.wells.loc[self.wells["Plate.SN"] == sorted(self.wells["Plate.SN"].unique())[0]]
+        with self.assertRaisesRegex(ValueError, "replicate wells"):
+            t2.triage(one_plate, t2.load_bundle())
+
 
 class Results(unittest.TestCase):
     def test_headline_comparison_recomputes_from_the_case_tables(self):

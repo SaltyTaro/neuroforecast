@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 import sys
 
 import numpy as np
@@ -19,12 +20,19 @@ import neuroforecast_gate as gate  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCT = "extra_trees_relative_day7"
 COMPARATOR = "extra_trees_activity_coordination"
-def tolerance_for(published: float | int) -> float:
+def written_decimals() -> dict[str, int]:
+    """Decimals of each value as written in this file, so a trailing zero counts: 1.60 must round to 1.60, not 1.6."""
+    source = Path(__file__).read_text(encoding="utf-8")
+    return {m.group(1): len(m.group(2).split(".")[1]) for m in re.finditer(r'^\s+"([^"]+)":\s*(-?\d+\.\d+),?\s*(?:#.*)?$', source, re.M)}
+
+
+def tolerance_for(published: float | int, decimals: int | None = None) -> float:
     """Compare at the precision the value is published to: 0.51 must match 51%, 0.93711 must match five decimals."""
     if isinstance(published, int):
         return 0.0
-    text = repr(float(published))
-    decimals = len(text.split(".")[1]) if "." in text else 0
+    if decimals is None:
+        text = repr(float(published))
+        decimals = len(text.split(".")[1]) if "." in text else 0
     return 0.5 * 10 ** -decimals
 
 
@@ -189,6 +197,72 @@ EXTERNAL = {
     "subsampling 4 controls false batch verdicts": 0,
 }
 
+SIGNAL = {
+    # Post hoc analyses of September 28, 2026 (tools/posthoc_signal_analysis.py; evaluation/v2_posthoc).
+    # Development: the same purged leave-one-batch-out folds; external: predictions already scored once.
+    "posthoc development least-squares linear date-macro MAE": 0.949,
+    "posthoc development median-regression linear date-macro MAE": 0.914,
+    "posthoc importance, day-7 active electrodes": 0.23,
+    "posthoc importance, day-7 network spikes": 0.14,
+    "posthoc importance, day-7 firing rate": 0.08,
+    "posthoc importance, all day-7 inputs": 0.88,
+    "posthoc importance, all day-5 inputs": -0.003,
+    "posthoc importance, dose": 0.000,
+    "posthoc external strongly suppressed conditions": 207,
+    "posthoc external strongly suppressed v2 MAE": 1.59,
+    "posthoc external strongly suppressed persistence MAE": 2.27,
+    "posthoc external suppressed conditions": 90,
+    "posthoc external suppressed v2 MAE": 0.65,
+    "posthoc external suppressed persistence MAE": 0.54,
+    "posthoc external near-control conditions": 570,
+    "posthoc external near-control v2 MAE": 0.476,
+    "posthoc external near-control persistence MAE": 0.485,
+    "posthoc external raised conditions": 47,
+    "posthoc external raised v2 MAE": 0.44,
+    "posthoc external raised persistence MAE": 0.87,
+    "posthoc external hyperactive conditions": 13,
+    "posthoc external hyperactive v2 MAE": 0.57,
+    "posthoc external hyperactive persistence MAE": 2.11,
+    "posthoc external raised or hyperactive conditions": 60,
+    "posthoc external raised or hyperactive v2 MAE": 0.47,
+    "posthoc external raised or hyperactive persistence MAE": 1.14,
+    "posthoc external hyperactive mean observed change": -2.1,
+    "posthoc external hyperactive mean forecast change": -1.9,
+    "posthoc development strongly suppressed v2 MAE": 1.39,
+    "posthoc development strongly suppressed persistence MAE": 2.15,
+    "posthoc development near-control v2 MAE": 0.52,
+    "posthoc development near-control persistence MAE": 0.58,
+    "posthoc development raised or hyperactive conditions": 76,
+    "posthoc development raised or hyperactive v2 MAE": 0.40,
+    "posthoc development raised or hyperactive persistence MAE": 0.87,
+    "posthoc external v2 kept MAE, trust verdict": 0.5413,
+    "posthoc external v2 kept MAE, declining the most extreme forecasts": 0.5405,
+    "posthoc external conditions declined by both rules": 102,
+    "posthoc external highest day-7 value among declined": -1.30,
+    "external secondary risk-coverage area, difficulty": 0.668,
+    "external secondary risk-coverage area, extremity": 0.634,
+    "external secondary v2 coverage at nominal 0.80": 0.607,
+    "posthoc batches where the batch rule fires": 3,
+    "posthoc batches checked by the batch rule": 41,
+    "posthoc batch rule 20160907 v2 MAE": 0.88,
+    "posthoc batch rule 20160907 persistence MAE": 1.85,
+    "posthoc batch rule 20170628 v2 MAE": 0.53,
+    "posthoc batch rule 20170628 persistence MAE": 1.99,
+    "posthoc batch rule 20171004 v2 MAE": 1.10,
+    "posthoc batch rule 20171004 persistence MAE": 0.68,
+    "posthoc recalibrated on 4 batches, calibration conditions": 103,
+    "posthoc recalibrated on 4 batches, locked coverage on the other 20": 0.711,
+    "posthoc recalibrated on 4 batches, recalibrated coverage on the other 20": 0.876,
+    "posthoc recalibrated on 4 batches, locked mean width": 1.87,
+    "posthoc recalibrated on 4 batches, recalibrated mean width": 3.04,
+    "posthoc recalibrated on 12 batches, locked coverage on the other 12": 0.855,
+    "posthoc recalibrated on 12 batches, recalibrated coverage on the other 12": 0.975,
+    "reserve pooled day-7/day-12 correlation": 0.87,
+    "external per-batch v2 advantage vs batch persistence correlation": -0.27,
+    "browser replay external conditions": 983,
+    "browser replay reserve-batch conditions": 245,
+}
+
 
 def paired_interval(frame: pd.DataFrame, a: str, b: str) -> list[float]:
     """Same resampling as the scoring code: 10000 paired date resamples, seed 20260927."""
@@ -328,6 +402,100 @@ def external(found: dict) -> None:
         found[f"subsampling {label} false batch verdicts"] = r["low_reference_batches"] if k == "1" else int(round(r["low_reference_batches"]))
 
 
+def signal(found: dict) -> None:
+    """The post hoc analyses, recomputed from per-case tables; only permutation importance is read from its JSON."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    import neuroforecast_v2 as v2
+
+    read = lambda p: pd.read_csv(ROOT / p, dtype={"identity": str, "spid": str})
+    oof = read("evaluation/v2_posthoc/dev_linear_oof.csv")
+    saved = read("evaluation/v2_development/dev_oof_predictions.csv")
+    if not np.array_equal(oof.small_refit.to_numpy(), saved.pred__small_refit.to_numpy()):
+        raise SystemExit("dev_linear_oof.csv does not carry the saved development predictions")
+    dev = oof.loc[oof.usable.astype(bool)]
+    found["posthoc development least-squares linear date-macro MAE"] = gate.macro_mae(dev.assign(prediction=dev.ols))
+    found["posthoc development median-regression linear date-macro MAE"] = gate.macro_mae(dev.assign(prediction=dev.lad))
+    analysis = json.loads((ROOT / "evaluation/v2_posthoc/signal_analysis.json").read_text(encoding="utf-8"))
+    importance = {r["input"]: r["mae_increase"] for r in analysis["development"]["permutation_importance"]}
+    for label, key in [("day-7 active electrodes", "contrast__nAE__d7"), ("day-7 network spikes", "contrast__ns.n__d7"),
+                       ("day-7 firing rate", "contrast__meanfiringrate__d7"), ("all day-7 inputs", "all day-7 inputs"),
+                       ("all day-5 inputs", "all day-5 inputs"), ("dose", "log10_dose")]:
+        found[f"posthoc importance, {label}"] = importance[key]
+
+    arm = read("evaluation/external/arm_b_cases.csv")
+    ext = arm.loc[arm.primary.astype(bool) & arm.usable.astype(bool)].reset_index(drop=True)
+    states = {"strongly suppressed": lambda d: d <= -1, "suppressed": lambda d: (d > -1) & (d <= -0.5),
+              "near-control": lambda d: abs(d) < 0.5, "raised": lambda d: (d >= 0.5) & (d < 1), "hyperactive": lambda d: d >= 1,
+              "raised or hyperactive": lambda d: d >= 0.5}
+    for prefix, frame, column in [("external", ext, "prediction"), ("development", dev, "small_refit")]:
+        for name, rule in states.items():
+            part = frame.loc[rule(frame.day7)]
+            found[f"posthoc {prefix} {name} conditions"] = len(part)
+            found[f"posthoc {prefix} {name} v2 MAE"] = float(abs(part[column] - part.target).mean())
+            found[f"posthoc {prefix} {name} persistence MAE"] = float(abs(part.day7 - part.target).mean())
+    hyper = ext.loc[ext.day7 >= 1]
+    found["posthoc external hyperactive mean observed change"] = float((hyper.target - hyper.day7).mean())
+    found["posthoc external hyperactive mean forecast change"] = float((hyper.prediction - hyper.day7).mean())
+
+    declined = ext.declined.astype(bool).to_numpy()
+    error = abs(ext.prediction - ext.target).to_numpy()
+    extreme = np.zeros(len(ext), dtype=bool)
+    extreme[np.argsort(-abs(ext.prediction.to_numpy()), kind="stable")[: declined.sum()]] = True
+    found["posthoc external v2 kept MAE, trust verdict"] = float(error[~declined].mean())
+    found["posthoc external v2 kept MAE, declining the most extreme forecasts"] = float(error[~extreme].mean())
+    found["posthoc external conditions declined by both rules"] = int((declined & extreme).sum())
+    found["posthoc external highest day-7 value among declined"] = float(ext.day7[declined].max())
+    secondary = arm.loc[~arm.primary.astype(bool) & arm.usable.astype(bool)]
+    secondary_error = abs(secondary.prediction - secondary.target).to_numpy()
+    found["external secondary risk-coverage area, difficulty"] = v2.risk_coverage(secondary.trust_score.to_numpy(), secondary_error)
+    found["external secondary risk-coverage area, extremity"] = v2.risk_coverage(abs(secondary.prediction.to_numpy()), secondary_error)
+    found["external secondary v2 coverage at nominal 0.80"] = float(((secondary.target >= secondary["low_0.8"]) & (secondary.target <= secondary["high_0.8"])).mean())
+
+    # The shipped batch rule: half or more conditions below one day-7 control network spike (plate median).
+    fires, checked = [], 0
+    for prefix in ["dev", "ext"]:
+        features = pd.read_csv(ROOT / f"evaluation/v2_prepared/{prefix}_features.csv", usecols=["rel__plate_ctrl_median_ns_d7"])
+        cases = read(f"evaluation/v2_prepared/{prefix}_cases.csv").assign(low=np.sinh(features.rel__plate_ctrl_median_ns_d7.to_numpy()) < 1)
+        share = cases.groupby("date").low.mean()
+        checked += len(share)
+        fires += [int(d) for d in share.index[share >= 0.5]]
+    found["posthoc batches where the batch rule fires"] = len(fires)
+    found["posthoc batches checked by the batch rule"] = checked
+    for date in [20160907, 20170628, 20171004]:
+        if date not in fires:
+            raise SystemExit(f"batch rule expected to fire on {date}")
+        part = dev.loc[dev.date == date]
+        found[f"posthoc batch rule {date} v2 MAE"] = gate.macro_mae(part.assign(prediction=part.small_refit))
+        found[f"posthoc batch rule {date} persistence MAE"] = gate.macro_mae(part.assign(prediction=part.day7))
+
+    reserve = read("evaluation/reserve_intervals.csv")
+    found["browser replay external conditions"] = len(read("evaluation/v2_reference/external_triage_v2.csv"))
+    found["browser replay reserve-batch conditions"] = len(read("evaluation/v2_reference/reserve_triage_v2.csv"))
+    found["reserve pooled day-7/day-12 correlation"] = float(np.corrcoef(reserve.day7, reserve.target)[0, 1])
+
+    v2_loss = gate.date_losses(ext)
+    carry_loss = gate.date_losses(ext.assign(prediction=ext.day7))
+    persistence_r = pd.Series({d: np.corrcoef(g.day7, g.target)[0, 1] for d, g in ext.groupby("date")})
+    found["external per-batch v2 advantage vs batch persistence correlation"] = float(np.corrcoef(carry_loss - v2_loss, persistence_r.loc[v2_loss.index])[0, 1])
+
+    locked_q = json.loads((ROOT / "evaluation/external/results.json").read_text(encoding="utf-8"))["lock"]["conformal_quantiles"]["0.8"]
+    sigma = (ext["high_0.8"] - ext["low_0.8"]) / (2 * locked_q)
+    score = error / sigma
+    dates = sorted(ext.date.unique())
+    for k in [4, 12]:
+        first = ext.date.isin(dates[:k]).to_numpy()
+        calibration = np.sort(score[first])
+        q = calibration[int(np.ceil((len(calibration) + 1) * 0.8)) - 1]
+        rest = ~first
+        label = f"posthoc recalibrated on {k} batches"
+        found[f"{label}, locked coverage on the other {len(dates) - k}"] = float((score[rest] <= locked_q).mean())
+        found[f"{label}, recalibrated coverage on the other {len(dates) - k}"] = float((score[rest] <= q).mean())
+        if k == 4:
+            found[f"{label}, calibration conditions"] = int(first.sum())
+            found[f"{label}, locked mean width"] = float((2 * locked_q * sigma[rest]).mean())
+            found[f"{label}, recalibrated mean width"] = float((2 * q * sigma[rest]).mean())
+
+
 def expected_detections(frame: pd.DataFrame, score: np.ndarray, budget: float = 0.2) -> float:
     """Early-quiet detections at the budget when tied scores are broken at random (expected value)."""
     work = frame.assign(score=score, positive=abs(frame.target) >= 1).loc[abs(frame.day7) < 0.5]
@@ -453,11 +621,14 @@ def recompute() -> dict:
 if __name__ == "__main__":
     found = recompute()
     external(found)
+    signal(found)
     PUBLISHED.update(EXTERNAL)
+    PUBLISHED.update(SIGNAL)
     failures = []
+    decimals = written_decimals()
     for label, published in PUBLISHED.items():
         actual = found[label]
-        ok = abs(actual - published) <= tolerance_for(published)
+        ok = abs(actual - published) <= tolerance_for(published, decimals.get(label)) + 1e-12
         print(f"{'ok ' if ok else 'BAD'}  {label:58s} published {published:<10} recomputed {round(actual, 5)}")
         if not ok:
             failures.append(label)

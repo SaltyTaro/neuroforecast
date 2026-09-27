@@ -1,6 +1,6 @@
 """Figures for the technical report's two sealed tests, drawn from the shipped per-case evidence tables.
 
-Writes docs/figures/{design_timeline,external_per_date,external_risk_coverage,assay_decision}.png.
+Writes docs/figures/{design_timeline,external_per_date,external_risk_coverage,external_by_state,assay_decision}.png.
 """
 
 from __future__ import annotations
@@ -130,6 +130,33 @@ def risk_coverage() -> None:
     plt.close(fig)
 
 
+def by_state() -> None:
+    b = primary(read("evaluation/external/arm_b_cases.csv"))
+    states = [("strongly\nsuppressed\n≤ −1", b.day7 <= -1), ("suppressed\n−1 to −0.5", (b.day7 > -1) & (b.day7 <= -0.5)),
+              ("near control\nwithin ±0.5", abs(b.day7) < 0.5), ("raised\n0.5 to 1", (b.day7 >= 0.5) & (b.day7 < 1)),
+              ("hyperactive\n≥ 1", b.day7 >= 1)]
+    x = np.arange(len(states))
+    v2 = [abs(b.prediction - b.target)[m].mean() for _, m in states]
+    carry = [abs(b.day7 - b.target)[m].mean() for _, m in states]
+    fig, ax = plt.subplots(figsize=(7.2, 3.3))
+    width = 0.36
+    for offset, values, color, label in [(-width / 2, v2, V2, "v2 forecast"), (width / 2, carry, PERSIST, "Carry day 7 forward")]:
+        ax.bar(x + offset, values, width - 0.04, color=color, label=label, zorder=3)
+        for xi, v in zip(x + offset, values):
+            ax.text(xi, v + 0.04, f"{v:.2f}", ha="center", va="bottom", color=INK2, fontsize=7.5)
+    ax.set_ylim(0, max(v2 + carry) * 1.15)
+    ax.set_xticks(x, [f"{label}\n{int(m.sum())} conditions" for label, m in states], fontsize=7.5)
+    ax.set_ylabel("MAE, log2 (lower is better)")
+    ax.set_xlabel("Day-7 state, log2 relative to the plate's controls")
+    ax.grid(axis="y", color=GRID, linewidth=0.6)
+    ax.set_axisbelow(True)
+    ax.legend(frameon=False, fontsize=7.5, loc="upper center")
+    ax.set_title("External test, post hoc: the forecast wins where day 7 is far from control")
+    fig.tight_layout()
+    fig.savefig(FIG / "external_by_state.png", dpi=200)
+    plt.close(fig)
+
+
 def assay_decision() -> None:
     fig, ax = plt.subplots(figsize=(7.2, 1.35))
     ax.set_xlim(0, 14)
@@ -153,4 +180,5 @@ if __name__ == "__main__":
     design_timeline()
     per_date()
     risk_coverage()
+    by_state()
     print("wrote", sorted(p.name for p in FIG.glob("*.png")))

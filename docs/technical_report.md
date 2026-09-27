@@ -1,4 +1,4 @@
-# NeuroForecast: day-7 forecasting and trust triage for neuronal network assays, tested on 27 sealed batches
+# NeuroForecast: day-7 forecasting and trust triage for neuronal MEA assays, with a sealed test on 24 batches and 105 unseen chemicals
 
 **Submission category: Tool & Platform.**
 AI4S Open Innovation: AI for Life Science (AI + Organ-on-a-Chip), 5th Pazhou Algorithm Competition.
@@ -21,19 +21,26 @@ We tested it twice, each time on data sealed before modelling, under hashed pre-
 
 | Sealed test | Batches | Conditions | Forecast MAE | Carry day 7 forward | Result |
 | --- | ---: | ---: | ---: | ---: | --- |
-| 1. Three later batches (v1 model) | 3 | 224 | 0.7716 | **0.6088** | the forecast **lost** |
-| 2. Earlier batches, 105 never-seen chemicals (v2 model) | 24 | 927 | **0.735** | 0.980 | the forecast **won**: 25% lower error, 19 of 24 batches |
+| Test 2, external: earlier batches, 105 never-seen chemicals (**v2, the shipped model**) | 24 | 927 | **0.735** | 0.980 | the forecast **won**: 25% lower error, 19 of 24 batches |
+| Test 1, reserve: three later batches (v1, retired) | 3 | 224 | 0.7716 | **0.6088** | the forecast **lost** |
 
 In the external test, declining the least predictable 15% of conditions cut error on the rest by 27% for our forecast and by 30% for the simple rule. The failures are reported as prominently as the passes:
 - Intervals under-covered: 70% observed at a nominal 80%.
 - An early-warning ranking for conditions still quiet at day 7 did not replicate.
 - A day-7 chemical-level call reached 89.1% agreement with EPA's final call, short of the pre-registered 90%.
 
-All 148 published numbers are recomputed from per-case evidence by a script in the repository. The external development run reproduces byte for byte from a fresh clone on the author's platform (Windows).
+**What is new.** The learner is not new: Extra Trees, conformal intervals and abstention are standard methods. What is new is:
+- a day-7 decision that shows a forecast only beside the carry-forward alternative, and declines the conditions it cannot predict;
+- an evaluation that holds out batch and chemical together, sealed twice;
+- two findings from that evaluation (§7.7, post hoc):
+  - **Where a day-7 forecast adds information.** Raised activity at day 7 is transient. On the 60 external conditions with raised activity at day 7, the forecast's error was 0.47, against 1.14 for carrying day 7 forward. Near-control conditions, the majority, tie (0.476 against 0.485).
+  - **What the forecast reads.** The number of active electrodes at day 7, relative to controls, is its most informative input; day-5 inputs and concentration add nothing. The relation is nonlinear: linear models on the same inputs score 0.914 and 0.949, against 0.726.
+
+All 209 published numbers are recomputed from per-case evidence by a script in the repository. The external development run reproduces byte for byte from a fresh clone on the author's platform (Windows).
 
 ## 中文摘要
 
-在微电极阵列（MEA）上培养的神经元网络，是发育神经毒性体外测试组合（OECD DNT-IVB）中唯一测量神经功能的读数，也是神经类器官芯片的核心读数。实验在第 5、7、9、12 天记录，第 12 天为终点。NeuroForecast 只用第 5 天和第 7 天的数据，在第 7 天给出三项判断：本批次对照是否可用（质控）；第 12 天的预测值及区间，并与"沿用第 7 天读数"的持续性基线并列显示；以及该预测是否可信（不可信则拒绝预测，建议实测第 12 天）。
+在微电极阵列（MEA）上培养的神经元网络，是发育神经毒性体外测试组合（OECD DNT-IVB）中唯一测量神经功能的读数，神经器官芯片记录的也是同类数据。实验在第 5、7、9、12 天记录，第 12 天为终点。NeuroForecast 只用第 5 天和第 7 天的数据，在第 7 天给出三项判断：本批次对照是否可用（质控）；第 12 天的预测值及区间，并与"沿用第 7 天读数"的持续性基线并列显示；以及该预测是否可信（不可信则拒绝预测，建议实测第 12 天）。
 
 我们做了两次封存测试。每次都在建模前封存数据、预先登记并哈希锁定评估标准，且只评分一次。
 
@@ -42,7 +49,14 @@ All 148 published numbers are recomputed from per-case evidence by a script in t
 
 未通过的项目同样报告：预测区间覆盖率不足（名义 80%，实测 70%），早期预警未能复现，第 7 天化合物判定一致率为 89.1%，未达到 90% 的预设门槛。
 
-全部 148 个公开数字均可由仓库脚本从逐条件证据表重新计算。代码、模型和浏览器工具全部公开，免登录，可在 CPU 上复现。
+**新意。** 学习器本身并不新：Extra Trees、保形区间和拒绝预测都是标准方法。新的是三点：
+- 第 7 天的决策流程：预测只与"沿用第 7 天读数"并列给出，并拒绝无法预测的条件；
+- 同时留出批次与化合物、两次封存的评估；
+- 由此得到的两个发现（事后分析）。
+  - 第 7 天的活动升高是暂时的，到第 12 天会回落。在这 60 个条件上，模型误差为 0.47，沿用第 7 天读数为 1.14；接近对照的条件两者持平。
+  - 信息量最大的输入是第 7 天活跃电极数（相对对照），第 5 天输入和浓度几乎没有贡献。关系是非线性的：同样输入的线性模型只达到 0.914 和 0.949，本模型为 0.726。
+
+全部 209 个公开数字均可由仓库脚本从逐条件证据表重新计算。代码、模型和浏览器工具全部公开，免登录，可在 CPU 上复现。
 
 ---
 
@@ -66,14 +80,14 @@ Neural organ chips produce the same kind of data: multi-electrode recordings of 
 
 A digital twin, or a data asset, needs a layer that says which readouts can be trusted, and when a forecast should not be believed. NeuroForecast is that layer for MEA network readouts. It gives a batch-level verdict from the day-7 controls, a per-condition forecast with a comparator, and a per-condition refusal to forecast. Everything is tested on held-out batches, which is the unit that varies between chip runs.
 
-We use public plate data because it is the largest longitudinal, chemically perturbed, functional dataset available under a public-data rule. It also supports two independent sealed tests. **Transfer to chips is not validated here.** §10 sets out what would change for a chip run and what would have to be re-tested.
+We use public plate data because it is the largest longitudinal, chemically perturbed, functional dataset available under a public-data rule. It also supports two sealed tests on batches from different periods. **Transfer to chips is not validated here.** §10 sets out what would change for a chip run and what would have to be re-tested.
 
 ### 1.3 What we claim, and what we do not
 
 We claim a day-7 triage tool and the evidence from two sealed tests:
 - The forecast beat carry-forward on 24 earlier batches, and lost on 3 later ones.
 - Abstention transferred in both tests.
-- The batch quality flag caught the one collapsed batch; no external batch tested it.
+- The batch quality rule caught the reserve batch whose controls were silent at day 7. Across all 41 batches v2 has seen it fires on 3, and on 2 of them the forecast still beat carry-forward. It marks a degenerate reference, not a failed forecast (§7.8).
 
 We do not claim saved recordings, wells or cost; toxicity, irreversibility or recovery; human or chip validity; or a new learning algorithm.
 
@@ -89,7 +103,7 @@ We do not claim saved recordings, wells or cost; toxicity, irreversibility or re
 | [Shafer et al. 2019](https://doi.org/10.1093/toxsci/kfz052) and the [EPA NFA refinement analysis](https://github.com/USEPA/CompTox-DNT-NFA-Refinement) | The data, the dose-response analyses, and EPA's day-7/day-12/AUC hit calls. | The data and the chemical effects are prior work. Ours is the day-7 decision, the reliability layer, and the evaluation. |
 | Split-conformal prediction; selective prediction | Distribution-free intervals under exchangeability; abstention. | Standard methods. We calibrate them under simultaneous batch and chemical shift and report observed per-batch coverage, including where it falls short. |
 
-Extra Trees, control normalization, conformal intervals and abstention are implementation choices. **The contribution is the day-7 triage workflow, and an evaluation strict enough to show where it works and where it does not.**
+Extra Trees, control normalization, conformal intervals and abstention are implementation choices. **The contribution is the day-7 triage workflow, an evaluation strict enough to show where it works and where it does not, and what that evaluation shows about where a day-7 forecast adds information (§7.7).**
 
 ---
 
@@ -149,7 +163,10 @@ The model sees day-5 and day-7 readouts, the same-plate same-day zero-dose contr
 
 ### 4.3 Components
 
-**(a) Batch quality verdict.** If the day-7 control median is below one network spike on most of a batch's plates, the batch verdict is "reference too low; measure day 12". Every condition in that batch is then shown as declined.
+**(a) Batch quality verdict.** A batch fails when half or more of its conditions sit on plates whose day-7 control median is below one network spike. Its verdict is then "reference too low to normalize against; measure day 12", and every condition in it is shown as "batch reference unusable".
+- The per-plate flag was fixed on v1 development.
+- The batch-level display rule was added to the tool after sealed test 2 and is in no hashed protocol.
+- §7.8 reports how often it fires.
 
 **(b) Forecast, always beside the comparator.**
 - **v1:** Extra Trees (256 trees, depth 12, minimum leaf 4, fixed seed) on the day-7 contrasts.
@@ -173,7 +190,7 @@ Split-conformal intervals use difficulty-scaled scores `|residual|/σ`. Every ca
 
 **Tools.**
 - `neuroforecast_triage_v2.py` (command line) and the browser app load only the shipped bundle.
-- The browser app evaluates the forests in JavaScript, entirely on the user's machine. Its outputs are tested against Python on every sealed condition.
+- The browser app evaluates the forests in JavaScript, entirely on the user's machine. Its outputs are tested against Python on 1,228 conditions (§9.1).
 
 **Runtime and cost.** On one CPU, v2 development takes 168 s with four processes; external scoring takes seconds; the tool takes under a second per batch. No GPU, cloud or paid service was used at any point.
 
@@ -197,8 +214,8 @@ The v2 protocol added a sealed replication of the **unchanged v1 tool** (Arm A) 
 **Audits.**
 - **Leakage.** The v1 audit deletes every observation after day 7, then mutates every future value and control, and requires bit-identical inputs both times. The v2 audit confirms that no external condition, date or chemical reached any fit.
 - **Replay.** Saved models reproduce their recorded forecasts to within 9e-16.
-- **Reproducibility.** A fresh v2 `prepare` and `develop` from the public repository reproduced every prepared file, every out-of-fold prediction and all five model files **byte for byte**. That was verified on Windows; on other systems the CSV line endings differ.
-- **Verified numbers.** `verify_published_numbers.py` recomputes 148 published numbers from the per-case evidence tables at the precision each is quoted to. It caught three drifts in our own drafts before publication.
+- **Reproducibility.** A fresh v2 `prepare` and `develop` from the public repository reproduced every prepared file, every out-of-fold prediction and all five model files **byte for byte**. That holds under both the pinned package versions and the newer numpy 2.5.3 and pandas 3.0.6 the test ran with. It was verified on Windows; on other systems the CSV line endings differ.
+- **Verified numbers.** `verify_published_numbers.py` recomputes 209 published numbers from the per-case evidence tables at the precision each is quoted to. It caught three drifts in our own drafts before publication.
 
 ---
 
@@ -281,22 +298,32 @@ The comparator row matters for the innovation claim. The v1 architecture refit o
 | Frozen v1 tool, its own verdict | 120 | 0.640 | 0.907 | 29% |
 | Carry day 7 forward, v1 verdict | 120 | 0.717 | 0.932 | 23% |
 
+Errors in this table are pooled over conditions, not date-macro. The v2 forecast's 0.742 here and its 0.735 in §7.3 are the same predictions averaged two ways.
+
 The conditions v2 declined had an MAE of 1.921, against 0.541 for those it kept: 3.5 times higher. They carried 38% of all forecast error. Kept conditions have a median absolute error of 0.41 log2, about a 1.33-fold error in the control-relative readout.
 
-In v2 the learned difficulty model beat the zero-parameter extremity rule over the whole retention range (area 0.542 against 0.562). In v1 the two tied (kept MAE 0.640 against 0.641).
+**The learned difficulty score's edge over a zero-parameter rule is not robust.**
+- On the pre-registered whole-curve criterion it beat "decline the most extreme forecasts" (area 0.542 against 0.562).
+- At the shipped operating point the two tie. Declining the 135 most extreme forecasts keeps an MAE of 0.5405, against 0.5413 for the trust verdict, and 102 of the 135 conditions are declined by both.
+- In v1 they tied too (0.640 against 0.641).
+- On the 56-condition secondary cohort the extremity rule won (0.634 against 0.668).
+
+The robust result is abstention itself.
+
+**What a decline means.** Every declined condition was already strongly suppressed at day 7 (at most −1.30 log2), so the hazard is visible at day 7. What remains undetermined is the direction from there, recovery or progression, and the day-12 measurement decides that.
 
 ![Sealed test 2: error of kept conditions as more are declined](figures/external_risk_coverage.png)
 
 ### 7.5 What failed
 
 - **Early warning among quiet conditions.** v1 found 16.0 of 65 later large changes and v2's locked score found 14.0, against 16.6 for flagging the highest doses first, 21.0 for day-7 magnitude and 14.8 by chance. The claim is withdrawn, and the v2 tool does not ship the list.
-- **Intervals** observed 0.666 (v1) and 0.702 (v2) coverage at a nominal 0.80, and 0.812 at 0.90. Under batch shift they are approximate, as on the reserve.
+- **Intervals** observed 0.666 (v1) and 0.702 (v2) coverage at a nominal 0.80, and 0.812 at 0.90. On the 56-condition secondary cohort v2 coverage was 0.607. Under batch shift they are approximate, as on the reserve; §7.7 tests recalibration.
 - **The day-7 chemical call** covered 106 EPA samples, 72 of them active by EPA's final area-under-curve call.
   - EPA's own day-7 hit call, applied to every sample, agreed with the final call 87.7% of the time.
   - Our locked policy decided 95.3% of samples at day 7 with 89.1% agreement, below the pre-registered 90%. It reaches 96.0% agreement against the stricter reference of three or more active endpoints.
   - Most of the policy's work was done by EPA's own day-7 hit count. Our forecast gate changed no decision.
   - We claim no recording-time saving.
-- **The quality flag** was not testable: no external batch had silent day-7 controls.
+- **The quality flag** was not testable: no external batch had silent day-7 controls. §7.8 applies the batch rule to all 41 batches.
 
 ### 7.6 Every criterion, as pre-written
 
@@ -315,16 +342,75 @@ In v2 the learned difficulty model beat the zero-parameter extremity rule over t
 | B4 day-7 call ≥ 90% agreement on ≥ 25% of samples | **FAIL** (89.1% on 95.3%) |
 | B5 v2 coverage ≥ 0.75 | **FAIL** (0.702) |
 
+### 7.7 Post hoc: what the forecast reads, and where it beats carry-forward
+
+None of this section or the next was pre-registered. The development analyses use the 17 development batches and the same purged folds as development. The external analyses describe predictions that were already scored once; nothing is refit, tuned or selected on external outcomes. The script is `tools/posthoc_signal_analysis.py`, and its outputs are in `evaluation/v2_posthoc/`.
+
+**The relation is nonlinear.** Linear models on the product's 13 inputs, in the same folds, score 0.949 (least squares) and 0.914 (median regression) on development, against 0.726 for Extra Trees and 1.064 for carry-forward.
+
+**The forecast reads day 7, and mostly the active electrodes.** Permuting one input within each held-out development batch raises date-macro MAE by:
+
+| Input permuted | MAE increase |
+| --- | ---: |
+| Day-7 active electrodes, relative to controls | +0.23 |
+| Day-7 network spikes, relative to controls | +0.14 |
+| Day-7 firing rate, relative to controls | +0.08 |
+| All day-7 inputs together | +0.88 |
+| All day-5 inputs together | −0.003 |
+| Concentration | 0.000 |
+
+How many electrodes are active at day 7, compared with the same plate's controls, carries more information about day-12 network spiking than the day-7 network-spike contrast itself. Day-5 inputs and concentration add nothing measurable. The model reads the culture's state, not the dose. Correlated inputs share credit in permutation tests, so the ranking matters more than the exact values. A day-7-only model would shorten the protocol, but it would need its own sealed test.
+
+**Where the forecast wins.** External conditions, by their day-7 state (errors pooled over conditions):
+
+| Day-7 state (log2, relative to controls) | Conditions | v2 forecast MAE | Carry-forward MAE |
+| --- | ---: | ---: | ---: |
+| Strongly suppressed, ≤ −1 | 207 | **1.59** | 2.27 |
+| Suppressed, −1 to −0.5 | 90 | 0.65 | **0.54** |
+| Near control, within ±0.5 | 570 | 0.476 | 0.485 |
+| Raised, 0.5 to 1 | 47 | **0.44** | 0.87 |
+| Hyperactive, ≥ 1 | 13 | **0.57** | 2.11 |
+
+![External test, post hoc: error by day-7 state, forecast against carry-forward](figures/external_by_state.png)
+
+- **Day-7 hyperactivity is transient.** Hyperactive conditions fell by 2.1 log2 on average by day 12, and the forecast anticipated 1.9 of that fall. Carry-forward cannot anticipate it. Over all 60 raised or hyperactive conditions the error was 0.47 against 1.14.
+- **Near control, the two tie.** This is where most conditions are.
+- **Strong suppression** is where both predictors err most, and where every declined condition sits (§7.4).
+- **Mild suppression** is the one state where carry-forward wins.
+
+Development shows the same shape: raised or hyperactive, 0.40 against 0.87 (76 conditions); near control, 0.52 against 0.58; strongly suppressed, 1.39 against 2.15. The pattern was therefore present before the external test, although nobody looked for it then.
+
+**Recalibrating the intervals.** A lab would recalibrate on its own first batches, so we did this in time order on the external batches:
+- Calibrated on the first 4 batches (103 conditions), coverage on the other 20 rose from 0.711 to 0.876 at a nominal 0.80. Intervals became 1.6 times wider (mean width 3.04 against 1.87).
+- Calibrated on the first 12 batches, coverage on the other 12 rose from 0.855 to 0.975.
+
+Error scale drifts between periods. One-off recalibration restores coverage but can overshoot, so a lab should keep monitoring coverage and recalibrate again when it drifts.
+
+### 7.8 Post hoc: the batch rule on all 41 batches
+
+The tool shows a batch as unusable when half or more of its conditions sit on plates whose day-7 control median is below one network spike. We applied that rule to every batch v2 has seen or been tested on. It fires on **3 of 41**, all in development, and on none of the 24 external batches.
+
+| Batch that fires | v2 held-out MAE | Carry-forward MAE |
+| --- | ---: | ---: |
+| 20160907 (exactly half its conditions) | 0.88 | 1.85 |
+| 20170628 | **0.53** | 1.99 |
+| 20171004 (the silent reserve batch) | 1.10 | **0.68** |
+
+For comparison, the development averages are 0.726 for the forecast and 1.064 for carry-forward. On every flagged batch at least one predictor erred badly, but it was not always the forecast. A day-7 value normalized against a near-silent control is not a trustworthy measurement, so the rule is a **quality-control rule for a degenerate reference**. It is not a validated predictor of forecast error. The tool's message says so: the batch's day-7 values and forecasts are "unverified", not "wrong".
+
 ---
 
 ## 8. What the two tests say together
 
 1. **Neither predictor wins everywhere, so the tool always shows both.** On three later batches, persistence won. On 24 earlier batches with new chemicals, the model won by a quarter. The per-batch picture (figure in §7.3) shows persistence winning 5 of the 24 external batches as well.
-   - *Descriptive only:* external batches were about as persistent overall as the reserve (pooled day-7/day-12 correlation 0.84 against 0.87; development 0.66). So persistence alone does not explain the reserve result.
-   - v1's under-reaction on the reserve's persistent batches and the degenerate 20171004 are the more likely causes. Large changes were also twice as common externally (27.5% of conditions against 13.8%).
-2. **Abstention is the most reproducible component.** It held in both tests and in both external arms, and it cut kept-condition error by 23–30% for every predictor, including persistence. It is a statement about which outcomes are predictable, not only about our model's weak spots.
-3. **Claims that rested on one batch did not survive.** The early-warning result (ten positives, one batch) did not replicate. The quality flag (one event) remains untested. We report both that way.
-4. **Intervals under-cover under batch shift**, at 0.67–0.71 against 0.80 in all three measurements. A deployment should recalibrate on the lab's own batches.
+   - *Descriptive only:* the reserve made persistence easy, but that alone does not make a forecast lose. External batches were about as persistent overall (pooled day-7/day-12 correlation 0.84, against 0.87 on the reserve and 0.66 in development), and the v2 forecast won there.
+   - What differed on the reserve was the model's behaviour:
+     - v1 under-reacted on the two persistent batches, with forecast slopes of 0.87–0.94 against a true 1.3;
+     - it extrapolated on the degenerate 20171004.
+   - Large changes were also twice as common externally (27.5% of conditions against 13.8%), and that is where a forecast can gain (§7.7).
+2. **Abstention is the most reproducible component.** It held in both tests and in both external arms, and it cut kept-condition error for every predictor, including persistence: by 23–30% externally and by 27–43% on the reserve. It is a statement about which outcomes are predictable, not only about our model's weak spots. The learned score's edge over declining the most extreme forecasts is not robust (§7.4); abstention itself is.
+3. **Claims that rested on one batch did not survive.** The early-warning result (ten positives, one batch) did not replicate. The batch rule was built on one event. It fires on 3 of 41 batches and marks a degenerate reference rather than a failed forecast (§7.8). We report both that way.
+4. **Intervals under-cover under batch shift**: 0.67–0.71 against 0.80 in the three primary measurements, and 0.61 on the small secondary cohort. Recalibrating on a lab's first four batches raised coverage on the rest to 0.876, with intervals 1.6 times wider (§7.7).
 
 ---
 
@@ -334,16 +420,16 @@ In v2 the learned difficulty model beat the zero-parameter extremity rule over t
 
 `tools/neuroforecast_triage_v2.py` and the [browser app](https://saltytaro.github.io/neuroforecast/app/) take a well-level CSV of day-5 and day-7 readouts with their zero-dose controls. They reject day-9 and day-12 rows and return:
 1. a **batch verdict** from the day-7 controls, with the reference activity level;
-2. per condition, the **day-12 forecast** with an 80% interval, the **carry-forward** value beside it, a **difficulty** score, and a verdict: *forecast usable* or *declined: measure day 12 directly*;
+2. per condition, the **day-12 forecast** with an 80% interval, the **carry-forward** value beside it, a **difficulty** score, and a verdict: *forecast usable*, *declined: measure day 12 directly*, or, when the batch rule fires, *batch reference unusable*;
 3. the **held-out evidence**, printed on every run, including the test the model lost.
 
 The browser app runs the same forests in JavaScript on the user's machine, with no upload and no login. It shows the plate maps and, for each chemical, the concentration–response panel read by the assay: day-7 observations, the day-12 forecast with its interval, and declined points ringed.
 
-A test replays all 1,228 sealed conditions through the JavaScript port and fails if any output differs from Python by more than 1e-6. The observed difference is zero: the port is bit-identical.
+A test replays 1,228 conditions through the JavaScript port and fails if any output differs from Python by more than 1e-6. They are all 983 external conditions, plus the 245 reserve-batch conditions, which are now v2 training data. The observed difference is zero: the port is bit-identical.
 
 ![The browser tool on a held-out 2016 batch: batch verdict, plate maps, concentration–response panels, forecast against carry-forward](figures/app_v2_heldout.png)
 
-![The same tool on the batch whose day-7 controls were silent: every condition is declined, before any day-12 data exist](figures/app_v2_collapsed.png)
+![The same tool on the batch whose day-7 controls were silent: every condition is marked, before any day-12 data exist](figures/app_v2_collapsed.png)
 
 ### 9.2 A held-out batch that passes, and a batch that does not
 
@@ -364,34 +450,40 @@ The second run is the batch whose cultures had not started firing at day 7:
 
 ```
 Batch 20171004: 84 conditions, day-7 reference activity 0.0 network spikes
-  measurement quality: day-7 reference activity is too low for this batch;
-                       forecasts here are unreliable and a day-12 measurement is recommended
+  measurement quality: day-7 reference activity is too low to normalize against;
+                       this batch's day-7 values and forecasts are unverified, so measure day 12 directly
 ```
 
-Every condition in that batch is shown as declined. v2 was trained on this batch, but the verdict does not depend on that: it comes from a fixed rule on the day-7 controls.
+Every condition in that batch is marked "batch reference unusable". v2 was trained on this batch, but the verdict does not depend on that: it comes from a fixed rule on the day-7 controls.
+
+The rule does not say the forecast is wrong. Here it was: 1.10, against 0.68 for carry-forward. On the two other batches where the rule fires, however, the forecast beat carry-forward (§7.8).
 
 ---
 
 ## 10. Impact, and the path to organ-on-a-chip use
 
-**Who uses it, and for what.** A screening lab running the NFA, or any longitudinal MEA exposure study, uses it at the day-7 recording.
+**Three users, one output each.**
 
-In the external test, the tool:
-- gave a usable day-12 estimate for 85% of conditions, with a median error of about 1.33-fold;
-- marked the other 15%, which carried 38% of the error, for the day-12 measurement to decide;
-- declined 1 to 12 conditions per batch (5.6 on average), which is a reviewable list rather than a wall of numbers.
+1. **A screening lab running the NFA or a similar longitudinal MEA study**, at the day-7 recording.
+   - It gets forecasts for 85% of conditions, with a median error of about 1.33-fold and always beside carry-forward.
+   - It also gets a short list of the rest, 1 to 12 per batch (5.6 on average), whose day-12 outcome is undetermined. Those carried 38% of the error.
+   - The forecast matters most where day 7 is far from control, because raised activity at day 7 usually falls back (§7.7).
+2. **A neural-chip developer designing a run:** at least two vehicle-treated chips per run. With one, the batch verdict raised false alarms, while the forecast itself barely changed (table below).
+3. **A builder of a data asset or digital twin from MEA runs:** a day-7 admission record for every run and condition.
+   - It states whether the reference was usable, whether the forecast was kept or declined, and why.
+   - It can be checked against day 12 when that arrives.
 
-A batch whose reference is silent at day 7 is flagged before five more days of culture. The v1 reserve contained one such batch in three.
+A batch whose reference is silent at day 7 is flagged before five more days of culture. That happened on 3 of the 41 batches v2 has seen.
 
 **What it does not yet save.** The chemical-level early call fell just short of its bar, so we claim no recording days, wells or cost.
 
-**Mapping to a neural chip.** The tool's inputs are the summary readouts any MEA analysis produces:
+**Mapping to a neural chip.** The tool's inputs are EPA's per-well summary readouts; [input_schema.md](input_schema.md) lists them, with a template. Other MEA software reports related metrics under different definitions, so a chip lab must either compute EPA's definitions from its spike times or recalibrate. The concepts map directly:
 - **Batch** becomes the chips seeded and recorded together.
 - **Reference** becomes the vehicle-treated chips in that run.
 - **Condition** becomes a compound and concentration.
 
 What must be re-established on chips:
-- the minimum number of vehicle chips per run (the plate version uses four or more control wells per plate);
+- the minimum number of vehicle chips per run (the plate version uses four or more control wells per plate, and the subsampling below suggests at least two);
 - the reliability thresholds, recalibrated on the lab's own batches;
 - the forecast, re-validated in a sealed test like ours before any claim.
 
@@ -414,18 +506,22 @@ The forecast barely moves, even with one control. Carry-forward degrades because
 1. A prospective sealed test on a chip provider's neural chips, with the protocol written before the first recording.
 2. Ingestion and quality control of human iPSC-derived neuron MEA data, starting with public datasets.
 3. Extension from one readout (network spikes) to the full panel, with per-endpoint abstention.
-4. Recalibration of intervals from each lab's first batches.
+4. Interval recalibration from each lab's first batches, with ongoing monitoring, since a one-off recalibration overshot here (§7.7).
+5. A day-7-only model: day-5 inputs added nothing (§7.7), which would shorten the protocol, but it needs its own sealed test.
 
 ---
 
 ## 11. Limitations
 
 - **Two sealed tests disagree on the forecast.** The larger one favours the model, but three later batches favoured persistence. Batch-level variation is real, so persistence stays on screen.
-- **The early-warning claim is withdrawn**, and **the quality flag rests on one event.**
+- **The early-warning claim is withdrawn.** The **batch rule** fires on 3 of 41 batches. It is a quality-control rule for a degenerate reference, not a validated predictor of forecast error.
+- **The learned difficulty score** ties a zero-parameter extremity rule at the shipped operating point. The robust result is abstention itself.
+- **The post hoc analyses** (§7.7–7.8) were not pre-registered. They describe the locked tool and select nothing.
 - **Intervals under-cover** under batch shift (0.67–0.71 at nominal 0.80).
 - **The v2 gain is a refit, not a new model class.** The v1 architecture refit on the same data was as good.
 - **One assay and one laboratory.** Dates are not verified independent donors or litters. Both sealed tests come from the same EPA program.
 - **Target construction.** The pseudocount-regularized target can be inflated by near-zero controls; the usable-reference rule limits this without eliminating it.
+- **Inputs follow EPA's readout definitions.** Other MEA software computes related metrics differently ([input_schema.md](input_schema.md)).
 - **Rat cortical cultures in plates** are not organ chips, human cells or clinical toxicity. No saved days, wells or cost are validated. Forecast magnitudes are not probabilities.
 - **Licensing.** The refinement release carries no licence file; we rely on its status as a US-Government work.
 
@@ -439,16 +535,16 @@ All of this is CPU-only and needs no account or paid service.
 git clone https://github.com/SaltyTaro/neuroforecast && cd neuroforecast
 pip install -r tools/requirements-neuroforecast.txt
 python -X utf8 -B tools/neuroforecast_triage_v2.py --input examples/v2/external_20160120_day5_day7.csv
-python -X utf8 -B tools/verify_published_numbers.py        # 148 published numbers against the evidence
+python -X utf8 -B tools/verify_published_numbers.py        # 209 published numbers against the evidence
 python -X utf8 -B -m unittest discover -s tests -v         # includes exact replays of both sealed tests
-node tests/test_web_triage_v2.mjs                          # browser port against Python, every sealed condition
+node tests/test_web_triage_v2.mjs                          # browser port against Python, 1,228 conditions
 ```
 
-To re-run the external test from source, use `tools/fetch_epa_refinement.py`, which downloads the pinned EPA files (about 3 MB) and verifies their checksums. Then run `tools/reproduce_external.py` with `prepare`, `develop`, `freeze`, `external --unseal` and `audit`. `develop` takes about three minutes and is byte-reproducible on Windows. Elsewhere, compare file contents, because CSV line endings differ.
+The external test itself ran with the exact versions in `tools/requirements-external-test.txt`. To re-run it from source, use `tools/fetch_epa_refinement.py`, which downloads the pinned EPA files (about 3 MB) and verifies their checksums. Then run `tools/reproduce_external.py` with `prepare`, `develop`, `freeze`, `external --unseal` and `audit`. `develop` takes about three minutes and is byte-reproducible on Windows. Elsewhere, compare file contents, because CSV line endings differ.
 
 The v1 gate reproduces from the v1 archive with `tools/fetch_epa_data.py` and `tools/neuroforecast_gate.py`.
 
-The repository ships every protocol, lock file, model, prepared input and per-case output of both sealed tests.
+The repository ships every protocol, lock file, model, prepared input and per-case output of both sealed tests. `notebooks/neuroforecast_v2_walkthrough.ipynb` runs the verifier, the tool and both sealed tests in about a minute, with its outputs saved.
 
 ---
 
