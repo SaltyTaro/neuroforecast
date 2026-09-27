@@ -1,60 +1,55 @@
-# NeuroForecast — day-7 trust triage for neuronal network assays
+# NeuroForecast: day-7 forecasting and trust triage for neuronal network assays
 
 **Submission category: Tool & Platform.** AI4S Open Innovation: AI for Life Science (5th Pazhou Algorithm Competition).
 
-A researcher running a chemical-exposure study on microelectrode arrays measures network activity days before the cultures finish developing. This tool reads the **day-7** wells and their plate controls and answers three questions that have to be answered on day 7, not afterwards:
+Neuronal networks grown on microelectrode arrays (MEAs) are recorded at days 5, 7, 9 and 12 while a chemical acts on them. This is the functional assay of the OECD developmental-neurotoxicity in-vitro battery, and the readout that neural organ chips produce.
 
-1. **Can I trust today's measurement?** A batch-level quality verdict from the day-7 controls alone.
-2. **Can the day-12 outcome be forecast for this condition at all?** A per-condition trust verdict, with an interval, beside the simple comparators.
-3. **Where should a limited review budget go?** Two ranked lists, one restricted to conditions that have barely moved by day 7 — where the early readout carries no information.
+At the **day-7** recording, this tool answers three questions from day-5 and day-7 wells alone:
 
-## The headline result, stated first
+1. **Is this batch's reference usable?** A batch quality verdict from the day-7 untreated controls.
+2. **What will day 12 show?** A forecast with an 80% interval, always printed beside the "carry day 7 forward" value.
+3. **Can that forecast be trusted?** A per-condition verdict that declines the conditions it cannot predict.
 
-We sealed three experiment dates (224 conditions, 32 chemicals absent from training) before any modelling, wrote the success criteria into a hashed protocol, and scored them **once**.
+## Two sealed tests
 
-**The learned forecast lost.** Carrying the day-7 readout forward was more accurate than our model: date-macro MAE **0.6088 versus 0.7716**. We do not claim a forecasting advantage over simple methods, and the tool prints the persistence column beside every forecast.
+Each test was sealed before modelling, with the criteria hashed in advance, and scored once:
 
-What did generalize to those unseen batches and chemicals:
+| Sealed test | Batches | Conditions | Forecast MAE | Carry day 7 forward |
+| --- | ---: | ---: | ---: | ---: |
+| 1. Three later batches, v1 model | 3 | 224 | 0.7716 | **0.6088**: the forecast **lost** |
+| 2. Earlier batches (2014–2016), 105 chemicals never seen, v2 model | 24 | 927 | **0.735**: the forecast **won** | 0.980 |
+
+In test 2, the v2 forecast had 25% lower error than carrying day 7 forward, and was better on 19 of 24 batches. The paired batch interval runs from −0.40 to −0.12.
 
 | Component | Held-out evidence |
 | --- | --- |
-| **Trust verdict** (day-7 difficulty model) | Declines 14% of conditions that carry **51% of all forecast error**. Retained-case MAE **0.446** versus **0.784** for all conditions. It improves persistence too (0.433 versus 0.595), so the verdict is useful whichever predictor you use. A zero-parameter rule that declines the most extreme forecasts does about as well (0.456), so the credit is for abstaining, not for the learned model. |
-| **Measurement-quality flag** | On 20171004 every plate had a day-7 control median of **zero** network spikes; the cultures had not begun firing when the input was taken. A threshold fixed on development fired on all 84 of that batch's conditions and on no others — before any day-12 data existed. That is the batch where the forecast collapsed. |
-| **Early-warning ranking** | Among conditions still quiet at day 7, a 20% review budget found **6 of 10** later large changes; ranking by the day-7 change found **0**; chance is 2.1; flagging the highest doses first finds 3.6. |
-| **Prediction intervals** | Observed **71.4%** coverage at a nominal 80% level — a real shortfall under batch shift, reported as one. |
+| **Trust verdict** | Declining the least predictable 15% of conditions cut error on the rest by **27%** for the forecast and **30%** for carry-forward. Declined conditions had 3.5 times the error of kept ones. In test 1 it declined 14% of conditions, which carried 51% of the error. |
+| **Batch quality verdict** | In test 1, every plate of one batch had silent day-7 controls. A threshold fixed on development flagged all 84 of that batch's conditions, and no others, before any day-12 data existed. No batch in test 2 had silent controls, so the flag rests on this one event. |
+| **Intervals** | Coverage was 70% at a nominal 80% in test 2 (71% in test 1). This is a stated shortfall under batch shift. |
+| **Withdrawn** | Test 1 showed an early-warning ranking for conditions still quiet at day 7; test 2 did not replicate it. A day-7 chemical-level call reached 89.1% agreement with EPA's final call, short of its pre-registered 90%. |
 
-**Technical report: [docs/technical_report.md](docs/technical_report.md)** — problem, data, method, protocol, both evaluations, the failure analysis, the tool, limitations and reproduction. Full reserve numbers per date: [docs/neuroforecast_reserve_results.md](docs/neuroforecast_reserve_results.md).
+**Technical report: [docs/technical_report.md](docs/technical_report.md).** Results in full:
+- test 1: [docs/neuroforecast_reserve_results.md](docs/neuroforecast_reserve_results.md)
+- test 2: [docs/neuroforecast_external_results.md](docs/neuroforecast_external_results.md)
+- test 2 protocol: [experiments/neuroforecast_v2_protocol.json](experiments/neuroforecast_v2_protocol.json)
 
 ## Use it in a browser
 
-**<https://saltytaro.github.io/neuroforecast/app/>** — no install, no account, no upload. The models run
-in the page: three Extra Trees forests are shipped as 2.7 MB of typed arrays and evaluated in JavaScript,
-so a batch is triaged entirely on your machine.
+**<https://saltytaro.github.io/neuroforecast/app/>**. There is no install, no account and no upload. The forests are shipped as typed arrays and run on your machine.
 
-Open with any of the three sealed-reserve batches, or drop in your own day-7 CSV. The page shows the
-batch quality verdict, a 48-well plate map of day-7 activity with the untreated controls outlined, a
-chart of the forecast against the "carry day 7 forward" diagonal, and the ranked review lists. Day-9 and
-day-12 rows are rejected on load.
-
-The browser port is not a reimplementation that can drift: `tests/test_web_triage.mjs` runs it over all
-224 sealed-reserve conditions and compares every forecast, difficulty score, interval bound, trust
-verdict and quality flag against the audited Python outputs — agreement to 8e-08, with the build failing
-above 1e-06.
+Open a held-out batch from 2016, or the collapsed batch, or drop in your own CSV of day-5 and day-7 wells. `tests/test_web_triage_v2.mjs` replays every sealed condition through the JavaScript port and fails if any output differs from Python by more than 1e-6.
 
 ## Run it from the command line
 
-Python 3.14 on CPU; no GPU, no paid service, no account. Pinned packages in [tools/requirements-neuroforecast.txt](tools/requirements-neuroforecast.txt).
+Python 3.14 on CPU, with no GPU, paid service or account. Pinned packages are in [tools/requirements-neuroforecast.txt](tools/requirements-neuroforecast.txt).
 
 ```bash
 pip install -r tools/requirements-neuroforecast.txt
-python -X utf8 -B tools/neuroforecast_triage.py --input examples/reserve_20171011_usable_day5_day7.csv
+python -X utf8 -B tools/neuroforecast_triage_v2.py --input examples/v2/external_20160120_day5_day7.csv
+python -X utf8 -B tools/neuroforecast_triage_v2.py --input examples/v2/reserve_20171004_low_quality_day5_day7.csv
 ```
 
-Both example inputs are real day-7 wells from the sealed reserve — chemicals and batches the shipped models never saw. The first passes quality; the second is the batch whose cultures had not started firing:
-
-```bash
-python -X utf8 -B tools/neuroforecast_triage.py --input examples/reserve_20171004_low_quality_day5_day7.csv
-```
+The first example is a batch from test 2 that the model never saw. The second is the batch whose cultures had not started firing by day 7:
 
 ```
 Batch 20171004: 84 conditions, day-7 reference activity 0.0 network spikes
@@ -62,75 +57,69 @@ Batch 20171004: 84 conditions, day-7 reference activity 0.0 network spikes
   forecasts here are unreliable and a day-12 measurement is recommended
 ```
 
-Day-5 rows are optional; day-9 and day-12 rows are **rejected** by the entry point, so a forecast cannot be made with information the researcher would not have. Write results with `--output table.csv --summary batch.json`.
+Day-9 and day-12 rows are **rejected**, so a forecast cannot use information the researcher would not have at day 7. Write results with `--output table.csv --summary batch.json`.
 
-## Reproduce it in a notebook
+The v1 tool that was scored in test 1 is kept unchanged as `tools/neuroforecast_triage.py`, with its bundle in `models/`.
 
-[`notebooks/neuroforecast_reproduction.ipynb`](notebooks/neuroforecast_reproduction.ipynb) walks through the whole result in nine cells: it clones this repository, checks every published number against the evidence, runs the tool on both sealed-reserve batches, reproduces the per-date comparison that the learned model lost, and shows what the trust verdict recovered. Parts 1–5 need no download. It runs on Kaggle with **Internet** enabled in the notebook settings, and locally in any Jupyter environment.
-
-## Reproduce the evaluation
-
-Download the public EPA source archive (~160 MB) and verify its checksum, then run the four stages:
+## Verify and reproduce
 
 ```bash
-python -X utf8 -B tools/fetch_epa_data.py --out raw/epa_nfa_raw.zip
-python -X utf8 -B tools/neuroforecast_gate.py --stage prepare --raw raw/epa_nfa_raw.zip --out runs/gate
-python -X utf8 -B tools/neuroforecast_gate.py --stage develop --out runs/gate
-python -X utf8 -B tools/neuroforecast_gate.py --stage reserve --unseal --out runs/gate
-python -X utf8 -B tools/neuroforecast_gate.py --stage audit --raw raw/epa_nfa_raw.zip --out runs/gate
-python -X utf8 -B tools/report_neuroforecast_gate.py --out runs/gate
+python -X utf8 -B tools/verify_published_numbers.py        # recomputes all 148 published numbers from the evidence tables
+python -X utf8 -B -m unittest discover -s tests -v         # exact replays of both sealed tests, input rules, cohort separation
+node tests/test_web_triage_v2.mjs                          # browser port against Python on every sealed condition
 ```
 
-`develop` takes about 8.4 minutes single-threaded and is bit-reproducible: two independent runs produced identical hashes for every prepared file, prediction file, interval file, flag file and fold record. `reserve` takes 12 seconds, requires the unchanged development lock and the explicit `--unseal`, and refuses to run twice.
+To re-run test 2 from source, start with `tools/fetch_epa_refinement.py`, which downloads the pinned EPA files (about 3 MB) and verifies their checksums. Then run `tools/reproduce_external.py` with the stages `prepare`, `develop`, `freeze`, `external --unseal` and `audit`.
 
-```bash
-python -X utf8 -B -m unittest discover -s tests -v
-python -X utf8 -B tools/verify_published_numbers.py
-node tests/test_web_triage.mjs
-```
+`develop` takes about three minutes. It is **byte-reproducible**: a fresh run from this repository reproduces every prepared file, every out-of-fold prediction and all five models exactly.
 
-26 tests, including end-to-end checks that the shipped tool reproduces the audited reserve forecasts, intervals, trust verdicts and quality flags to 1e-12, and that removing day-5 rows changes none of them. The second command recomputes all 33 headline numbers in this README and the reports directly from `evaluation/*.csv`, at the precision each is quoted to, and fails if any of them drifts from the evidence.
+To re-run test 1, use `tools/fetch_epa_data.py` and `tools/neuroforecast_gate.py`. The stages are `prepare`, `develop`, `reserve --unseal` and `audit`.
+
+[`notebooks/neuroforecast_reproduction.ipynb`](notebooks/neuroforecast_reproduction.ipynb) walks through the v1 result in nine cells.
 
 ## How the evaluation was kept honest
 
-- **Batches and chemicals are both held out.** Every fold leaves out one experiment date *and* purges that date's chemicals from training, so no chemical is ever seen at another dose on another plate.
-- **The reserve was sealed before modelling.** Three later dates, 32 chemical identities purged from development everywhere, scored once, every date reported.
-- **The criteria were hashed before scoring.** [docs/neuroforecast_gate_protocol.md](docs/neuroforecast_gate_protocol.md) records what counts as success, the operating points, and a dated amendment made before unsealing.
-- **Selection optimism is measured.** A nested leave-one-date-out estimate of the whole selection procedure gives **1.133**, worse than persistence — reported beside the post-selection 0.937.
-- **Leakage is tested, not asserted.** The audit removes every observation after day 7, then mutates every future value and every future control, and requires the model inputs to be bit-identical.
-- **Failures are kept.** The worst batch, the collapsed control plate, and the failed criterion are in the reports; nothing was excluded to improve a number.
+- **Batches and chemicals are both held out.** Every fold leaves out one batch *and* purges that batch's chemicals from training. In test 2, the 105 primary chemicals appear nowhere in development.
+- **Sealed twice, scored once each.** The criteria were hashed before development, the thresholds were locked before unsealing, and the scoring code was frozen with the hashes of the unchanged v1 tool.
+- **Selection optimism is measured.** A nested estimate of the whole selection procedure is reported beside the selected model: 1.133 for v1, 0.770 for v2.
+- **Leakage is tested, not asserted.** Future values and controls are mutated and model inputs must stay bit-identical. No external condition, date or chemical reached any fit.
+- **Failures stay in.** The lost test, the withdrawn claims and the under-covering intervals are in the reports. Nothing was excluded to improve a number.
 
 ## Data and licences
 
-Source: EPA network formation assay, [DOI 10.23719/1503191](https://doi.org/10.23719/1503191), accompanying [Shafer et al., 2019](https://doi.org/10.1093/toxsci/kfz052). Rat cortical cultures on microelectrode arrays, measured at days 5, 7, 9 and 12 under continuing chemical exposure. EPA-produced data are in the U.S. public domain under the [ScienceHub licence statement](https://pasteur.epa.gov/license/sciencehub-license.html) unless otherwise specified; citing the data and the original study does not imply EPA endorsement. Archive SHA-256 `fd92c1339bb764ee9b96c935bf31867c12640505e5c3f065ad5956a7eea08cfb`.
+**Test 1 and v1 development** use the EPA network formation assay archive, [DOI 10.23719/1503191](https://doi.org/10.23719/1503191), with [Shafer et al., 2019](https://doi.org/10.1093/toxsci/kfz052). It is in the US public domain under the [ScienceHub licence statement](https://pasteur.epa.gov/license/sciencehub-license.html).
 
-After removing 96 duplicate physical rows: 17,128 recordings, 4,320 physical wells, 17 experiment dates, 136 identified substances. Three conflicting identities and three unmapped names are excluded; silent wells and missing burst measurements are retained. Development: 819 dose-condition cases, 101 substances, 12 dates. Reserve: 224 conditions, 32 substances, 3 dates.
+**Test 2 and v2 development** use the EPA refinement release, [USEPA/CompTox-DNT-NFA-Refinement](https://github.com/USEPA/CompTox-DNT-NFA-Refinement) at commit `01adf3e`. It re-processes the same recordings and adds 28 dates from 2014–2016. The repository has no licence file; we treat it as a US-Government work and cite it to EPA.
 
-Our code is MIT licensed ([LICENSE](LICENSE)). The shipped models are trained only on the public EPA development data.
+Both releases are rat cortical cultures on 48-well MEA plates. Our code is MIT licensed ([LICENSE](LICENSE)).
 
 ## What this does not establish
 
-Rat cortical cultures in multi-well plates are not perfused organ chips, human cells, or clinical toxicity. Nothing here validates saved experimental days or wells, irreversibility, recovery after washout, or chip performance. The reserve is three later batches from one public study, not broad external validity. Forecast magnitudes are not calibrated probabilities. Early neural forecasting, MEA chemical screening, and toxicological tipping-point analysis are established prior work — see [docs/round3_topic_selection.md](docs/round3_topic_selection.md) for the prior-art assessment that bounds our claim. Extra Trees, control normalization and split-conformal prediction are standard methods used as implementation choices; the contribution is the triage workflow and the evaluation protocol around it.
+This work does not establish performance on perfused organ chips, human cells, or clinical toxicity. It validates no saved recording days, wells or cost. The two tests come from one EPA program and one laboratory, and dates are not verified independent donors.
+
+The v2 gain over v1 comes from refitting on more batches, not from a new model class: the v1 architecture refit on the same data did as well. Forecast magnitudes are not probabilities. Extra Trees, control normalization, conformal intervals and abstention are standard methods; the contribution is the day-7 triage workflow and the evaluation around it.
 
 ## Repository map
 
 | Path | What it is |
 | --- | --- |
-| `tools/neuroforecast_triage.py` | The tool: day-7 wells in, quality verdict, forecasts with comparators, trust verdicts and ranked lists out |
-| `tools/neuroforecast_gate.py` | The validation gate: prepare, develop, reserve (once), audit |
-| `tools/neuroforecast_data.py` | Frozen data core: audited loading, case construction, purged splits |
-| `tools/neuroforecast_benchmark.py`, `tools/neuroforecast_representation.py` | Frozen selection benchmark and the control-relative representation |
-| `experiments/*.json` | The three hashed protocols |
-| `models/` | Final models trained on the 819 development cases, the development lock, and the reserve summary |
-| `examples/` | Two real day-7 inputs from the sealed reserve |
-| `docs/technical_report.md` | The technical report |
-| `docs/` | Protocol, development results, reserve results, project brief, prior-art assessment |
-| `evaluation/` | Audited per-case predictions, intervals and flags for both stages, so every number recomputes without the source archive |
+| `tools/neuroforecast_triage_v2.py` | The v2 tool: day-5/7 wells in; batch verdict, forecast with interval and comparator, trust verdict out |
+| `tools/neuroforecast_v2.py`, `tools/neuroforecast_v2_external.py` | Test 2: prepare and develop; then freeze, score once, audit (locked bytes) |
+| `tools/external_nfa_intake.py`, `tools/external_nfa_equivalence.py` | The adapter for the EPA refinement release, and its check on known data |
+| `tools/reproduce_external.py`, `tools/fetch_epa_refinement.py` | Re-run test 2 from a fresh clone |
+| `tools/neuroforecast_triage.py`, `tools/neuroforecast_gate.py` | The v1 tool and the v1 gate (test 1), unchanged |
+| `tools/neuroforecast_data.py`, `tools/neuroforecast_benchmark.py`, `tools/neuroforecast_representation.py` | Frozen cores, imported unchanged by everything |
+| `experiments/*.json` | The four hashed protocols |
+| `models/v2/`, `models/` | The v2 models (test 2), and the v1 bundle (test 1) |
+| `evaluation/` | Per-case evidence for both tests, the v2 lock files, and the prepared inputs, so every number recomputes without a download |
 | `tools/verify_published_numbers.py` | Recomputes every published number from those tables |
-| `app/` | The browser tool: page, the ported pipeline, and the forests as typed arrays |
-| `notebooks/` | A nine-cell walkthrough that clones, verifies and runs everything |
+| `app/` | The browser tool |
+| `examples/v2/`, `examples/` | Real day-5/7 inputs for the v2 and v1 tools |
+| `docs/` | Technical report, protocols and results for both tests, prior-art assessment |
 | `docs/history/` | Two earlier approaches from this campaign that failed their own gates, kept for disclosure |
 
 ## Disclosure
 
-Earlier rounds of this campaign tested two different approaches — adaptive dose selection from cell-image profiles, and vessel-patch selection for an oxygen-transport model — and both failed their pre-registered gates. Their reports are in `docs/history/`. Claude (Anthropic) was used as a coding and drafting assistant throughout; all numbers in this repository come from the scripts here, run on public data, and every claim above is checked against a saved evaluation output.
+Earlier rounds of this campaign tested two other approaches, adaptive dose selection from cell-image profiles and vessel-patch selection for an oxygen-transport model. Both failed their pre-registered gates, and their reports are in `docs/history/`.
+
+Claude (Anthropic) was used as a coding, analysis and drafting assistant throughout. Every number in this repository comes from the scripts here, run on public data, and is checked against saved evidence.

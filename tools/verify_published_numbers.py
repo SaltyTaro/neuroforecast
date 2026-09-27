@@ -93,6 +93,241 @@ PUBLISHED = {
 }
 
 
+EXTERNAL = {
+    # The sealed external test (scored once, September 27, 2026); primary cohort unless stated.
+    "external primary conditions": 927,
+    "external primary dates": 24,
+    "external primary unseen chemicals": 105,
+    "external secondary conditions": 56,
+    "external v2 date-macro MAE": 0.735,
+    "external persistence date-macro MAE": 0.980,
+    "external frozen v1 date-macro MAE": 0.941,
+    "external control-reference date-macro MAE": 1.403,
+    "external v1 refit date-macro MAE": 0.706,
+    "external v2 dates better than persistence": 19,
+    "external frozen v1 dates better than persistence": 14,
+    "external v2 minus persistence interval low": -0.396,
+    "external v2 minus persistence interval high": -0.123,
+    "external frozen v1 minus persistence interval low": -0.130,
+    "external frozen v1 minus persistence interval high": 0.052,
+    "external v2 relative error reduction vs persistence": 0.25,
+    "external v2 declined": 135,
+    "external v2 kept MAE": 0.541,
+    "external v2 all MAE": 0.742,
+    "external v2 kept reduction": 0.27,
+    "external persistence kept MAE (v2 verdict)": 0.655,
+    "external persistence all MAE": 0.932,
+    "external persistence kept reduction (v2 verdict)": 0.30,
+    "external v1 declined": 120,
+    "external v1 kept MAE": 0.640,
+    "external v1 all MAE": 0.907,
+    "external v1 kept reduction": 0.29,
+    "external persistence kept MAE (v1 verdict)": 0.717,
+    "external persistence kept reduction (v1 verdict)": 0.23,
+    "external v1 extremity rule kept MAE": 0.641,
+    "external v2 risk-coverage area, difficulty": 0.542,
+    "external v2 risk-coverage area, extremity": 0.562,
+    "external early-quiet positives": 65,
+    "external early-quiet detected, v1": 16.0,
+    "external early-quiet detected, v2 locked score": 14.0,
+    "external early-quiet detected, highest dose": 16.6,
+    "external early-quiet detected, day-7 magnitude": 21.0,
+    "external early-quiet detected, chance": 14.8,
+    "external v1 coverage at nominal 0.80": 0.666,
+    "external v2 coverage at nominal 0.80": 0.702,
+    "external v2 coverage at nominal 0.90": 0.812,
+    "external decision samples": 106,
+    "external decision samples active": 72,
+    "external decision EPA day-7 call agreement": 0.877,
+    "external decision early share": 0.953,
+    "external decision early agreement": 0.891,
+    "external decision early agreement, secondary reference": 0.960,
+    "external pooled day-7/day-12 correlation": 0.84,
+    "external large-change share": 0.275,
+    "reserve large-change share": 0.138,
+    "v2 development pooled day-7/day-12 correlation": 0.66,
+    "v2 development product date-macro MAE": 0.726,
+    "v2 development persistence date-macro MAE": 1.064,
+    "v2 development nested selection estimate": 0.770,
+    "v2 development conditions": 1260,
+    # Figures quoted in the rewritten technical report (September 27, 2026).
+    "external v2 declined MAE": 1.921,
+    "external v2 declined-to-kept error ratio": 3.5,
+    "external v2 share of error in declined conditions": 0.38,
+    "external v2 kept median absolute error": 0.41,
+    "external v2 kept median fold error": 1.33,
+    "external v2 share of conditions kept": 0.85,
+    "external v2 fewest declined in a batch": 1,
+    "external v2 most declined in a batch": 12,
+    "external v2 mean declined per batch": 5.6,
+    "external v2 batches where persistence won": 5,
+    "external secondary v2 date-macro MAE": 0.724,
+    "external secondary persistence date-macro MAE": 0.978,
+    "external 20160120 v2 date-macro MAE": 0.286,
+    "external 20160120 persistence date-macro MAE": 0.622,
+    "v2 development v1 refit date-macro MAE": 0.745,
+    "v2 development anchored residual date-macro MAE": 0.731,
+    "v2 development batch blend date-macro MAE": 0.742,
+    "v2 development anchored residual with batch summaries date-macro MAE": 0.810,
+    "v2 development control-reference date-macro MAE": 1.385,
+    "v2 development nested choices of the small model": 6,
+    "v2 development nested choices of the blend": 9,
+    "v2 development risk-coverage area, difficulty": 0.504,
+    "v2 development risk-coverage area, extremity": 0.513,
+    # Post hoc control-subsampling sensitivity (evaluation/v2_posthoc/control_subsampling.json).
+    "subsampling 1 control v2 MAE": 0.733,
+    "subsampling 1 control persistence MAE": 1.118,
+    "subsampling 1 control declined share": 0.18,
+    "subsampling 1 control false batch verdicts": 1.2,
+    "subsampling 2 controls v2 MAE": 0.738,
+    "subsampling 2 controls persistence MAE": 0.985,
+    "subsampling 2 controls declined share": 0.15,
+    "subsampling 2 controls false batch verdicts": 0,
+    "subsampling 4 controls v2 MAE": 0.733,
+    "subsampling 4 controls persistence MAE": 0.977,
+    "subsampling 4 controls declined share": 0.12,
+    "subsampling 4 controls false batch verdicts": 0,
+}
+
+
+def paired_interval(frame: pd.DataFrame, a: str, b: str) -> list[float]:
+    """Same resampling as the scoring code: 10000 paired date resamples, seed 20260927."""
+    la = gate.date_losses(frame.assign(prediction=frame[a]))
+    lb = gate.date_losses(frame.assign(prediction=frame[b]))
+    index = np.random.default_rng(20260927).integers(len(la), size=(10000, len(la)))
+    diff = la.to_numpy()[index].mean(axis=1) - lb.to_numpy()[index].mean(axis=1)
+    return np.quantile(diff, [0.025, 0.975]).tolist()
+
+
+def external(found: dict) -> None:
+    sys.path.insert(0, str(ROOT / "tools"))
+    import neuroforecast_v2 as v2
+
+    read = lambda p: pd.read_csv(ROOT / p, dtype={"identity": str, "spid": str})
+    a_all, b_all = read("evaluation/external/arm_a_cases.csv"), read("evaluation/external/arm_b_cases.csv")
+    keep = lambda f: f.loc[f.primary.astype(bool) & f.usable.astype(bool)].reset_index(drop=True)
+    a, b = keep(a_all), keep(b_all)
+    a["persistence"], b["persistence"] = a.day7, b.day7
+    found["external primary conditions"] = len(b)
+    found["external primary dates"] = int(b.date.nunique())
+    found["external primary unseen chemicals"] = int(b.identity.nunique())
+    found["external secondary conditions"] = int((~b_all.primary.astype(bool) & b_all.usable.astype(bool)).sum())
+    losses = {name: gate.date_losses(frame.assign(prediction=frame[col])) for name, frame, col in
+              [("v2", b, "prediction"), ("persistence", b, "persistence"), ("v1", a, "prediction"), ("refit", b, "v1_refit")]}
+    losses["control"] = gate.date_losses(b.assign(prediction=0.0))
+    found["external v2 date-macro MAE"] = float(losses["v2"].mean())
+    found["external persistence date-macro MAE"] = float(losses["persistence"].mean())
+    found["external frozen v1 date-macro MAE"] = float(losses["v1"].mean())
+    found["external control-reference date-macro MAE"] = float(losses["control"].mean())
+    found["external v1 refit date-macro MAE"] = float(losses["refit"].mean())
+    found["external v2 dates better than persistence"] = int((losses["v2"] < losses["persistence"]).sum())
+    found["external frozen v1 dates better than persistence"] = int((losses["v1"] < losses["persistence"]).sum())
+    lo, hi = paired_interval(b, "prediction", "persistence")
+    found["external v2 minus persistence interval low"], found["external v2 minus persistence interval high"] = lo, hi
+    lo, hi = paired_interval(a, "prediction", "persistence")
+    found["external frozen v1 minus persistence interval low"], found["external frozen v1 minus persistence interval high"] = lo, hi
+    found["external v2 relative error reduction vs persistence"] = float(1 - losses["v2"].mean() / losses["persistence"].mean())
+
+    def kept(frame, mask, column):
+        error = abs(frame[column] - frame.target).to_numpy()
+        return float(error[mask].mean()), float(error.mean())
+
+    keep_b = ~b.declined.astype(bool).to_numpy()
+    found["external v2 declined"] = int((~keep_b).sum())
+    found["external v2 kept MAE"], found["external v2 all MAE"] = kept(b, keep_b, "prediction")
+    found["external v2 kept reduction"] = 1 - found["external v2 kept MAE"] / found["external v2 all MAE"]
+    found["external persistence kept MAE (v2 verdict)"], found["external persistence all MAE"] = kept(b, keep_b, "persistence")
+    found["external persistence kept reduction (v2 verdict)"] = 1 - found["external persistence kept MAE (v2 verdict)"] / found["external persistence all MAE"]
+    keep_a = a.forecast_trusted.astype(bool).to_numpy()
+    found["external v1 declined"] = int((~keep_a).sum())
+    found["external v1 kept MAE"], found["external v1 all MAE"] = kept(a, keep_a, "prediction")
+    found["external v1 kept reduction"] = 1 - found["external v1 kept MAE"] / found["external v1 all MAE"]
+    found["external persistence kept MAE (v1 verdict)"], _ = kept(a, keep_a, "persistence")
+    found["external persistence kept reduction (v1 verdict)"] = 1 - found["external persistence kept MAE (v1 verdict)"] / found["external persistence all MAE"]
+    order = np.argsort(-abs(a.prediction.to_numpy()), kind="stable")
+    extreme = np.ones(len(a), dtype=bool)
+    extreme[order[: int((~keep_a).sum())]] = False
+    found["external v1 extremity rule kept MAE"], _ = kept(a, extreme, "prediction")
+    error_b = abs(b.prediction - b.target).to_numpy()
+    found["external v2 risk-coverage area, difficulty"] = v2.risk_coverage(b.trust_score.to_numpy(), error_b)
+    found["external v2 risk-coverage area, extremity"] = v2.risk_coverage(abs(b.prediction.to_numpy()), error_b)
+
+    warn = lambda frame, score: v2.expected_detections(frame, score)
+    found["external early-quiet positives"] = warn(b, abs(b.prediction.to_numpy()))["positives"]
+    found["external early-quiet detected, v1"] = warn(a, abs(a.prediction.to_numpy()))["expected_detected"]
+    found["external early-quiet detected, v2 locked score"] = warn(b, abs(b.v1_refit.to_numpy()))["expected_detected"]
+    found["external early-quiet detected, highest dose"] = warn(b, b.dose.to_numpy(dtype=float))["expected_detected"]
+    found["external early-quiet detected, day-7 magnitude"] = warn(b, abs(b.day7.to_numpy()))["expected_detected"]
+    found["external early-quiet detected, chance"] = warn(b, b.dose.to_numpy(dtype=float))["random_expected"]
+    inside = lambda frame, lo, hi: float(((frame.target >= frame[lo]) & (frame.target <= frame[hi])).mean())
+    found["external v1 coverage at nominal 0.80"] = inside(a, "forecast_low", "forecast_high")
+    found["external v2 coverage at nominal 0.80"] = inside(b, "low_0.8", "high_0.8")
+    found["external v2 coverage at nominal 0.90"] = inside(b, "low_0.9", "high_0.9")
+
+    units = pd.read_csv(ROOT / "evaluation/external/decision_units.csv")
+    reference = units.reference_active.astype(bool)
+    early = units.call != "continue"
+    agree = lambda calls, ref: float((calls[early] == np.where(ref[early], "active", "inactive")).mean())
+    found["external decision samples"] = len(units)
+    found["external decision samples active"] = int(reference.sum())
+    day7_call = pd.Series(np.where(units["div7.hitsum"] >= 1, "active", "inactive"))
+    found["external decision EPA day-7 call agreement"] = float((day7_call == np.where(reference, "active", "inactive")).mean())
+    found["external decision early share"] = float(early.mean())
+    found["external decision early agreement"] = agree(units.call, reference)
+    found["external decision early agreement, secondary reference"] = agree(units.call, units["auc.hitsum"] >= 3)
+
+    reserve = pd.read_csv(ROOT / "evaluation/reserve_intervals.csv", dtype={"identity": str})
+    found["external pooled day-7/day-12 correlation"] = float(np.corrcoef(b.day7, b.target)[0, 1])
+    found["external large-change share"] = float((abs(b.target) >= 1).mean())
+    found["reserve large-change share"] = float((abs(reserve.target) >= 1).mean())
+    dev = read("evaluation/v2_development/dev_oof_predictions.csv")
+    dev = dev.loc[dev.usable.astype(bool)]
+    found["v2 development pooled day-7/day-12 correlation"] = float(np.corrcoef(dev.day7, dev.target)[0, 1])
+    found["v2 development product date-macro MAE"] = gate.macro_mae(dev.assign(prediction=dev.pred__small_refit))
+    found["v2 development persistence date-macro MAE"] = gate.macro_mae(dev.assign(prediction=dev.day7))
+    found["v2 development nested selection estimate"] = gate.macro_mae(dev.assign(prediction=dev.pred__nested))
+    found["v2 development conditions"] = len(dev)
+
+    declined = b.declined.astype(bool).to_numpy()
+    error = abs(b.prediction - b.target).to_numpy()
+    found["external v2 declined MAE"] = float(error[declined].mean())
+    found["external v2 declined-to-kept error ratio"] = float(error[declined].mean() / error[~declined].mean())
+    found["external v2 share of error in declined conditions"] = float(error[declined].sum() / error.sum())
+    found["external v2 kept median absolute error"] = float(np.median(error[~declined]))
+    found["external v2 kept median fold error"] = float(2 ** np.median(error[~declined]))
+    found["external v2 share of conditions kept"] = float((~declined).mean())
+    per_batch = b.assign(d=declined).groupby("date").d.sum()
+    found["external v2 fewest declined in a batch"] = int(per_batch.min())
+    found["external v2 most declined in a batch"] = int(per_batch.max())
+    found["external v2 mean declined per batch"] = float(per_batch.mean())
+    found["external v2 batches where persistence won"] = int((losses["persistence"] < losses["v2"]).sum())
+    secondary = b_all.loc[~b_all.primary.astype(bool) & b_all.usable.astype(bool)]
+    found["external secondary v2 date-macro MAE"] = gate.macro_mae(secondary)
+    found["external secondary persistence date-macro MAE"] = gate.macro_mae(secondary.assign(prediction=secondary.day7))
+    found["external 20160120 v2 date-macro MAE"] = float(losses["v2"].loc[20160120])
+    found["external 20160120 persistence date-macro MAE"] = float(losses["persistence"].loc[20160120])
+    dev_all = read("evaluation/v2_development/dev_oof_predictions.csv")
+    dev_all = dev_all.loc[dev_all.usable.astype(bool)]
+    for label, column in [("v1 refit", "v1_refit"), ("anchored residual", "anchored_residual"), ("batch blend", "batch_blend"),
+                          ("anchored residual with batch summaries", "anchored_residual_batch"), ("control-reference", "control_reference")]:
+        found[f"v2 development {label} date-macro MAE"] = gate.macro_mae(dev_all.assign(prediction=dev_all[f"pred__{column}"]))
+    # Selection statistics come from the hashed development results (checked against the lock by the tests).
+    results = json.loads((ROOT / "evaluation/v2_development/development_results.json").read_text(encoding="utf-8"))
+    choices = list(results["nested_selected_by_fold"].values())
+    found["v2 development nested choices of the small model"] = choices.count("small_refit")
+    found["v2 development nested choices of the blend"] = choices.count("batch_blend")
+    found["v2 development risk-coverage area, difficulty"] = results["trust_aurc"]["sigma_v2"]
+    found["v2 development risk-coverage area, extremity"] = results["trust_aurc"]["extremity"]
+    sub = json.loads((ROOT / "evaluation/v2_posthoc/control_subsampling.json").read_text(encoding="utf-8"))
+    by_k = {str(r["controls_per_plate"]): r for r in sub["summary"]}
+    for k, label in [("1", "1 control"), ("2", "2 controls"), ("4", "4 controls")]:
+        r = by_k[k]
+        found[f"subsampling {label} v2 MAE"] = r["product_date_macro"]
+        found[f"subsampling {label} persistence MAE"] = r["persistence_date_macro"]
+        found[f"subsampling {label} declined share"] = r["declined_share"]
+        found[f"subsampling {label} false batch verdicts"] = r["low_reference_batches"] if k == "1" else int(round(r["low_reference_batches"]))
+
+
 def expected_detections(frame: pd.DataFrame, score: np.ndarray, budget: float = 0.2) -> float:
     """Early-quiet detections at the budget when tied scores are broken at random (expected value)."""
     work = frame.assign(score=score, positive=abs(frame.target) >= 1).loc[abs(frame.day7) < 0.5]
@@ -217,6 +452,8 @@ def recompute() -> dict:
 
 if __name__ == "__main__":
     found = recompute()
+    external(found)
+    PUBLISHED.update(EXTERNAL)
     failures = []
     for label, published in PUBLISHED.items():
         actual = found[label]
