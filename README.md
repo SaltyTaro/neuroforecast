@@ -1,6 +1,6 @@
 # NeuroForecast: day-7 forecasting and trust triage for neuronal network assays
 
-**Submission category: Tool & Platform.** AI4S Open Innovation: AI for Life Science (5th Pazhou Algorithm Competition).
+**Submission category: Tool & Platform.** AI4S Open Innovation: AI for Life Science (5th Pazhou Algorithm Competition). · [中文说明](README.zh.md)
 
 Neuronal networks grown on microelectrode arrays (MEAs) are recorded at days 5, 7, 9 and 12 while a chemical acts on them. This is the functional assay of the OECD developmental-neurotoxicity in-vitro battery, and the readout that neural organ chips produce.
 
