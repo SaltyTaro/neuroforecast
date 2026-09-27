@@ -63,7 +63,101 @@ PUBLISHED = {
     "development all-case MAE": 0.984,
     "development controls-disagree flagged conditions": 42,
     "development early-quiet positives": 45,
+    # Corrections of September 27, 2026: the clean-target explanation of the reserve result and the
+    # post hoc trivial baselines. All are descriptive; none changes a locked criterion.
+    "development usable-reference conditions": 777,
+    "development usable-reference product date-macro MAE": 0.7635,
+    "development usable-reference persistence date-macro MAE": 1.0571,
+    "reserve 20170920 day-7/day-12 correlation": 0.97,
+    "reserve 20171011 day-7/day-12 correlation": 0.92,
+    "reserve 20171004 day-7/day-12 correlation": 0.12,
+    "development lowest per-date day-7/day-12 correlation": 0.23,
+    "development highest per-date day-7/day-12 correlation": 0.88,
+    "reserve 20170920 day-12 slope on day 7": 1.31,
+    "reserve 20171011 day-12 slope on day 7": 1.27,
+    "reserve persistent-batch lowest forecast slope": 0.87,
+    "reserve persistent-batch highest forecast slope": 0.94,
+    "reserve unflagged product date-macro MAE": 0.629,
+    "reserve unflagged persistence date-macro MAE": 0.573,
+    "reserve 20171004 conditions with day-7 value exactly zero": 69,
+    "reserve 20171004 early-quiet conditions": 76,
+    "reserve early-quiet expected detections by persistence, random ties": 1.3,
+    "reserve early-quiet expected detections by highest dose": 3.6,
+    "development early-quiet expected detections by highest dose": 16.7,
+    "development early-quiet detected at 20% budget": 22,
+    "reserve early-quiet detections with the wrong direction": 2,
+    "reserve retained-case MAE declining the most extreme forecasts": 0.456,
+    "development retained-case MAE declining the most extreme forecasts": 0.623,
+    "reserve abstention error reduction, product": 0.43,
+    "reserve abstention error reduction, persistence": 0.27,
 }
+
+
+def expected_detections(frame: pd.DataFrame, score: np.ndarray, budget: float = 0.2) -> float:
+    """Early-quiet detections at the budget when tied scores are broken at random (expected value)."""
+    work = frame.assign(score=score, positive=abs(frame.target) >= 1).loc[abs(frame.day7) < 0.5]
+    total = 0.0
+    for _, group in work.groupby("date"):
+        k = int(np.ceil(budget * len(group)))
+        cutoff = np.sort(group.score.to_numpy())[::-1][k - 1]
+        above, tied = group[group.score > cutoff], group[group.score == cutoff]
+        total += above.positive.sum() + tied.positive.sum() * (k - len(above)) / len(tied)
+    return float(total)
+
+
+def retained_after_declining_extremes(frame: pd.DataFrame, declined: int) -> float:
+    kept = frame.assign(extremity=abs(frame.prediction)).sort_values("extremity", ascending=False).iloc[declined:]
+    return float(abs(kept.prediction - kept.target).mean())
+
+
+def post_hoc(found: dict, threshold: float) -> None:
+    development = pd.read_csv(ROOT / "evaluation/development_intervals.csv", dtype={"identity": str})
+    reserve = pd.read_csv(ROOT / "evaluation/reserve_intervals.csv", dtype={"identity": str})
+    usable = development.loc[development.day12_ctrl_median_ns >= 5]
+    found["development usable-reference conditions"] = len(usable)
+    found["development usable-reference product date-macro MAE"] = gate.macro_mae(usable)
+    found["development usable-reference persistence date-macro MAE"] = gate.macro_mae(usable.assign(prediction=usable.day7))
+
+    def correlation(group):
+        return float(np.corrcoef(group.day7, group.target)[0, 1])
+
+    by_date = {int(d): g for d, g in reserve.groupby("date")}
+    for date in [20170920, 20171011, 20171004]:
+        found[f"reserve {date} day-7/day-12 correlation"] = correlation(by_date[date])
+    development_r = [correlation(g) for _, g in development.groupby("date")]
+    found["development lowest per-date day-7/day-12 correlation"] = min(development_r)
+    found["development highest per-date day-7/day-12 correlation"] = max(development_r)
+    persistent = [by_date[20170920], by_date[20171011]]
+    found["reserve 20170920 day-12 slope on day 7"] = float(np.polyfit(by_date[20170920].day7, by_date[20170920].target, 1)[0])
+    found["reserve 20171011 day-12 slope on day 7"] = float(np.polyfit(by_date[20171011].day7, by_date[20171011].target, 1)[0])
+    forecast_slopes = [float(np.polyfit(g.day7, g.prediction, 1)[0]) for g in persistent]
+    found["reserve persistent-batch lowest forecast slope"] = min(forecast_slopes)
+    found["reserve persistent-batch highest forecast slope"] = max(forecast_slopes)
+
+    unflagged = reserve.loc[~reserve.flag_low_reference_activity.astype(bool)]
+    found["reserve unflagged product date-macro MAE"] = gate.macro_mae(unflagged)
+    found["reserve unflagged persistence date-macro MAE"] = gate.macro_mae(unflagged.assign(prediction=unflagged.day7))
+    collapsed = by_date[20171004]
+    found["reserve 20171004 conditions with day-7 value exactly zero"] = int((collapsed.day7 == 0).sum())
+    found["reserve 20171004 early-quiet conditions"] = int((abs(collapsed.day7) < 0.5).sum())
+
+    found["reserve early-quiet expected detections by persistence, random ties"] = expected_detections(reserve, abs(reserve.day7).to_numpy())
+    found["reserve early-quiet expected detections by highest dose"] = expected_detections(reserve, reserve.dose.to_numpy(dtype=float))
+    found["development early-quiet expected detections by highest dose"] = expected_detections(development, development.dose.to_numpy(dtype=float))
+    found["development early-quiet detected at 20% budget"] = early_quiet_recall(development, abs(development.prediction).to_numpy())[0]
+    quiet = reserve.loc[abs(reserve.day7) < 0.5]
+    flagged = pd.concat(g.assign(s=abs(g.prediction)).nlargest(int(np.ceil(0.2 * len(g))), "s") for _, g in quiet.groupby("date"))
+    detected = flagged.loc[abs(flagged.target) >= 1]
+    found["reserve early-quiet detections with the wrong direction"] = int((np.sign(detected.prediction) != np.sign(detected.target)).sum())
+
+    reserve_declined = int((reserve.sigma > threshold).sum())
+    development_declined = int((development.sigma > threshold).sum())
+    found["reserve retained-case MAE declining the most extreme forecasts"] = retained_after_declining_extremes(reserve, reserve_declined)
+    found["development retained-case MAE declining the most extreme forecasts"] = retained_after_declining_extremes(development, development_declined)
+    retained = reserve.sigma <= threshold
+    product_error, simple_error = abs(reserve.prediction - reserve.target), abs(reserve.day7 - reserve.target)
+    found["reserve abstention error reduction, product"] = float(1 - product_error[retained].mean() / product_error.mean())
+    found["reserve abstention error reduction, persistence"] = float(1 - simple_error[retained].mean() / simple_error.mean())
 
 
 def early_quiet_recall(frame: pd.DataFrame, score: np.ndarray, budget: float = 0.2) -> tuple[int, int]:
@@ -117,6 +211,7 @@ def recompute() -> dict:
             found["development retained conditions"] = int(retained.sum())
             flags = pd.read_csv(ROOT / "evaluation/development_flags.csv")
             found["development controls-disagree flagged conditions"] = int(flags.controls_disagree.sum())
+    post_hoc(found, threshold)
     return found
 
 

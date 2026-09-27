@@ -14,7 +14,7 @@ Three experiment dates (224 dose conditions, 32 chemicals) were sealed before an
 
 **The learned forecast lost.** Simply carrying the day-7 reading forward was more accurate than our model: date-macro mean absolute error **0.6088 versus 0.7716**. We withdraw the forecasting claim, and the tool prints the simple rule beside every forecast.
 
-Three things did transfer to those unseen batches and chemicals. A day-7 difficulty model declines 14% of conditions that carry 51% of all forecast error, halving the error of the conditions it keeps — and it improves the simple rule as well, so it is not a crutch for a weak model. A day-7 control-quality flag, thresholded on development data, identified every condition of the one batch whose cultures had not begun firing when the input was taken, before any day-12 data existed; that is precisely the batch where the forecast collapsed. And among conditions that had barely moved by day 7, ranking by forecast magnitude at a 20% review budget found 6 of 10 later large changes where ranking by the day-7 change found none.
+Three things did transfer to those unseen batches and chemicals. A day-7 abstention rule declines 14% of conditions that carry 51% of all forecast error, which cuts the error of the conditions it keeps by 43%. It improves the simple rule as well (by 27%), so it is not a crutch for a weak model. A zero-parameter rule that declines the most extreme forecasts does about as well, so the credit belongs to abstaining, not to our learned difficulty model. A day-7 control-quality flag, thresholded on development data, identified every condition of the one batch whose cultures had not begun firing when the input was taken, before any day-12 data existed; that is precisely the batch where the forecast collapsed. And among conditions that had barely moved by day 7, ranking by forecast magnitude at a 20% review budget found 6 of 10 later large changes where ranking by the day-7 change found none, and flagging the highest doses first would find 3.6.
 
 The contribution is therefore not a better predictor. It is a triage workflow that knows when to abstain, and an evaluation protocol strict enough to discover that its own headline model was not worth deploying.
 
@@ -247,7 +247,16 @@ Scored once, on 224 conditions and 32 unseen chemicals across three batches. Eve
 
 **C1a FAILED. C1b passed** (better than the small model on all three dates).
 
-Why persistence won is not mysterious, and it is a lesson about the covariate the field should report. The reserved batches are far more *persistent* than development: the day-7-to-day-12 correlation of the relative readout is 0.87 on the reserve against 0.54 on development, and 13.8% of reserve conditions show a later large change against 21.4% on development. A model trained where early readings are weakly informative was deployed where they are strongly informative, and a rule that copies the early reading forward won. This is distribution shift in the difficulty of the task itself, not in the inputs alone, and no amount of input-space validation would have caught it.
+**The model's error held steady; the simple rule got better.** Restricting development to conditions with a usable day-12 reference (plate control median of at least 5 network spikes, the protocol's outcome-quality subset) gives a like-for-like comparison, because every reserve condition meets that bar:
+
+| Date-macro MAE | Product model | Carry day 7 forward |
+| --- | ---: | ---: |
+| Development, usable day-12 reference (777 conditions) | 0.7635 | 1.0571 |
+| Sealed reserve (224 conditions) | 0.7716 | **0.6088** |
+
+The forecast generalized stably (0.764 to 0.772). What changed was how predictable the batches were. Two of the three reserve batches were unusually *persistent*: their day-7-to-day-12 correlations were 0.97 (20170920) and 0.92 (20171011), against 0.23 to 0.88 across development batches. On those two batches the day-12 value rose about 1.3 log2 units per unit of day-7 change (slopes 1.31 and 1.27), while the model's forecasts rose only 0.87 to 0.94. The model shrinks toward the change typical of development and could not exploit an easier regime. The third batch, 20171004, is not persistent (correlation 0.12). It failed for a different reason: its day-7 inputs were degenerate (§7.4).
+
+The quality flag explains the worst batch, not the whole loss. On the 140 conditions it did not flag, persistence still wins (date-macro 0.573 against 0.629). The honest reading is that neither predictor wins everywhere, and that task difficulty shifted between batches, not only the inputs. That is why the tool prints both columns and says where neither should be trusted.
 
 ### 7.2 Warning: passed, with an honest caveat
 
@@ -260,7 +269,13 @@ Why persistence won is not mysterious, and it is a lesson about the covariate th
 
 ![Reserve: recall against review budget](figures/gate_warning_reserve.png)
 
-**C2a and C2b passed.** The caveat matters: all ten quiet-condition positives lie on 20171004, the batch whose day-7 controls were zero — which makes every day-7 relative value identically zero there, so the naive rule is *definitionally* blind and its 0/10 is not a fair defeat so much as an impossibility. The learned ranking did find 6, against 2.1 expected by chance, on the batch where its own point forecasts were worst. Ranking worked where magnitudes did not. This is one batch and ten positives, and we say so.
+**C2a and C2b passed.** The caveat matters: all ten quiet-condition positives lie on 20171004, the batch whose day-7 control medians were zero. There, 69 of 84 day-7 relative values are exactly zero, including all ten positives. Ranking by day-7 change therefore cannot separate them, and its 0/10 is closer to an impossibility than a fair defeat (with ties broken at random its expectation is 1.3). The learned ranking found 6, against 2.1 expected by chance, on the batch where its own point forecasts were worst.
+
+Two checks run after scoring qualify this. Both are descriptive only.
+- A zero-parameter rule that flags the highest doses first finds 3.6 of 10 in expectation. On development it finds 16.7 of 45, against 22 for the forecast.
+- Two of the six detections predicted a collapse where the outcome rose: Bisphenol AF at 20 µM (+1.36) and Abamectin at 0.03 µM (+1.02). All six were also declined by the tool's own trust verdict.
+
+This is one batch and ten positives, and we say so.
 
 ### 7.3 Reliability: passed, with a stated shortfall
 
@@ -284,6 +299,8 @@ Abstention is the component that transferred most cleanly:
 | Declined (32) | 2.813 | 1.566 |
 
 Declining 14.3% of conditions removes 51% of total forecast error. Critically, it improves the *simple rule* as well (0.433 versus 0.595) — the difficulty model is estimating whether the outcome is predictable, not merely where our particular model is weak. It does not reverse the ranking: persistence remains slightly better on kept conditions too.
+
+A check run after scoring limits the credit owed to the difficulty model itself. Declining the 32 conditions with the most extreme forecasts, which needs no model at all, keeps an MAE of 0.456 (against 0.446). On development that rule beats the difficulty model at the same retention (0.623 against 0.678). What transferred is the decision to abstain on extreme or degenerate conditions. We have not shown that a learned difficulty model is needed to make that decision.
 
 ![Reserve: predicted difficulty against realized error; the declined conditions carry half the error](figures/gate_abstention_reserve.png)
 
@@ -343,7 +360,7 @@ Batch 20171004: 84 conditions, day-7 reference activity 0.0 network spikes
      3  Bisphenol AF                     20    +0.00     -5.00     [-9.96, -0.03]        +0.00  declined: measure day 12 directly
 ```
 
-Every day-7 value is exactly `+0.00`, because the plate controls were zero and the ratio is degenerate. The model, as expected, produces extreme forecasts. Every surfaced condition is marked **declined**, and the batch verdict tells the researcher to measure day 12 rather than rely on any of it. The tool reaches the correct operational conclusion on the batch where its own forecast is worst — which is the behaviour we were trying to buy.
+Every surfaced day-7 value is exactly `+0.00`. The plate controls were silent, so the ratio is degenerate, and 69 of the batch's 84 conditions show no network spikes at day 7. The model, as expected, produces extreme forecasts. Every surfaced condition is marked **declined**, and the batch verdict tells the researcher to measure day 12 rather than rely on any of it. The tool reaches the correct operational conclusion on the batch where its own forecast is worst — which is the behaviour we were trying to buy.
 
 ### 8.2 Provenance printed at every run
 
@@ -356,13 +373,15 @@ Held-out evidence (3 experiment dates, 224 conditions, chemicals unseen in train
   intervals observed 71.4% coverage at a nominal 80% level
 ```
 
+The first line uses the protocol's date-macro error. The second compares condition-mean errors, which is why the all-condition figure (0.784) differs from 0.772.
+
 Two real inputs from the sealed reserve ship with it. Building the tool changed its design once: the naive "largest forecast change" list filled with conditions already dead at day 7 — which the day-7 column shows directly — so the early-warning list was promoted to the primary output, matching the subgroup where the held-out evidence actually exists.
 
 ---
 
 ## 9. What we would do differently, and what comes next
 
-**Shift in task difficulty, not just inputs.** The single most useful diagnostic we lacked was a day-7-computable estimate of *how persistent a batch is*. The reserve's day-7-to-day-12 correlation (0.87) against development's (0.54) explains the outcome entirely, and a batch-level persistence estimate would let the tool choose between the model and the simple rule per batch rather than globally. That selector would itself need a sealed test, and our reserve is spent.
+**Shift in task difficulty, not just inputs.** The single most useful diagnostic we lacked was a day-7-computable estimate of *how persistent a batch is*. Two of the three reserve batches had day-7-to-day-12 correlations of 0.97 and 0.92, above every development batch (0.23 to 0.88), and on them our model under-reacted (§7.1). A batch-level persistence estimate would let the tool choose between the model and the simple rule per batch rather than globally. That selector would itself need a sealed test, and our reserve is spent.
 
 **The difficulty model deserved to be the primary hypothesis.** It is the component that transferred, it helps both predictors, and we specified it as supporting apparatus. A protocol built around selective prediction — retained-case error at a fixed retention rate as the primary metric — would have been a better-aimed experiment, and is what we would pre-register next.
 
@@ -396,7 +415,7 @@ python -X utf8 -B tools/verify_published_numbers.py
 python -X utf8 -B -m unittest discover -s tests -v
 ```
 
-`verify_published_numbers.py` recomputes all 33 headline numbers in the README and reports directly from the per-case evidence tables — never from a summary — at the precision each is quoted to, and fails if any claim has drifted. Writing it caught two real inconsistencies in our own drafts, both corrected and both recorded in the git history. The 26 tests include end-to-end checks that the shipped tool reproduces the audited reserve forecasts, intervals, trust verdicts and quality flags to 1e-12, and that removing day-5 rows changes none of them.
+`verify_published_numbers.py` recomputes all 58 published numbers in the README and reports directly from the per-case evidence tables — never from a summary — at the precision each is quoted to, and fails if any claim has drifted. Writing it caught two real inconsistencies in our own drafts, both corrected and both recorded in the git history. The 26 tests include end-to-end checks that the shipped tool reproduces the audited reserve forecasts, intervals, trust verdicts and quality flags to 1e-12, and that removing day-5 rows changes none of them.
 
 Full reproduction from the public archive: `fetch_epa_data.py` (checksum-verified) then the four gate stages. `develop` takes ~8.4 minutes single-threaded and is bit-reproducible; `reserve` takes 12 seconds, requires the unchanged lock and an explicit `--unseal`, and refuses to run twice. A nine-cell notebook walks through the whole result and was validated by executing every cell from an empty directory.
 
