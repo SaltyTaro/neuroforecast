@@ -18,9 +18,9 @@ What did generalize to those unseen batches and chemicals:
 
 | Component | Held-out evidence |
 | --- | --- |
-| **Trust verdict** (day-7 difficulty model) | Declines 14% of conditions that carry **51% of all forecast error**. Retained-case MAE **0.446** versus **0.784** for all conditions. It improves persistence too (0.433 versus 0.595), so the verdict is useful whichever predictor you use. |
+| **Trust verdict** (day-7 difficulty model) | Declines 14% of conditions that carry **51% of all forecast error**. Retained-case MAE **0.446** versus **0.784** for all conditions. It improves persistence too (0.433 versus 0.595), so the verdict is useful whichever predictor you use. A zero-parameter rule that declines the most extreme forecasts does about as well (0.456), so the credit is for abstaining, not for the learned model. |
 | **Measurement-quality flag** | On 20171004 every plate had a day-7 control median of **zero** network spikes; the cultures had not begun firing when the input was taken. A threshold fixed on development fired on all 84 of that batch's conditions and on no others — before any day-12 data existed. That is the batch where the forecast collapsed. |
-| **Early-warning ranking** | Among conditions still quiet at day 7, a 20% review budget found **6 of 10** later large changes; ranking by the day-7 change found **0**; chance is 2.1. |
+| **Early-warning ranking** | Among conditions still quiet at day 7, a 20% review budget found **6 of 10** later large changes; ranking by the day-7 change found **0**; chance is 2.1; flagging the highest doses first finds 3.6. |
 | **Prediction intervals** | Observed **71.4%** coverage at a nominal 80% level — a real shortfall under batch shift, reported as one. |
 
 **Technical report: [docs/technical_report.md](docs/technical_report.md)** — problem, data, method, protocol, both evaluations, the failure analysis, the tool, limitations and reproduction. Full reserve numbers per date: [docs/neuroforecast_reserve_results.md](docs/neuroforecast_reserve_results.md).
