@@ -1,0 +1,269 @@
+{
+  "note": "Post-hoc sensitivity: how the locked v2 tool degrades with fewer untreated control wells per plate.",
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "summary": [
+    {
+      "controls_per_plate": 1,
+      "conditions_scored": 927.0,
+      "product_date_macro": 0.7328733266813401,
+      "persistence_date_macro": 1.1181488290984043,
+      "declined_share": 0.17691477885652643,
+      "kept_error_reduction": 0.28964171258138477,
+      "low_reference_batches": 1.2
+    },
+    {
+      "controls_per_plate": 2,
+      "conditions_scored": 927.0,
+      "product_date_macro": 0.7384618407881589,
+      "persistence_date_macro": 0.9849599122496911,
+      "declined_share": 0.15253505933117584,
+      "kept_error_reduction": 0.2413187276064356,
+      "low_reference_batches": 0.0
+    },
+    {
+      "controls_per_plate": 3,
+      "conditions_scored": 927.0,
+      "product_date_macro": 0.7283808572041155,
+      "persistence_date_macro": 0.9838436634087417,
+      "declined_share": 0.12599784250269686,
+      "kept_error_reduction": 0.21417367820900712,
+      "low_reference_batches": 0.2
+    },
+    {
+      "controls_per_plate": 4,
+      "conditions_scored": 927.0,
+      "product_date_macro": 0.7325695545934326,
+      "persistence_date_macro": 0.9772710114678889,
+      "declined_share": 0.11758360302049622,
+      "kept_error_reduction": 0.19944527014262914,
+      "low_reference_batches": 0.0
+    },
+    {
+      "controls_per_plate": "all",
+      "conditions_scored": 927.0,
+      "product_date_macro": 0.7345496278472572,
+      "persistence_date_macro": 0.9801005503187815,
+      "declined_share": 0.14563106796116504,
+      "kept_error_reduction": 0.2707535717874763,
+      "low_reference_batches": 0.0
+    }
+  ],
+  "detail": [
+    {
+      "controls_per_plate": 1,
+      "seed": 1,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7204996137105729,
+      "persistence_date_macro": 0.9867101025861987,
+      "declined_share": 0.18015102481121897,
+      "kept_error_reduction": 0.29255392892045373,
+      "low_reference_batches": 1
+    },
+    {
+      "controls_per_plate": 1,
+      "seed": 2,
+      "conditions_scored": 927,
+      "product_date_macro": 0.751514119835987,
+      "persistence_date_macro": 1.2651717822457582,
+      "declined_share": 0.1725997842502697,
+      "kept_error_reduction": 0.28467679866959383,
+      "low_reference_batches": 2
+    },
+    {
+      "controls_per_plate": 1,
+      "seed": 3,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7687734735121996,
+      "persistence_date_macro": 1.1730997005377468,
+      "declined_share": 0.17691477885652643,
+      "kept_error_reduction": 0.29780996905199186,
+      "low_reference_batches": 2
+    },
+    {
+      "controls_per_plate": 1,
+      "seed": 4,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7182068929967705,
+      "persistence_date_macro": 1.079088230390837,
+      "declined_share": 0.17475728155339806,
+      "kept_error_reduction": 0.2829660667422971,
+      "low_reference_batches": 1
+    },
+    {
+      "controls_per_plate": 1,
+      "seed": 5,
+      "conditions_scored": 927,
+      "product_date_macro": 0.70537253335117,
+      "persistence_date_macro": 1.0866743297314805,
+      "declined_share": 0.18015102481121897,
+      "kept_error_reduction": 0.2902017995225873,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 2,
+      "seed": 1,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7567286772871995,
+      "persistence_date_macro": 0.9793590342620564,
+      "declined_share": 0.16720604099244876,
+      "kept_error_reduction": 0.27300889987697463,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 2,
+      "seed": 2,
+      "conditions_scored": 927,
+      "product_date_macro": 0.738448900781027,
+      "persistence_date_macro": 1.0424675781542783,
+      "declined_share": 0.14670981661272922,
+      "kept_error_reduction": 0.21840817132953083,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 2,
+      "seed": 3,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7327593702129738,
+      "persistence_date_macro": 0.9900333070760174,
+      "declined_share": 0.14670981661272922,
+      "kept_error_reduction": 0.23371505517336488,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 2,
+      "seed": 4,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7191168024108702,
+      "persistence_date_macro": 0.9403126515191017,
+      "declined_share": 0.15102481121898598,
+      "kept_error_reduction": 0.25151293927932694,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 2,
+      "seed": 5,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7452554532487244,
+      "persistence_date_macro": 0.9726269902370022,
+      "declined_share": 0.15102481121898598,
+      "kept_error_reduction": 0.22994857237298072,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 3,
+      "seed": 1,
+      "conditions_scored": 927,
+      "product_date_macro": 0.72901227178451,
+      "persistence_date_macro": 0.9597844450345666,
+      "declined_share": 0.13700107874865156,
+      "kept_error_reduction": 0.22392202395371086,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 3,
+      "seed": 2,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7597854890858194,
+      "persistence_date_macro": 1.0699146050337598,
+      "declined_share": 0.11434735706580366,
+      "kept_error_reduction": 0.19624437383131244,
+      "low_reference_batches": 1
+    },
+    {
+      "controls_per_plate": 3,
+      "seed": 3,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7352194299195643,
+      "persistence_date_macro": 0.9705420383398611,
+      "declined_share": 0.1262135922330097,
+      "kept_error_reduction": 0.21931155286295112,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 3,
+      "seed": 4,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7026519798478722,
+      "persistence_date_macro": 0.9475696248266784,
+      "declined_share": 0.11434735706580366,
+      "kept_error_reduction": 0.19222507982687798,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 3,
+      "seed": 5,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7152351153828116,
+      "persistence_date_macro": 0.9714076038088426,
+      "declined_share": 0.13807982740021574,
+      "kept_error_reduction": 0.23916536057018323,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 4,
+      "seed": 1,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7491309454411378,
+      "persistence_date_macro": 0.97848142132919,
+      "declined_share": 0.12189859762675297,
+      "kept_error_reduction": 0.20737081351405684,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 4,
+      "seed": 2,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7520031472736332,
+      "persistence_date_macro": 0.9786113222390779,
+      "declined_share": 0.11326860841423948,
+      "kept_error_reduction": 0.20428382863312078,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 4,
+      "seed": 3,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7341735538439474,
+      "persistence_date_macro": 0.9929901597718253,
+      "declined_share": 0.11650485436893204,
+      "kept_error_reduction": 0.17649149825297494,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 4,
+      "seed": 4,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7142183425230622,
+      "persistence_date_macro": 0.9584362588403684,
+      "declined_share": 0.1111111111111111,
+      "kept_error_reduction": 0.18744350682527877,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": 4,
+      "seed": 5,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7133217838853829,
+      "persistence_date_macro": 0.9778358951589831,
+      "declined_share": 0.12513484358144553,
+      "kept_error_reduction": 0.22163670348771436,
+      "low_reference_batches": 0
+    },
+    {
+      "controls_per_plate": "all",
+      "seed": 0,
+      "conditions_scored": 927,
+      "product_date_macro": 0.7345496278472572,
+      "persistence_date_macro": 0.9801005503187815,
+      "declined_share": 0.14563106796116504,
+      "kept_error_reduction": 0.2707535717874763,
+      "low_reference_batches": 0
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "dev_cases": 1302,
+  "dev_usable_cases": 1260,
+  "dev_dates": 17,
+  "dev_identities": 138,
+  "ext_input_cases": 983,
+  "ext_primary_input_cases": 927,
+  "ext_dates": 24,
+  "ext_identities": 111,
+  "external_outcomes_built": false,
+  "feature_readouts": [
+    "meanfiringrate",
+    "burst.per.min",
+    "mean.isis",
+    "per.spikes.in.burst",
+    "mean.dur",
+    "mean.IBIs",
+    "nAE",
+    "nABE",
+    "ns.n",
+    "ns.peak.m",
+    "ns.durn.m",
+    "ns.percent.of.spikes.in.ns",
+    "ns.mean.insis",
+    "ns.durn.sd",
+    "ns.mean.spikes.in.ns",
+    "r",
+    "mi"
+  ],
+  "files": {
+    "dev_cases.csv": "d1412bed55137a6c7ddf5052c1e3aba254b44401d056535c2b18b844f03cf9e5",
+    "dev_features.csv": "d25d1975f4c40c8f5e89fc6f3c40c3b3b777a1deb066f29dfaa94b6ca68049d6",
+    "ext_cases.csv": "e86352ee8f02982943df67eefb3f57593c9f48fd811805255f0cb3f246032933",
+    "ext_features.csv": "5f02f4302339696df3ce10a3c0aac08cbf35c0c6d0241f1bc74f88b16bd2b69f"
+  },
+  "code": {
+    "neuroforecast_v2.py": "7f7a4935d8606fefd84b66f1379b64f2fccf23b4fc1d783414525aae0f202550",
+    "neuroforecast_v2_protocol.json": "fe046966f238752498427a51031809e8dc8d359faa2618ef1144a434a7066e0d",
+    "external_nfa_intake.py": "35bc5e79183ea924066bcce7aec5d0df2532dad5888fc90b4ec4c7305193ab4f",
+    "neuroforecast_data.py": "dcb6910646c111adee45c4278177bf928cede4311238d07a9b5f132bc7782221",
+    "neuroforecast_benchmark.py": "37634dea12596666d6c582b099d8e7cf62cb7792a958f3b3845aa6dd90d10d41",
+    "neuroforecast_representation.py": "af415c1887920644da985d94774961b895ffa823e43bf3c2728f51b8094cea7d",
+    "neuroforecast_gate.py": "9c25616ab76919434aed5fbb08526142dc50810d426e1cc6b777112e93ab4e7b",
+    "neuroforecast_selection_protocol.json": "2938e8e0be979259ce580b752b64cdd326c24dc2778afdae15ae0605489a8c1f",
+    "neuroforecast_representation_protocol.json": "0dfe0eb4647385232375595f8710d726cf383ef028ebeb66125d44a4fdcd5aa1"
+  }
+}

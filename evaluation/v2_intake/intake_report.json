@@ -1,0 +1,566 @@
+{
+  "release": {
+    "repository": "https://github.com/USEPA/CompTox-DNT-NFA-Refinement",
+    "commit": "01adf3e1a0068c87fe221d60df36b9f96c4b4b1d",
+    "files": {
+      "All_DIV_Data.Rdata": "fe8015c789770092b485fb63dd8aa0f643120e366df73c5624665454ee982af6",
+      "annotate_dnt_ref_chems.csv": "664de5d0c26671f1f45bd8bfe3e1ae44c100c5249f6b2dc1aa1a288d7a045875",
+      "CCD-Batch-Search_2025-07-03_01_12_13.xlsx": "4eeed184fa3f60d21393f494ffa40871a6e2eea5a763c65b2bdbbea3435bd298",
+      "CCD-Batch-Search_2025-07-18_07_43_29.csv": "4c7418951bcc35e6f97c71b018ce7d363d14b4dccc99cc637798ae7d00da4a8c",
+      "CCD-Batch-Search_2025-07-18_11_43_18.csv": "5463c0251a6aa3f68c9a7292edd529486f2d9e3c3fee6905513370cb77b74d84",
+      "Chem_243_mfr_chem_class_Jul_21_TJS.xlsx": "a482a21073f4bed296600d1b9e11defd437451fd424fc31ff6a9fde858ca36de",
+      "div12.data.with.spids.RData": "5beaabf8ba89f6bc920f020031963809aa4099657b140c92b08aad316c212005",
+      "div5.data.with.spids.Rdata": "e9424a7646eba438c5060a6213e59b6f93775878dc9cc4136744434fe7a27c68",
+      "div7.data.with.spids.Rdata": "8f2bd0fc2c6fc450dc74acb71c8097e092e8dabca8e48fae673936b732e52fd2",
+      "div9.data.with.spids.Rdata": "e8f2a0c5dc519f2f7534e053e57b54863149ef2d4f7761da5d46c873f0162bd0",
+      "Exclusion_Criteria_for_Plates_with_Rval0.R": "17271e5a39eba02699f84add8ff43e52301154f7bbc64ffe4cc684943cdb4ce8",
+      "List_of_spids_in_data_for_KC.xlsx": "68758f57179ee2c6ab462ad08604894e4d6dd5ba6ee9128dd6ee60a01d048504",
+      "Potency_Table_for_All_Methods_for_KC.csv": "808ee18da0223e1924dc6c7b834526b152b3af94ffa9b5be130963537f582c72"
+    }
+  },
+  "licence_note": "The repository has no LICENSE file. The data are produced by the US EPA; treat as a US-Government work and cite EPA's data policy. Record this limitation in the report.",
+  "adapter": {
+    "input_rows": 31756,
+    "duplicate_physical_rows_removed": 156,
+    "rows": 31600,
+    "spids_with_ambiguous_dtxsid": [],
+    "treated_rows_without_identity": 0,
+    "samples_by_route": {
+      "sample_annotation": 191,
+      "name": 76
+    },
+    "treated_names_with_name_key_only": [],
+    "names_mapping_to_two_substances": [],
+    "readouts_absent_from_release": [
+      "cv.time",
+      "cv.network"
+    ]
+  },
+  "identity_links_from_shared_wells": {
+    "our_identities_linked": 136,
+    "linked_to_more_than_one_dtxsid": [],
+    "new_date_identities_matching_our_cas": [
+      "DTXSID3030056",
+      "DTXSID5020607",
+      "DTXSID5021209",
+      "DTXSID5023588",
+      "DTXSID6020690",
+      "DTXSID8022292"
+    ]
+  },
+  "consistency_on_shared_dates": {
+    "shared_dates": [
+      20160720,
+      20160803,
+      20160907,
+      20160921,
+      20161013,
+      20161109,
+      20170201,
+      20170222,
+      20170412,
+      20170628,
+      20170712,
+      20170809,
+      20170816,
+      20170913,
+      20170920,
+      20171004,
+      20171011
+    ],
+    "physical_rows_in_both": 16983,
+    "rows_only_in_our_archive": 145,
+    "rows_only_in_release": 877,
+    "rows_only_in_our_archive_by_date": {
+      "20161013": 4,
+      "20161109": 4,
+      "20170809": 16,
+      "20170816": 21,
+      "20171011": 100
+    },
+    "rows_only_in_release_by_date": {
+      "20160907": 48,
+      "20161013": 96,
+      "20170201": 576,
+      "20170222": 68,
+      "20170628": 48,
+      "20170816": 41
+    },
+    "dose_disagreements": 0,
+    "readouts": {
+      "meanfiringrate": {
+        "rows_compared": 16983,
+        "rows_differing": 13468,
+        "max_abs_difference": 3.64261232,
+        "median_relative_difference_where_differing": 0.000899869827602598,
+        "pearson_r": 0.9961496878207623,
+        "missingness_disagreements": 0
+      },
+      "burst.per.min": {
+        "rows_compared": 16983,
+        "rows_differing": 6632,
+        "max_abs_difference": 28.08,
+        "median_relative_difference_where_differing": 0.0048780487804877554,
+        "pearson_r": 0.9941733184762325,
+        "missingness_disagreements": 0
+      },
+      "mean.isis": {
+        "rows_compared": 12245,
+        "rows_differing": 5037,
+        "max_abs_difference": 0.095428461395205,
+        "median_relative_difference_where_differing": 0.001291786004512173,
+        "pearson_r": 0.9970892855960245,
+        "missingness_disagreements": 30
+      },
+      "per.spikes.in.burst": {
+        "rows_compared": 16983,
+        "rows_differing": 9927,
+        "max_abs_difference": 100.0,
+        "median_relative_difference_where_differing": 0.0005564032874185936,
+        "pearson_r": 0.9968574373671001,
+        "missingness_disagreements": 0
+      },
+      "mean.dur": {
+        "rows_compared": 12245,
+        "rows_differing": 5080,
+        "max_abs_difference": 5.060916669999999,
+        "median_relative_difference_where_differing": 0.002242711327899764,
+        "pearson_r": 0.997619478024752,
+        "missingness_disagreements": 30
+      },
+      "mean.IBIs": {
+        "rows_compared": 12245,
+        "rows_differing": 4571,
+        "max_abs_difference": 82.2978333333333,
+        "median_relative_difference_where_differing": 0.0017935926381584405,
+        "pearson_r": 0.9921117986935376,
+        "missingness_disagreements": 30
+      },
+      "nAE": {
+        "rows_compared": 16983,
+        "rows_differing": 398,
+        "max_abs_difference": 8.0,
+        "median_relative_difference_where_differing": 0.16666666666666666,
+        "pearson_r": 0.9989486433687957,
+        "missingness_disagreements": 0
+      },
+      "nABE": {
+        "rows_compared": 16983,
+        "rows_differing": 217,
+        "max_abs_difference": 7.0,
+        "median_relative_difference_where_differing": 0.2,
+        "pearson_r": 0.9992259573523783,
+        "missingness_disagreements": 0
+      },
+      "ns.n": {
+        "rows_compared": 16983,
+        "rows_differing": 1958,
+        "max_abs_difference": 58.0,
+        "median_relative_difference_where_differing": 0.03686714237172953,
+        "pearson_r": 0.9996830372258885,
+        "missingness_disagreements": 0
+      },
+      "ns.peak.m": {
+        "rows_compared": 10744,
+        "rows_differing": 1916,
+        "max_abs_difference": 4.0,
+        "median_relative_difference_where_differing": 0.0028178561350864694,
+        "pearson_r": 0.997939082524032,
+        "missingness_disagreements": 18
+      },
+      "ns.durn.m": {
+        "rows_compared": 10744,
+        "rows_differing": 1963,
+        "max_abs_difference": 0.20274972980952402,
+        "median_relative_difference_where_differing": 0.004885371467608944,
+        "pearson_r": 0.9953359172074359,
+        "missingness_disagreements": 18
+      },
+      "ns.percent.of.spikes.in.ns": {
+        "rows_compared": 16983,
+        "rows_differing": 8924,
+        "max_abs_difference": 12.267503726719161,
+        "median_relative_difference_where_differing": 0.0014757620860303728,
+        "pearson_r": 0.999718949508719,
+        "missingness_disagreements": 0
+      },
+      "ns.mean.insis": {
+        "rows_compared": 10524,
+        "rows_differing": 1944,
+        "max_abs_difference": 449.92999999999995,
+        "median_relative_difference_where_differing": 0.012299887901039457,
+        "pearson_r": 0.9948981873711905,
+        "missingness_disagreements": 25
+      },
+      "ns.durn.sd": {
+        "rows_compared": 10524,
+        "rows_differing": 1952,
+        "max_abs_difference": 0.141808581342406,
+        "median_relative_difference_where_differing": 0.010381540909579694,
+        "pearson_r": 0.9941852758211226,
+        "missingness_disagreements": 25
+      },
+      "ns.mean.spikes.in.ns": {
+        "rows_compared": 10744,
+        "rows_differing": 1968,
+        "max_abs_difference": 49.2683215174468,
+        "median_relative_difference_where_differing": 0.009459019820111955,
+        "pearson_r": 0.9965809772278225,
+        "missingness_disagreements": 18
+      },
+      "r": {
+        "rows_compared": 16983,
+        "rows_differing": 13428,
+        "max_abs_difference": 0.780525553,
+        "median_relative_difference_where_differing": 0.09029659577546663,
+        "pearson_r": 0.9878145703006309,
+        "missingness_disagreements": 0
+      }
+    }
+  },
+  "case_equivalence_on_shared_dates": {
+    "ours_input_cases": 1211,
+    "release_input_cases": 1302,
+    "ours_target_cases": 1211,
+    "release_target_cases": 1302
+  },
+  "sealed_cohort": {
+    "rule": "Counts only. Day-12 records are checked for existence (>= 2 treated wells), never for value.",
+    "new_dates": [
+      20140205,
+      20140212,
+      20140402,
+      20140423,
+      20140716,
+      20140730,
+      20140827,
+      20140910,
+      20140924,
+      20141015,
+      20141029,
+      20141112,
+      20141203,
+      20141231,
+      20150128,
+      20150401,
+      20150805,
+      20150819,
+      20150909,
+      20151014,
+      20151125,
+      20151209,
+      20160120,
+      20160217,
+      20160330,
+      20160413,
+      20160511,
+      20160601
+    ],
+    "new_plate_dates": 73,
+    "input_eligible_conditions": 983,
+    "eligible_conditions": 983,
+    "eligible_chemicals": 111,
+    "eligible_conditions_on_chemicals_absent_from_our_17_dates": 927,
+    "eligible_chemicals_absent_from_our_17_dates": 105,
+    "chemicals_shared_with_our_17_dates": [
+      "DTXSID3030056",
+      "DTXSID5020607",
+      "DTXSID5021209",
+      "DTXSID5023588",
+      "DTXSID6020690",
+      "DTXSID8022292"
+    ],
+    "per_date": [
+      {
+        "date": 20140716,
+        "plates": 1,
+        "controls_per_plate_day7": [
+          5
+        ],
+        "eligible_conditions": 13,
+        "chemicals": 2,
+        "chemicals_not_in_our_17_dates": 2
+      },
+      {
+        "date": 20140730,
+        "plates": 1,
+        "controls_per_plate_day7": [
+          6
+        ],
+        "eligible_conditions": 13,
+        "chemicals": 2,
+        "chemicals_not_in_our_17_dates": 2
+      },
+      {
+        "date": 20140827,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 5
+      },
+      {
+        "date": 20140910,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20140924,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20141015,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          5,
+          5,
+          5
+        ],
+        "eligible_conditions": 33,
+        "chemicals": 5,
+        "chemicals_not_in_our_17_dates": 4
+      },
+      {
+        "date": 20141029,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 5
+      },
+      {
+        "date": 20141112,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 5
+      },
+      {
+        "date": 20141203,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20141231,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20150128,
+        "plates": 6,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6,
+          6,
+          4,
+          6
+        ],
+        "eligible_conditions": 84,
+        "chemicals": 12,
+        "chemicals_not_in_our_17_dates": 12
+      },
+      {
+        "date": 20150401,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 5
+      },
+      {
+        "date": 20150805,
+        "plates": 2,
+        "controls_per_plate_day7": [
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 5
+      },
+      {
+        "date": 20150819,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20150909,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20151014,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 5
+      },
+      {
+        "date": 20151125,
+        "plates": 2,
+        "controls_per_plate_day7": [
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20151209,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20160120,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20160217,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20160330,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          5,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20160413,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      },
+      {
+        "date": 20160511,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 5
+      },
+      {
+        "date": 20160601,
+        "plates": 3,
+        "controls_per_plate_day7": [
+          6,
+          6,
+          6
+        ],
+        "eligible_conditions": 42,
+        "chemicals": 6,
+        "chemicals_not_in_our_17_dates": 6
+      }
+    ],
+    "new_date_rows_sha256": "879ca0cc20451468102b28f18b78d7b7b78174091623830cabd547e3785a9568"
+  },
+  "frozen_core_sha256": {
+    "neuroforecast_data.py": "dcb6910646c111adee45c4278177bf928cede4311238d07a9b5f132bc7782221"
+  },
+  "code_sha256": "35bc5e79183ea924066bcce7aec5d0df2532dad5888fc90b4ec4c7305193ab4f"
+}

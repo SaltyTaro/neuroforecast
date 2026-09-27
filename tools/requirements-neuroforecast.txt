@@ -8,3 +8,5 @@ openpyxl==3.1.5
 matplotlib==3.10.8
 threadpoolctl==3.6.0
 joblib==1.5.3
+# Test 2 (September 27, 2026) ran with numpy 2.5.3 and pandas 3.0.6; rdata reads the EPA refinement release.
+rdata==1.1.0

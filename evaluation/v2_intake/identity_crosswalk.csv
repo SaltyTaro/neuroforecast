@@ -1,0 +1,268 @@
+spid,names,route,dtxsid,casrn
+EX000278,1-Ethyl-3-methyl-1H-imidazol-3-ium diethyl phosphate,sample_annotation,DTXSID9047889,848641-69-0
+EX000279,1-Methyl-4-phenylpyridinium iodide,sample_annotation,DTXSID40880040,36913-39-0
+EX000280,2-Ethylhexyl diphenyl phosphate,sample_annotation,DTXSID1025300,1241-94-7
+EX000281,"2-Ethylhexyl 2,3,4,5-tetrabromobenzoate",sample_annotation,DTXSID9052686,183658-27-7
+EX000282,2-Methoxyethanol,sample_annotation,DTXSID5024182,109-86-4
+EX000283,"2,2',4,4',5-Pentabromodiphenyl ether",sample_annotation,DTXSID9030048,60348-60-9
+EX000284,"2,2',4,4',5,5'-Hexabromodiphenyl ether",sample_annotation,DTXSID4030047,68631-49-2
+EX000285,"2,2',4,4'-Tetrabromodiphenyl ether",sample_annotation,DTXSID3030056,5436-43-1
+EX000287,"3,3'-Iminobispropanenitrile",sample_annotation,DTXSID2041464,111-94-4
+EX000289,4H-Cyclopenta(def)phenanthrene,sample_annotation,DTXSID1024887,203-64-5
+EX000291,Oxidopamine hydrochloride,sample_annotation,DTXSID0045838,28094-15-7
+EX000296,Manganese(II) acetate,sample_annotation,DTXSID5027279,638-38-0
+EX000297,Aspirin,name,DTXSID5020108,50-78-2
+EX000301,Anthracene,name,DTXSID0023878,120-12-7
+EX000302,Auramine hydrochloride,sample_annotation,DTXSID9020114,2465-27-2
+EX000304,Benzo[a]pyrene,sample_annotation,DTXSID2020139,50-32-8
+EX000306,Benzo[e]pyrene,sample_annotation,DTXSID3023764,192-97-2
+EX000307,Benzo[k]fluoranthene,sample_annotation,DTXSID0023909,207-08-9
+EX000308,"Benzo[g,h,i]perylene",sample_annotation,DTXSID5023908,191-24-2
+EX000309,Berberine chloride,sample_annotation,DTXSID8024602,633-65-8
+EX000310,Bis(2-ethylhexyl) tetrabromophthalate,sample_annotation,DTXSID7027887,26040-51-7
+EX000313,Bisphenol AF,sample_annotation,DTXSID7037717,1478-61-1
+EX000314,"4,4'-Sulfonyldiphenol",sample_annotation,DTXSID3022409,80-09-1
+EX000316,Captan,sample_annotation,DTXSID9020243,133-06-2
+EX000317,3-Iodo-2-propynyl-N-butylcarbamate,sample_annotation,DTXSID0028038,55406-53-6
+EX000320,Chrysene,sample_annotation,DTXSID0022432,218-01-9
+EX000322,D-Glucitol,name,DTXSID5023588,50-70-4
+EX000324,Di(2-ethylhexyl) phthalate,name,DTXSID5020607,117-81-7
+EX000326,"Dibenz[a,h]anthracene",sample_annotation,DTXSID9020409,53-70-3
+EX000327,"Dibenz[a,c]anthracene",sample_annotation,DTXSID9049245,215-58-7
+EX000328,DDT,sample_annotation,DTXSID4020375,50-29-3
+EX000331,17beta-Estradiol,sample_annotation,DTXSID0020573,50-28-2
+EX000332,Firemaster 550,sample_annotation,DTXSID70880073,860302-33-6
+EX000335,Hexachlorophene,sample_annotation,DTXSID6020690,70-30-4
+EX000337,Isodecyl diphenyl phosphate,sample_annotation,DTXSID3025465,29761-21-5
+EX000338,L-Ascorbic acid,sample_annotation,DTXSID5020106,50-81-7
+EX000341,(Methylcyclopentadienyl)tricarbonylmanganese,sample_annotation,DTXSID9027738,12108-13-3
+EX000344,Naphthalene,sample_annotation,DTXSID8020913,91-20-3
+EX000345,Parathion,sample_annotation,DTXSID7021100,56-38-2
+EX000346,Permethrin,sample_annotation,DTXSID8022292,52645-53-1
+EX000347,Phenanthrene,sample_annotation,DTXSID6024254,85-01-8
+EX000348,Phenobarbital,sample_annotation,DTXSID5021122,50-06-6
+EX000350,Triphenyl phosphates isopropylated,sample_annotation,DTXSID4028880,68937-41-7
+EX000351,Pyrene,sample_annotation,DTXSID3024289,129-00-0
+EX000352,Rotenone,sample_annotation,DTXSID6021248,83-79-4
+EX000355,tert-Butylphenyl diphenyl phosphate,name,DTXSID6024701,56803-37-3
+EX000356,Tetraethylthiuram disulfide,sample_annotation,DTXSID1021322,97-77-8
+EX000359,Tris(methylphenyl) phosphate,sample_annotation,DTXSID4021391,1330-78-5
+EX000360,Triphenyl phosphate,sample_annotation,DTXSID1021952,115-86-6
+EX000361,Tris(2-chloroethyl) phosphate,sample_annotation,DTXSID5021411,115-96-8
+EX000362,Valinomycin,sample_annotation,DTXSID9041150,2001-95-8
+EX000364,Tris(2-chloroisopropyl)phosphate,name,DTXSID5026259,13674-84-5
+EX000378,Chlorpyrifos oxon,sample_annotation,DTXSID1038666,5598-15-2
+EX000381,"5,5-Diphenylhydantoin",sample_annotation,DTXSID8020541,57-41-0
+EX000382,Cocaine,sample_annotation,DTXSID2038443,50-36-2
+EX000383,Methylmercuric(II) chloride,sample_annotation,DTXSID5020813,115-09-3
+EX000384,Chlorpyrifos,sample_annotation,DTXSID4020458,2921-88-2
+EX000385,Lead(II) acetate trihydrate,sample_annotation,DTXSID3031521,6080-56-4
+EX000386,Retinoic acid,sample_annotation,DTXSID7021239,302-79-4
+EX000388,Cadmium(II) chloride hydrate (2:5),sample_annotation,DTXSID4040183,7790-78-5
+EX000389,Tebuconazole,sample_annotation,DTXSID9032113,107534-96-3
+EX000390,Chlordiazepoxide hydrochloride,sample_annotation,DTXSID40880060,438-41-5
+EX000391,Esketamine hydrochloride,sample_annotation,DTXSID601027734,33643-47-9
+EX000392,Hexachlorophene,name,DTXSID6020690,70-30-4
+EX000393,Terbutaline hemisulfate,sample_annotation,DTXSID3045437,23031-32-5
+EX000395,Dexamethasone,name,DTXSID3020384,50-02-2
+EX000396,Caffeine,sample_annotation,DTXSID0020232,58-08-2
+EX000399,Amoxicillin,sample_annotation,DTXSID3037044,26787-78-0
+EX000400,D-Glucitol,name,DTXSID5023588,50-70-4
+EX000402,Dextroamphetamine sulfate,sample_annotation,DTXSID2057865,51-63-8
+EX000403,Sodium saccharin hydrate,sample_annotation,DTXSID7021992,82385-42-0
+EX000409,Diazepam,sample_annotation,DTXSID4020406,439-14-5
+EX000410,Haloperidol,sample_annotation,DTXSID4034150,52-86-8
+EX000411,Loperamide,sample_annotation,DTXSID00880006,34552-83-5
+EX000412,5-Fluorouracil,sample_annotation,DTXSID2020634,51-21-8
+EX000413,Cytarabine,sample_annotation,DTXSID3022877,147-94-4
+EX000416,(-)-Nicotine,sample_annotation,DTXSID1020930,54-11-5
+EX000417,Dieldrin,sample_annotation,DTXSID9020453,60-57-1
+EX000418,Maneb,sample_annotation,DTXSID9020794,12427-38-2
+EX000419,Trimethyltin hydroxide,sample_annotation,DTXSID9032240,56-24-6
+EX000420,Bisphenol A,sample_annotation,DTXSID7020182,80-05-7
+EX000421,6-Propyl-2-thiouracil,sample_annotation,DTXSID5021209,51-52-5
+EX000422,Di(2-ethylhexyl) phthalate,name,DTXSID5020607,117-81-7
+EX000423,Deltamethrin,sample_annotation,DTXSID8020381,52918-63-5
+EX000424,6-aminopyridine-3-carboxamide,sample_annotation,DTXSID5051446,329-89-5
+EX000427,Acrylamide,sample_annotation,DTXSID5020027,79-06-1
+EX000429,Aldicarb,sample_annotation,DTXSID0039223,116-06-3
+EX000431,Colchicine,sample_annotation,DTXSID5024845,64-86-8
+EX000432,Diethylstilbestrol,sample_annotation,DTXSID3020465,56-53-1
+EX000437,Heptachlor epoxide B,sample_annotation,DTXSID1024126,1024-57-3
+EX000439,Sodium valproate,sample_annotation,DTXSID5037072,1069-66-5
+EX000440,Thalidomide,sample_annotation,DTXSID9022524,50-35-1
+EX000441,Isoniazid,sample_annotation,DTXSID8020755,54-85-3
+EX000445,Methotrexate,sample_annotation,DTXSID4020822,59-05-2
+EX000446,Hydroxyurea,sample_annotation,DTXSID6025438,127-07-1
+EX000447,Bis(tributyltin)oxide,sample_annotation,DTXSID9020166,56-35-9
+EX000449,Phenobarbital sodium,sample_annotation,DTXSID0021123,57-30-7
+EX000453,"Tris(1,3-dichloro-2-propyl) phosphate",sample_annotation,DTXSID9026261,13674-87-8
+EX000454,"3,3',5,5'-Tetrabromobisphenol A",sample_annotation,DTXSID1026081,79-94-7
+EX000455,Phenol,sample_annotation,DTXSID5021124,108-95-2
+EX000456,Captopril,name,DTXSID1037197,62571-86-2
+EX000457,Diethylene glycol,sample_annotation,DTXSID8020462,111-46-6
+EX000458,Sodium benzoate,sample_annotation,DTXSID1020140,532-32-1
+EX000459,Cotinine,sample_annotation,DTXSID1047576,486-56-6
+EX000460,Chloramben,sample_annotation,DTXSID2020262,133-90-4
+EX000461,"2,2',4,4'-Tetrabromodiphenyl ether",name,DTXSID3030056,5436-43-1
+EX000462,Fluconazole,sample_annotation,DTXSID3020627,86386-73-4
+EX000463,Permethrin,name,DTXSID8022292,52645-53-1
+EX000464,Paraquat dichloride,sample_annotation,DTXSID7024243,1910-42-5
+EX000465,Sodium arsenite,sample_annotation,DTXSID5020104,7784-46-5
+EX000466,Sodium fluoride,sample_annotation,DTXSID2020630,7681-49-4
+EX000467,Manganese dichloride,sample_annotation,DTXSID9040681,7773-01-5
+EX000468,Fluoxetine hydrochloride,sample_annotation,DTXSID7020635,56296-78-7
+EX000469,Chlorpromazine hydrochloride,sample_annotation,DTXSID7024827,69-09-0
+EX000470,Carbamazepine,sample_annotation,DTXSID4022731,298-46-4
+EX000471,Naloxone hydrochloride dihydrate,sample_annotation,DTXSID90199452,51481-60-8
+EX000472,Cyclophosphamide monohydrate,sample_annotation,DTXSID6024888,6055-19-2
+EX000473,Triethyltin bromide,sample_annotation,DTXSID9040712,2767-54-6
+EX000475,Bisindolylmaleimide I,sample_annotation,DTXSID50157932,133052-90-1
+EX000487,L-Domoic acid,sample_annotation,DTXSID20274180,14277-97-5
+EX000498,Mevastatin,sample_annotation,DTXSID4040684,73573-88-3
+EX000499,Sodium orthovanadate,sample_annotation,DTXSID2037269,13721-39-6
+EX000516,"1,2-Propylene glycol",sample_annotation,DTXSID0021206,57-55-6
+EX000517,5-Chloro-2-methyl-3(2H)-isothiazolone,sample_annotation,DTXSID9034286,26172-55-4
+EX000518,Flusilazole,sample_annotation,DTXSID3024235,85509-19-9
+EX000519,Spiroxamine,sample_annotation,DTXSID1034212,118134-30-8
+EX000520,Lactofen,sample_annotation,DTXSID7024160,77501-63-4
+EX000521,Acetamiprid,sample_annotation,DTXSID0034300,135410-20-7
+EX000522,Carbaryl,name,DTXSID9020247,63-25-2
+EX000523,Cypermethrin,name,DTXSID1023998,52315-07-8
+EX000524,Emamectin benzoate,name,DTXSID0034566,155569-91-8
+EX000525,Fipronil,sample_annotation,DTXSID4034609,120068-37-3
+EX000526,Imidacloprid,sample_annotation,DTXSID5032442,138261-41-3
+EX000527,Lindane,sample_annotation,DTXSID2020686,58-89-9
+MEA20201109A1,Bisindolylmaleimide I,name,DTXSID50157932,133052-90-1
+MEA20201109A11,Glyphosate,name,DTXSID1024122,1071-83-6
+MEA20201109A2,Bisindolylmaleimide I,name,DTXSID50157932,133052-90-1
+MEA20201109A3,Bisindolylmaleimide I,name,DTXSID50157932,133052-90-1
+MEA20201109A4,L-Domoic acid,name,DTXSID20274180,14277-97-5
+MEA20201109A5,Mevastatin,name,DTXSID4040684,73573-88-3
+MEA20201109A6,Acetaminophen,name,DTXSID2020006,103-90-2
+MEA20201109A7,Acetaminophen,name,DTXSID2020006,103-90-2
+TP0001411E11,Perfluoroundecanoic acid,sample_annotation,DTXSID8047553,2058-94-8
+TP0001413A04,"1H,1H,2H,2H-Perfluorooctyl iodide",sample_annotation,DTXSID2047565,2043-57-4
+TP0001649A01,Bisphenol AF,name,DTXSID7037717,1478-61-1
+TP0001649A02,Mirex,sample_annotation,DTXSID7020895,2385-85-5
+TP0001649A03,Reserpine,sample_annotation,DTXSID7021237,50-55-5
+TP0001649A04,S-Ethyl dipropylthiocarbamate,name,DTXSID1024091,759-94-4
+TP0001649A05,Busulfan,sample_annotation,DTXSID3020910,55-98-1
+TP0001649A06,CP-409092,sample_annotation,DTXSID2047276,194098-25-4
+TP0001649A07,Picoxystrobin,name,DTXSID9047542,117428-22-5
+TP0001649A08,Piperonyl butoxide,sample_annotation,DTXSID1021166,51-03-6
+TP0001649A09,"p,p'-DDD",sample_annotation,DTXSID4020373,72-54-8
+TP0001649A10,Molinate,name,DTXSID6024206,2212-67-1
+TP0001649A11,Tetramethrin,sample_annotation,DTXSID6032649,7696-12-0
+TP0001649A12,6-Methyl-2-thiouracil,sample_annotation,DTXSID2020890,56-04-2
+TP0001649B01,S-Bioallethrin,sample_annotation,DTXSID2039336,28434-00-6
+TP0001649B02,Mancozeb,name,DTXSID0034695,8018-01-7
+TP0001649B03,Tamoxifen,sample_annotation,DTXSID1034187,10540-29-1
+TP0001649B04,Benz(a)anthracene,sample_annotation,DTXSID5023902,56-55-3
+TP0001649B05,Fenpropathrin,sample_annotation,DTXSID0024002,39515-41-8
+TP0001649B06,PharmaGSID_47330,sample_annotation,DTXSID9047330,NOCAS_47330
+TP0001649B07,6-Propyl-2-thiouracil,name,DTXSID5021209,51-52-5
+TP0001649B08,D-Mannitol,sample_annotation,DTXSID1023235,69-65-8
+TP0001649B09,Boscalid,name,DTXSID6034392,188425-85-6
+TP0001649B10,Eugenol,sample_annotation,DTXSID9020617,97-53-0
+TP0001649B11,Parathion,name,DTXSID7021100,56-38-2
+TP0001649B12,Resmethrin,sample_annotation,DTXSID7022253,10453-86-8
+TP0001649C01,Clodinafop-propargyl,name,DTXSID6032354,105512-06-9
+TP0001649C02,"p,p'-DDE",sample_annotation,DTXSID9020374,72-55-9
+TP0001649C03,tert-Butylhydroquinone,sample_annotation,DTXSID6020220,1948-33-0
+TP0001649C04,CP-457920,sample_annotation,DTXSID4047254,220860-50-4
+TP0001649C05,"Octachloro-4,7-methanotetrahydroindane",sample_annotation,DTXSID7020267,57-74-9
+TP0001649C06,Glycerol,sample_annotation,DTXSID9020663,56-81-5
+TP0001649C07,Fluoxastrobin,name,DTXSID2034625,361377-29-9
+TP0001649C08,Simvastatin,sample_annotation,DTXSID0023581,79902-63-9
+TP0001649C09,Tributyltin chloride,sample_annotation,DTXSID3027403,1461-22-9
+TP0001649C10,Es-fenvalerate,sample_annotation,DTXSID4032667,66230-04-4
+TP0001649C11,Mercuric chloride,sample_annotation,DTXSID5020811,7487-94-7
+TP0001649C12,Enadoline,sample_annotation,DTXSID4047258,124378-77-4
+TP0001649D01,Methimazole,sample_annotation,DTXSID4020820,60-56-0
+TP0001649D02,Phenanthrene,name,DTXSID6024254,85-01-8
+TP0001649D03,DDT,name,DTXSID4020375,50-29-3
+TP0001649D04,Tributyltin methacrylate,sample_annotation,DTXSID9035204,2155-70-6
+TP0001649D05,Fenamiphos,name,DTXSID3024102,22224-92-6
+TP0001649D06,2-(m-Chlorophenoxy)propionic acid,sample_annotation,DTXSID9034232,101-10-0
+TP0001649D07,Erythromycin,sample_annotation,DTXSID4022991,114-07-8
+TP0001649D08,Lovastatin,sample_annotation,DTXSID5020784,75330-75-5
+TP0001649D09,Acenaphthene,sample_annotation,DTXSID3021774,83-32-9
+TP0001649D10,Methadone hydrochloride,sample_annotation,DTXSID2020501,1095-90-5
+TP0001649D11,Phenylmercuric acetate,sample_annotation,DTXSID7021150,62-38-4
+TP0001649D12,Spirodiclofen,name,DTXSID6034928,148477-71-8
+TP0001649E01,3-Iodo-2-propynyl-N-butylcarbamate,name,DTXSID0028038,55406-53-6
+TP0001649E02,Clove leaf oil,sample_annotation,DTXSID8044175,8000-34-8
+TP0001649E03,Tetracycline,sample_annotation,DTXSID7023645,60-54-8
+TP0001649E04,Carbofuran,name,DTXSID9020249,1563-66-2
+TP0001649E05,Atrazine,sample_annotation,DTXSID9020112,1912-24-9
+TP0001649E06,Methoxychlor,sample_annotation,DTXSID9020827,72-43-5
+TP0001649E07,Thiacloprid,sample_annotation,DTXSID7034961,111988-49-9
+TP0001649E08,Tefluthrin,sample_annotation,DTXSID5032577,79538-32-2
+TP0001649E09,Triphenyl phosphite,sample_annotation,DTXSID0026252,101-02-0
+TP0001649E10,Thiamethoxam,sample_annotation,DTXSID2034962,153719-23-4
+TP0001649E11,Tetraethylthiuram disulfide,name,DTXSID1021322,97-77-8
+TP0001649E12,Pravastatin sodium,sample_annotation,DTXSID6047525,81131-70-6
+TP0001649F01,Chlorendic acid,sample_annotation,DTXSID2020268,115-28-6
+TP0001649F02,Cyfluthrin,name,DTXSID5035957,68359-37-5
+TP0001649F03,"2,2-Bis(4-hydroxyphenyl)-1,1,1-trichloroethane",sample_annotation,DTXSID8022325,2971-36-0
+TP0001649F04,Flufenacet,name,DTXSID2032552,142459-58-3
+TP0001649F05,Boric acid (H3BO3),sample_annotation,DTXSID1020194,10043-35-3
+TP0001649F06,Disulfoton,name,DTXSID0022018,298-04-4
+TP0001649F07,Clothianidin,name,DTXSID2034465,210880-92-5
+TP0001649F08,Fenitrothion,sample_annotation,DTXSID4032613,122-14-5
+TP0001649F09,Pyraclostrobin,name,DTXSID7032638,175013-18-0
+TP0001649F10,Prallethrin,sample_annotation,DTXSID0032572,23031-36-9
+TP0001649F11,Captan,name,DTXSID9020243,133-06-2
+TP0001649F12,Allethrin,name,DTXSID8035180,584-79-2
+TP0001649G01,Diphenhydramine hydrochloride,sample_annotation,DTXSID4020537,147-24-0
+TP0001649G02,Benzo(b)fluoranthene,sample_annotation,DTXSID0023907,205-99-2
+TP0001649G03,"o,p'-DDT",sample_annotation,DTXSID6022345,789-02-6
+TP0001649G04,Aspirin,name,DTXSID5020108,50-78-2
+TP0001649G05,Azoxystrobin,name,DTXSID0032520,131860-33-8
+TP0001649G06,Endosulfan,sample_annotation,DTXSID1020560,115-29-7
+TP0001649G07,Cariporide mesylate,sample_annotation,DTXSID3047344,159138-81-5
+TP0001649G08,17beta-Estradiol,name,DTXSID0020573,50-28-2
+TP0001649G09,Endrin,sample_annotation,DTXSID6020561,72-20-8
+TP0001649G10,Trifloxystrobin,name,DTXSID4032580,141517-21-7
+TP0001649G11,Aldrin,sample_annotation,DTXSID8020040,309-00-2
+TP0001649G12,Kepone,sample_annotation,DTXSID1020770,143-50-0
+TP0001649H01,Rotenone,name,DTXSID6021248,83-79-4
+TP0001649H02,Bisphenol B,sample_annotation,DTXSID4022442,77-40-7
+TP0001649H03,Abamectin,name,DTXSID8023892,71751-41-2
+TP0001649H04,Fluorene,sample_annotation,DTXSID8024105,86-73-7
+TP0001649H05,Folic acid,sample_annotation,DTXSID0022519,59-30-3
+TP0001649H06,Difpas-pyrazole,sample_annotation,DTXSID6048175,151506-44-4
+TP0001649H07,Bifenthrin,name,DTXSID9020160,82657-04-3
+TP0001649H08,Acenaphthylene,sample_annotation,DTXSID3023845,208-96-8
+TP0001649H09,Cymoxanil,name,DTXSID6032358,57966-95-7
+TP0001649H10,Etofenprox,sample_annotation,DTXSID9032610,80844-07-1
+TP0001649H11,Octylbicycloheptenedicarboximide,sample_annotation,DTXSID6032562,113-48-4
+TP0001649H12,Triclosan,sample_annotation,DTXSID5032498,3380-34-5
+TT0000177A01,Profenofos,sample_annotation,DTXSID3032464,41198-08-7
+TT0000177A02,Coumaphos,sample_annotation,DTXSID2020347,56-72-4
+TT0000177A03,Bensulide,name,DTXSID9032329,741-58-2
+TT0000177A04,Acephate,name,DTXSID8023846,30560-19-1
+TT0000177B01,Z-Tetrachlorvinphos,name,DTXSID1032648,22248-79-9
+TT0000177B02,Methamidophos,name,DTXSID6024177,10265-92-6
+TT0000177B03,Malaoxon,sample_annotation,DTXSID9020790,1634-78-2
+TT0000177B04,Fosthiazate,sample_annotation,DTXSID0034930,98886-44-3
+TT0000177C01,Dichlorvos,name,DTXSID5020449,62-73-7
+TT0000177C02,Tebupirimfos,name,DTXSID1032482,96182-53-5
+TT0000177C03,Phosmet,name,DTXSID5024261,732-11-6
+TT0000177C04,Omethoate,sample_annotation,DTXSID4037580,1113-02-6
+TT0000177D01,Ethoprop,name,DTXSID4032611,13194-48-4
+TT0000177D02,Malathion,name,DTXSID4020791,121-75-5
+TT0000177D03,Pirimiphos-methyl,sample_annotation,DTXSID0024266,29232-93-7
+TT0000177E01,Terbufos,name,DTXSID2022254,13071-79-9
+TT0000177E02,Chlorpyrifos,name,DTXSID4020458,2921-88-2
+TT0000177E03,Naled,name,DTXSID1024209,300-76-5
+TT0000177F01,Trichlorfon,name,DTXSID0021389,52-68-6
+TT0000177F02,Phorate,name,DTXSID4032459,298-02-2
+TT0000177F03,Tribufos,name,DTXSID1024174,78-48-8
+TT0000177G01,Diazoxon,name,DTXSID5037523,962-58-3
+TT0000177G02,Chlorpyrifos oxon,name,DTXSID1038666,5598-15-2
+TT0000177G03,Chlorethoxyfos,name,DTXSID2032344,54593-83-8
+TT0000177H01,Diazinon,name,DTXSID9020407,333-41-5
+TT0000177H02,Dimethoate,name,DTXSID7020479,60-51-5
+TT0000177H03,Dicrotophos,sample_annotation,DTXSID9023914,141-66-2

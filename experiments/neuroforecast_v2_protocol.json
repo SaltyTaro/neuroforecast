@@ -1,0 +1,109 @@
+{
+  "version": "neuroforecast_v2.0",
+  "status": "candidates_fixed_before_development_run",
+  "written": "2026-09-27 IST",
+  "purpose": "One sealed external test of (A) the frozen v1 triage tool, unchanged, and (B) a bounded set of v2 components designed to fix the weaknesses found after the v1 reserve. Candidates, selection rules, operating-point rules, criteria and wording are fixed here before any v2 development evaluation is run. Operating points chosen by these rules on development are written into a hashed lock file before the external data are unsealed.",
+  "builds_on": {
+    "v1_gate_protocol": "experiments/neuroforecast_gate_protocol.json (v1.1; reserve scored once on 2026-09-21; the reserve is spent and is treated here as development data)",
+    "frozen_cores_imported_unchanged": ["tools/neuroforecast_data.py", "tools/neuroforecast_benchmark.py", "tools/neuroforecast_representation.py", "tools/neuroforecast_gate.py", "tools/neuroforecast_triage.py"],
+    "intake": "tools/external_nfa_intake.py and tools/external_nfa_equivalence.py; outputs E:/kaggle/AI4S/experiments/neuroforecast_external_v2/intake"
+  },
+  "source": {
+    "repository": "https://github.com/USEPA/CompTox-DNT-NFA-Refinement",
+    "commit": "01adf3e1a0068c87fe221d60df36b9f96c4b4b1d",
+    "file": "source_files/All_DIV_Data.Rdata",
+    "sha256": "fe8015c789770092b485fb63dd8aa0f643120e366df73c5624665454ee982af6",
+    "licence": "No LICENSE file in the repository. The data were produced by the US EPA; they are treated as a US-Government work and cited to EPA. This limitation is reported.",
+    "relation_to_v1_source": "The release re-processes the same recordings as the v1 archive (DOI 10.23719/1503191) for the 17 shared dates: per-readout Pearson r 0.988 to 0.9997, network-spike counts typically differ by one. It lacks cv.time and cv.network and adds mi (normalized mutual information)."
+  },
+  "cohorts": {
+    "development": "The 17 dates present in both sources (the 12 v1 development dates, the 3 spent reserve dates, 20170201 and 20170222), taken from the release copy so that development and external data share one processing pipeline. Identity = DSSTox substance ID from the release's own tables.",
+    "external": "The 28 dates from 2014-02-05 to 2016-06-01 that exist only in the release: 73 plate-dates, 983 conditions eligible by the input rules and with at least two day-12 treated wells, 111 chemicals.",
+    "external_primary": "External conditions whose chemical is absent from all 17 development dates: 927 conditions, 105 chemicals (by DSSTox ID and, independently, by CAS). The six shared chemicals are reported separately as a secondary cohort.",
+    "case_rule": "Unchanged from v1: date/identity/positive dose with at least two usable replicate wells and a finite control-relative network-spike value at days 5, 7 and 12.",
+    "what_the_author_has_seen_of_the_external_dates": "Dates, plate counts, chemical names and IDs, per-date chemical counts, control-well counts at day 7, and the existence of day-12 records. EPA's plate-exclusion script, read on 2026-09-27, names one external plate (MW1045-09_20141231) as having zero-valued day-12 control endpoints on 14 rows; no other day-9 or day-12 value, and no hit call, for an external chemical has been read."
+  },
+  "target": {
+    "definition": "Unchanged: log2 of the replicate-mean of (ns.n + 1)/(same-plate same-DIV zero-dose median ns.n + 1) at day 12.",
+    "usable_reference_rule": "Primary scoring uses conditions whose day-12 plate zero-dose median ns.n is at least 5 on every plate the condition occupies (the v1 outcome-quality subset). This uses a future observation, so it only decides which targets are trustworthy enough to score; it never enters a feature, decision or model at prediction time. Results on all conditions are reported as a sensitivity analysis.",
+    "large_change": "abs(target) >= 1",
+    "early_quiet": "abs(day-7 normalized network-spike value) < 0.5"
+  },
+  "inputs": {
+    "allowed": "Day-5 and day-7 readouts present in the release (17: the 16 shared v1 readouts plus mi), their same-plate same-day zero-dose controls, log10 concentration, the seven v1 day-7 reliability indicators, and batch-level day-7 covariates computed from all eligible conditions of the same experiment date at day 7 (defined below). For decision D only: EPA's own day-7 hit sum (div7.hitsum), which is computed from day-7 data alone.",
+    "batch_covariates_day7": ["batch_sd_d7: standard deviation of normalized_ns_d7 over the date's eligible conditions", "batch_changed_frac_d7: fraction of the date's conditions with abs(normalized_ns_d7) >= 0.5", "batch_ctrl_median_d7: median over the date's plates of arcsinh(plate control median ns.n at day 7)"],
+    "forbidden": "Identities, date and plate identifiers, any day-9 or day-12 measurement or control, viability, EPA potency, AUC, DIV9 or DIV12 hit calls, and any external outcome before unsealing.",
+    "exploration_disclosure": "Before this protocol was written, the author examined development data only and found that batch_sd_d7 correlates 0.82 across the 17 development dates with the day-7-to-day-12 correlation. That observation motivated the batch covariates and the batch blend."
+  },
+  "arm_A_v1_replication": {
+    "what": "The shipped v1 triage function (tools/neuroforecast_triage.py triage()) and the shipped v1 bundle, unchanged, applied to external day-5 and day-7 wells from the release.",
+    "disclosed_handicaps": "The release lacks cv.time and cv.network, so those v1 inputs are missing (the tool treats them as unobserved), and the recordings were re-processed. Measured on the spent reserve before unsealing: v1 date-macro MAE 0.7716 on the archive, 0.7904 without the two readouts, 0.8200 on the release copy; persistence 0.6088 and 0.6086; declined 32 and 33; low-reference-activity flags 84 and 84. The same handicap applies to the external test and is stated beside every Arm A forecast number.",
+    "criteria": {
+      "A1_forecast_vs_persistence": {"test": "v1 date-macro MAE lower than persistence on the primary cohort, and lower on more than half of the dates with at least 10 scored conditions.", "if_pass": "The frozen v1 forecast beat carrying day 7 forward on 28 earlier batches despite two missing inputs.", "if_fail": "The frozen v1 forecast again did not beat carrying day 7 forward; the forecasting claim stays withdrawn."},
+      "A2_abstention": {"test": "At the locked v1 difficulty threshold, retained-case MAE at least 20% below all-case MAE for v1, and at least 10% below for persistence on the same retained cases.", "if_pass": "Abstention on predicted difficulty transferred to 28 earlier batches, for both predictors.", "if_fail": "Abstention did not transfer at the stated margins."},
+      "A2b_difficulty_model_vs_extremity_rule": {"test": "Retained-case MAE of v1 using the difficulty model is lower than using the zero-parameter rule that declines the same number of conditions with the most extreme forecasts.", "if_pass": "The learned difficulty model adds value over declining extreme forecasts.", "if_fail": "The credit belongs to abstaining on extreme forecasts, not to the learned difficulty model (as on the v1 reserve)."},
+      "A3_quality_flag": {"test": "If any external condition carries low_reference_activity, flagged conditions have persistence MAE and v1 MAE both at least 1.5 times the unflagged values. If none is flagged, the criterion is reported as not testable.", "if_pass": "The day-7 control-activity flag marked conditions whose later readout could not be anticipated, on batches from a different period.", "if_fail": "The flag did not separate harder conditions on the external batches."},
+      "A4_early_warning": {"test": "Pooled early-quiet recall at the 20% budget exceeds twice the random expectation and exceeds the expected recall of flagging the highest doses first.", "if_pass": "The v1 early-warning ranking beat chance and the dose rule on 28 earlier batches.", "if_fail": "The v1 early-warning ranking did not beat the dose rule."},
+      "A5_interval_coverage": {"test": "Scaled nominal-0.80 intervals observe at least 0.70 pooled coverage (the v1 bar); any value below 0.80 is reported as a shortfall.", "if_pass": "Coverage met the v1 bar.", "if_fail": "Intervals under-covered below the v1 bar on external batches."}
+    }
+  },
+  "arm_B_v2": {
+    "forecast_candidates": {
+      "trivial": ["persistence_day7", "control_reference"],
+      "v1_refit": "Extra Trees on the v1 day-7 relative representation (without cv.time/cv.network), v1 hyperparameters.",
+      "small_refit": "Extra Trees on the v1 activity/coordination features, v1 hyperparameters.",
+      "anchored_residual": "Forecast = day7 + lambda * g(x), where g is Extra Trees (v1 hyperparameters) fit to (target - day7) on the v1 day-7 relative representation; lambda chosen from {0.25, 0.5, 0.75, 1.0} by inner cross-validation.",
+      "anchored_residual_batch": "As anchored_residual, with the three batch covariates added to the features.",
+      "batch_blend": "Forecast = w_b * v1_refit + (1 - w_b) * day7, with w_b = clip(a + b * batch_sd_d7, 0, 1); (a, b) chosen from the grid a in {-1, -0.5, 0, 0.5, 1}, b in {-1, -0.5, 0, 0.5, 1} by inner cross-validation.",
+      "no_additions": "No forecasting candidate may be added after this protocol is hashed."
+    },
+    "trust_candidates": {
+      "sigma_v2": "Extra Trees (v1 hyperparameters, floor 0.05) fit to out-of-fold absolute residuals of the product, on the product features plus the seven reliability indicators and the three batch covariates.",
+      "extremity": "abs(forecast)",
+      "predicted_change": "abs(forecast - day7)",
+      "day7_magnitude": "abs(day7)",
+      "low_control_activity": "negative plate control median ns.n at day 7",
+      "selection_metric": "Area under the risk-coverage curve (mean absolute error of retained cases averaged over retention 50% to 100% in 1% steps) on development out-of-fold predictions of the product; lowest wins. Trivial rules are eligible and are shipped if they win.",
+      "operating_point": "Decline the 20% of conditions with the highest trust score; the threshold is the 80th percentile of the development out-of-fold score and is locked."
+    },
+    "interval": "Split-conformal intervals on out-of-fold development residuals, scaled by the locked trust score when it is sigma_v2, otherwise symmetric; nominal 0.80 primary, 0.90 secondary.",
+    "warning_candidates": {
+      "scores": ["abs(product forecast - day7)", "abs(product forecast)", "abs(v1_refit forecast)", "highest dose first", "abs(day7) with random tie-breaking"],
+      "selection_metric": "Pooled early-quiet recall at the 20% within-date budget on development out-of-fold predictions; ties go to the simpler score in the listed order reversed (dose rule before learned scores).",
+      "also_reported": "Direction agreement: among detections, the share whose forecast change has the same sign as the realized change."
+    },
+    "decision_D_day7_chemical_call": {
+      "question": "For a chemical measured on one experiment date, can EPA's final activity call be settled at day 7, so recording can stop, and for which chemicals must it continue to day 12?",
+      "reference": "EPA's final call from Bioactivity_bin_tbl_comp_methods.csv: active if auc.hitsum >= 1 (primary) or >= 3 (secondary). This is an outcome and is sealed for external chemicals.",
+      "day7_evidence": "EPA's own day-7 call div7.hitsum (day-7 data only), the v2 product forecasts over the chemical's concentrations, the locked trust score, and the batch quality flags.",
+      "baseline_D0": "Decide every chemical at day 7 with EPA's own day-7 call: active if div7.hitsum >= 1.",
+      "policy_D1": "Stop early and call active if div7.hitsum >= h; stop early and call inactive if div7.hitsum == 0 and the maximum over the chemical's concentrations of abs(product forecast) is below c and no condition of the chemical is declined or carries low_reference_activity; otherwise continue to day 12. h in {1, 2, 3, 5}, c in {0.25, 0.5, 0.75, 1.0}; choose the pair with the largest early-decision share on development subject to development early-call agreement >= 0.95 with the primary reference; if no pair meets 0.95, D1 is not locked and D is reported descriptively only.",
+      "unit": "Chemical x experiment date, joined to EPA's per-sample call through the sample ID.",
+      "reading_rule": "Before unsealing, EPA call tables may be read only for development samples, except the div7.hitsum column, which is day-7 information and may be read for external samples."
+    },
+    "development_design": {
+      "outer_split": "Leave one development date out and purge its chemical identities from training (17 folds).",
+      "inner_split": "The same leave-one-date-out purged split over the remaining 16 dates, for hyperparameters (lambda, a, b), trust selection and nested selection.",
+      "primary_metric": "Date-macro MAE on usable-reference targets (per date: mean over doses per chemical, then over chemicals; then mean over dates).",
+      "training_targets": "Only usable-reference targets are used for fitting (a historical, not a prediction-time, check).",
+      "product_selection": "The forecasting candidate (learned or trivial) with the lowest development out-of-fold date-macro MAE is the product; the nested estimate of that selection procedure is reported beside it.",
+      "final_fit": "Selected components are refit on all 17 development dates for the external test."
+    },
+    "criteria": {
+      "B1_forecast_vs_persistence": {"test": "Product date-macro MAE lower than persistence on the primary cohort, and lower on more than half of the dates with at least 10 scored conditions. If the product is persistence itself, B1 is reported as not applicable.", "if_pass": "A v2 forecaster beat carrying day 7 forward on 28 earlier batches with unseen chemicals.", "if_fail": "No v2 forecaster beat carrying day 7 forward; persistence remains the recommended point forecast."},
+      "B1b_forecast_vs_v1": {"test": "Product date-macro MAE lower than Arm A's v1 on the primary cohort.", "note": "Arm A carries a disclosed input handicap; B1b is reported but not claimed as an algorithmic improvement unless v1_refit, fit on the same release inputs, is also beaten."},
+      "B2_trust": {"test": "The locked trust score's area under the risk-coverage curve on the primary cohort is lower than that of the extremity rule (when the locked score is not the extremity rule itself) and lower than random retention.", "if_pass": "The locked trust score ranks predictability better than the extremity rule on external batches.", "if_fail": "The locked trust score did not beat the extremity rule."},
+      "B3_warning": {"test": "Pooled early-quiet recall at 20% budget exceeds twice the random expectation and the highest-dose rule.", "if_pass": "Early warning beat chance and the dose rule on external batches.", "if_fail": "Early warning did not beat the dose rule."},
+      "B4_decision_D": {"test": "If D1 is locked: on external primary-cohort chemicals, early-call agreement with EPA's final call is at least 0.90 and the early-decision share is at least 0.25, and D1 agreement exceeds D0 agreement.", "if_pass": "At day 7 the tool settled at least a quarter of chemical calls with at least 90% agreement with EPA's final call, and knew when to continue recording.", "if_fail": "The day-7 decision did not reach the stated agreement or share; no recording-time saving is claimed."},
+      "B5_interval_coverage": {"test": "Nominal-0.80 intervals observe at least 0.75 pooled coverage on the primary cohort; per-date coverage is reported.", "if_pass": "Intervals were approximately calibrated on external batches.", "if_fail": "Intervals under-covered on external batches."}
+    }
+  },
+  "external_scoring": {
+    "preconditions": ["development run complete and a lock file written with hashes of this protocol, the v2 code, the frozen cores, the intake outputs and every locked operating point", "the lock and hashes unchanged at unsealing", "an explicit --unseal flag", "no existing external outputs"],
+    "runs": "Exactly once for both arms. Every date is reported. A rerun needs a new protocol version and a written reason.",
+    "uncertainty": "10000 paired resamples of external date losses, descriptive.",
+    "reporting": "Every criterion is reported with its pre-written wording whether it passes or fails, with Arm A's handicap stated beside its numbers."
+  },
+  "claims_not_supported": ["living-chip or clinical validity", "toxicity, irreversibility or washout recovery", "human-cell validity", "cost savings beyond recording days, which D alone can support"],
+  "outputs": {"directory": "E:/kaggle/AI4S/experiments/neuroforecast_external_v2", "storage_rule": "All generated data on E:; code, protocol and compact reports in the workspace."}
+}
