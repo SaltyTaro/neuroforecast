@@ -71,7 +71,7 @@ node tests/test_web_triage_v2.mjs                          # browser port agains
 
 To re-run test 2 from source, start with `tools/fetch_epa_refinement.py`, which downloads the pinned EPA files (about 3 MB) and verifies their checksums. Then run `tools/reproduce_external.py` with the stages `prepare`, `develop`, `freeze`, `external --unseal` and `audit`.
 
-`develop` takes about three minutes. It is **byte-reproducible**: a fresh run from this repository reproduces every prepared file, every out-of-fold prediction and all five models exactly.
+`develop` takes about three minutes. It is **byte-reproducible**: a fresh run from this repository reproduced every prepared file, every out-of-fold prediction and all five models exactly. That was verified on Windows with Python 3.14; on other systems the CSV line endings differ, so compare contents there.
 
 To re-run test 1, use `tools/fetch_epa_data.py` and `tools/neuroforecast_gate.py`. The stages are `prepare`, `develop`, `reserve --unseal` and `audit`.
 
