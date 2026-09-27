@@ -1,4 +1,7 @@
+<!doctype html>
 <meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%232a78d6%27/%3E%3Ccircle cx=%275%27 cy=%278%27 r=%271.6%27 fill=%27white%27/%3E%3Ccircle cx=%2711%27 cy=%278%27 r=%271.6%27 fill=%27white%27/%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NeuroForecast Triage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,12 +92,19 @@
   .status.good .txt b{color:var(--ok)}
   .status .txt span{color:var(--ink-2)}
 
+  /* ---- batch picker, only when a file holds more than one batch ---- */
+  .picker{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding-bottom:9px}
+  .picker .sub{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-right:4px}
+  .picker button.low{color:var(--caution)}
+  .picker button.low[aria-pressed="true"]{background:var(--caution);border-color:var(--caution);color:var(--s1)}
+
   /* ---- working surface ---- */
   .work{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:16px 56px;
     display:grid;grid-template-columns:286px minmax(0,1fr);gap:0}
   .rail{border-right:var(--hair) solid var(--line-2);padding-right:18px;display:flex;flex-direction:column;gap:18px}
   .main{padding-left:18px;display:flex;flex-direction:column;gap:22px;min-width:0}
   @media (max-width:900px){
+    .run{position:static}
     .work{grid-template-columns:minmax(0,1fr)}
     .rail{border-right:none;padding-right:0;border-bottom:var(--hair) solid var(--line-2);padding-bottom:18px}
     .main{padding-left:0}
@@ -115,6 +125,7 @@
   .well.ctrl{box-shadow:inset 0 0 0 1px var(--ink)}
   .legend{display:flex;flex-wrap:wrap;gap:4px 10px;font-family:var(--mono);font-size:10px;color:var(--ink-2);align-items:center}
   .sw{width:9px;height:9px;border-radius:1.5px;display:inline-block;vertical-align:-1px;margin-right:4px}
+  .legend svg{display:inline-block;vertical-align:-1px;margin-right:4px;overflow:visible}
 
   /* ---- small multiples ---- */
   .panels{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:2px}
@@ -147,6 +158,8 @@
   .ev p{max-width:80ch;color:var(--ink-2);font-size:12px}
   .ev .rows{font-family:var(--mono);font-size:11px;color:var(--ink-2);display:flex;flex-direction:column;gap:2px}
   .ev b{font-weight:500;color:var(--ink)}
+  .ev .test{display:flex;flex-direction:column;gap:2px;padding-top:3px}
+  .ev .test .hd{font-family:var(--mono);font-size:11px;color:var(--ink)}
   footer{max-width:1240px;margin:0 auto;padding:0 16px 40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:3px}
   footer a{color:var(--accent)}
   .err{border-left:2px solid var(--alert);background:var(--alert-wash);color:var(--alert);padding:9px 12px;border-radius:0 4px 4px 0;font-size:12px;margin:12px 16px}
@@ -158,11 +171,12 @@
     <div class="run-top">
       <div class="run-title">
         <h1>NeuroForecast Triage</h1>
-        <span class="sub">day-7 decision &middot; microelectrode array</span>
+        <span class="sub">day-7 decision &middot; microelectrode array &middot; model v2</span>
       </div>
       <div class="seg" id="controls"><span class="sub mono">loading models</span></div>
     </div>
     <div class="meta" id="meta"></div>
+    <div class="picker" id="picker" hidden></div>
     <div class="status good" id="status" hidden>
       <span class="dot"></span>
       <div class="txt"><b id="status-head"></b> <span id="status-detail"></span></div>
@@ -178,33 +192,43 @@
       <h2>Batch readout</h2>
       <dl class="kv" id="readout"></dl>
     </section>
+    <section class="block" id="provenance" hidden>
+      <h2>About this example</h2>
+      <p class="cap" id="provenance-text"></p>
+    </section>
     <section class="block">
       <h2>Day-7 activity by well</h2>
       <div class="plates" id="plates"></div>
       <div class="legend" id="plate-legend"></div>
-      <p class="cap">Outlined wells are the untreated controls every normalised readout is divided by.</p>
+      <p class="cap">Outlined wells are the untreated controls every normalised readout is divided by. The number
+        beside each plate is its day-7 control median.</p>
     </section>
   </aside>
 
   <main class="main">
     <section class="block">
       <h2>Concentration response, observed day 7 and forecast day 12</h2>
-      <p class="cap">One panel per chemical, seven concentrations each, shared scale. The line is the
-        day-12 forecast with its 80% interval; dots are what was measured at day 7. Zero is the
-        plate's untreated control level.</p>
+      <p class="cap">One panel per chemical, shared scale, log concentration across. The blue line is the day-12
+        forecast with its 80% interval. Grey dots are the day-7 measurement, and the dashed line carries them
+        forward unchanged: the simple rule the model has to beat. Zero is the plate's untreated control level.</p>
+      <div class="legend">
+        <span><svg width="14" height="8" aria-hidden="true"><line x1="0" y1="4" x2="14" y2="4" stroke="var(--accent)" stroke-width="1.4"></line></svg>forecast, day 12</span>
+        <span><span class="sw" style="background:color-mix(in srgb, var(--accent-solid) 18%, transparent)"></span>80% interval</span>
+        <span><svg width="14" height="8" aria-hidden="true"><line x1="0" y1="4" x2="14" y2="4" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 2"></line><circle cx="7" cy="4" r="1.7" fill="var(--ink-2)"></circle></svg>day 7, carried forward</span>
+        <span><svg width="8" height="8" aria-hidden="true"><circle cx="4" cy="4" r="2.6" fill="var(--s1)" stroke="var(--caution)" stroke-width="1.2"></circle></svg>declined</span>
+      </div>
       <div class="panels" id="panels"></div>
     </section>
 
     <section class="block">
-      <h2>Forecast against the simple rule</h2>
-      <p class="cap">The diagonal is &ldquo;carry day 7 forward&rdquo;, which beat this model on the sealed
-        batches. Distance from it is what the model adds; trust it only where the point is filled.</p>
+      <h2>Forecast against carrying day 7 forward</h2>
+      <p class="cap" id="chart-cap"></p>
       <div class="chartwrap"><svg id="chart"></svg></div>
     </section>
 
     <section class="block">
       <div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between">
-        <h2>Conditions to review</h2>
+        <h2>Every condition</h2>
         <div class="seg" id="tabs"></div>
       </div>
       <p class="cap" id="table-hint"></p>
@@ -212,9 +236,10 @@
     </section>
 
     <section class="ev" id="ev" hidden>
-      <h2>Held-out result</h2>
+      <h2>Held-out evidence</h2>
       <p id="ev-text"></p>
-      <div class="rows" id="ev-rows"></div>
+      <div id="ev-tests"></div>
+      <div class="rows" id="ev-limits"></div>
     </section>
   </main>
 </div>
@@ -225,28 +250,51 @@
 </footer>
 
 <script type="module">
-import { parseCSV, prepareRows, buildFeatures, triage, Forest } from "./triage.js";
+import { parseCSV, prepareRowsV2, buildFeaturesV2, triageV2, ExactForest } from "./triage.js";
 
 const EXAMPLES = [
-  { date: 20170920, label: "20170920", file: "examples/reserve_20170920_usable_day5_day7.csv" },
-  { date: 20171004, label: "20171004", file: "examples/reserve_20171004_low_quality_day5_day7.csv" },
-  { date: 20171011, label: "20171011", file: "examples/reserve_20171011_usable_day5_day7.csv" },
+  {
+    id: "external", label: "20160120 held out", file: "examples/v2/external_20160120_day5_day7.csv",
+    tag: "held out from v2",
+    note: "A batch from the sealed external test (2014–2016). No v2 fit saw this date or any of its six chemicals.",
+  },
+  {
+    id: "low", label: "20171004 low quality", file: "examples/v2/reserve_20171004_low_quality_day5_day7.csv",
+    tag: "in v2 training data",
+    note: "This batch is in v2's training data, so its forecasts are not a test. The batch verdict is not learned: it is a "
+      + "fixed rule that fires when at least half the conditions sit on plates whose day-7 control median is below one "
+      + "network spike. Here all six plates had a control median of zero.",
+  },
+  {
+    id: "usable", label: "20171011 usable", file: "examples/v2/reserve_20171011_usable_day5_day7.csv",
+    tag: "in v2 training data",
+    note: "This batch is in v2's training data, so its forecasts show how the tool reads a normal batch, not held-out accuracy.",
+  },
 ];
 const el = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
 const sign = (x, d = 2) => (Number.isFinite(x) ? (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(d) : "—");
 const num = (x, d = 2) => (Number.isFinite(x) ? x.toFixed(d) : "—");
-const state = { models: null, constants: null, result: null, rows: null, tab: "early" };
+const capital = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+const byNameDose = (a, b) => String(a.name).localeCompare(String(b.name)) || a.dose - b.dose;
+const state = { models: null, constants: null, result: null, rows: null, batch: null, example: null, source: "", tab: "all" };
+
+async function get(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+  return response;
+}
 
 async function boot() {
   try {
-    const manifest = await (await fetch("models/manifest.json")).json();
+    const manifest = await (await get("models/v2/manifest.json")).json();
     state.constants = manifest.constants;
     state.models = {};
     for (const [label, spec] of Object.entries(manifest.models)) {
-      state.models[label] = new Forest(await (await fetch("models/" + spec.file)).arrayBuffer(), spec);
+      state.models[label] = new ExactForest(await (await get("models/v2/" + spec.file)).arrayBuffer(), spec);
     }
     controls();
-    await load(EXAMPLES[1]);
+    await load(EXAMPLES[0]);
   } catch (error) {
     fail("Could not load the models: " + error.message);
   }
@@ -256,6 +304,16 @@ function fail(message) {
   el("error").textContent = message;
   el("error").hidden = false;
   el("work").hidden = true;
+  el("status").hidden = true;
+  el("picker").hidden = true;
+  el("meta").innerHTML = "";
+}
+
+function press(id) {
+  for (const example of EXAMPLES) {
+    const b = el("ex-" + example.id);
+    if (b) b.setAttribute("aria-pressed", String(example.id === id));
+  }
 }
 
 function controls() {
@@ -264,7 +322,7 @@ function controls() {
   for (const example of EXAMPLES) {
     const b = document.createElement("button");
     b.textContent = example.label;
-    b.id = "ex-" + example.date;
+    b.id = "ex-" + example.id;
     b.setAttribute("aria-pressed", "false");
     b.addEventListener("click", () => load(example));
     host.appendChild(b);
@@ -278,72 +336,111 @@ function controls() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
-      for (const e of EXAMPLES) el("ex-" + e.date).setAttribute("aria-pressed", "false");
+      press(null);
+      state.example = null;
       run(reader.result, file.name);
     };
     reader.readAsText(file);
+    event.target.value = "";
   });
 }
 
 async function load(example) {
-  for (const other of EXAMPLES) {
-    const b = el("ex-" + other.date);
-    if (b) b.setAttribute("aria-pressed", String(other.date === example.date));
-  }
-  run(await (await fetch(example.file)).text(), example.label);
-}
-
-function run(text, source) {
-  el("error").hidden = true;
+  press(example.id);
+  state.example = example;
   try {
-    const { rows } = prepareRows(parseCSV(text), state.constants.readouts);
-    const cases = buildFeatures(rows, state.constants);
-    if (!cases.length) throw new Error("No conditions with at least two usable replicate wells were found.");
-    state.rows = rows;
-    state.result = triage(cases, state.models, state.constants);
-    el("work").hidden = false;
-    render(source);
+    run(await (await get(example.file)).text(), example.file.split("/").pop());
   } catch (error) {
     fail(error.message);
   }
 }
 
-function render(source) {
-  const { conditions, batches } = state.result;
-  const b = batches[0];
-  const chemicals = new Set(conditions.map((c) => c.name)).size;
+function run(text, source) {
+  el("error").hidden = true;
+  try {
+    const { rows } = prepareRowsV2(parseCSV(text), state.constants.readouts);
+    const cases = buildFeaturesV2(rows, state.constants);
+    if (!cases.length) {
+      throw new Error("No condition has at least two replicate wells, each with same-plate controls, on both day 5 and day 7.");
+    }
+    state.rows = rows;
+    state.result = triageV2(cases, state.models, state.constants);
+    state.source = source;
+    state.batch = state.result.batches[0].date;
+    el("work").hidden = false;
+    render();
+  } catch (error) {
+    fail(error.message);
+  }
+}
 
+function render() {
+  const { conditions: all, batches } = state.result;
+  const b = batches.find((x) => x.date === state.batch);
+  const conditions = all.filter((c) => c.date === b.date);
+  const threshold = state.constants.trust_threshold;
+
+  picker(batches);
   el("meta").innerHTML = [
     `<span>BATCH <b>${b.date}</b></span>`,
     `<span><b>${b.plates.length}</b> plates</span>`,
-    `<span>DIV <b>${conditions[0].hasDay5 ? "5,7" : "7"}</b></span>`,
-    `<span><b>${chemicals}</b> chemicals</span>`,
+    `<span>DIV <b>5,7</b></span>`,
+    `<span><b>${b.chemicals}</b> chemicals</span>`,
     `<span><b>${b.conditions}</b> conditions</span>`,
-    `<span>source <b>${source}</b></span>`,
+    `<span>source <b>${esc(state.source)}</b></span>`,
+    state.example ? `<span>${state.example.tag}</span>` : "",
   ].join("");
 
   const s = el("status");
   s.hidden = false;
   s.className = "status " + (b.usable ? "good" : "bad");
-  el("status-head").textContent = b.verdict;
+  el("status-head").textContent = capital(b.verdict) + ".";
+  const few = b.fewControls ? ` ${b.fewControls} have fewer than four day-7 controls.` : "";
   el("status-detail").textContent = b.usable
-    ? `${b.declined} of ${b.conditions} forecasts declined individually; ${b.quiet} conditions have barely moved by day 7.`
-    : `All ${b.conditions} conditions carry a quality flag. The forecasts below are shown for inspection only.`;
+    ? (b.declined
+      ? `${b.declined} of ${b.conditions} forecasts declined as unpredictable from day 7; measure those at day 12.${few}`
+      : `No forecast declined as unpredictable.${few}`)
+    : `${b.lowReference} of ${b.conditions} conditions sit on plates whose day-7 control median is below one network spike. `
+      + `Every condition is marked for a day-12 measurement; forecasts are shown for inspection only.${few}`;
 
+  const declinedRows = b.usable
+    ? [["forecasts declined", `${b.declined} (${Math.round(100 * b.declined / b.conditions)}%)`, false]]
+    : [["forecasts declined", `all ${b.conditions} (batch)`, true], ["on difficulty alone", String(b.declined), false]];
   el("readout").innerHTML = [
-    ["control median, day 7", `${b.referenceActivity.toFixed(1)} spikes`, !b.usable],
+    ["control median, day 7", `${num(b.referenceActivity, 1)} spikes`, !b.usable],
     ["conditions", String(b.conditions), false],
-    ["quiet at day 7", String(b.quiet), false],
-    ["forecasts declined", `${b.declined} (${Math.round(100 * b.declined / b.conditions)}%)`, false],
-    ["quality flags", String(b.flagged), b.flagged > 0],
-    ["early-warning list", String(b.earlyWarningList), false],
+    ...declinedRows,
+    ["low reference", String(b.lowReference), b.lowReference > 0],
+    ["under 4 controls", String(b.fewControls), b.fewControls > 0],
+    ["day-7 spread (SD)", num(b.spread, 2), false],
+    ["moved ≥0.5 by day 7", `${Math.round(100 * b.changedFraction)}%`, false],
+    ["decline threshold", num(threshold, 3), false],
   ].map(([k, v, warn]) => `<dt>${k}</dt><dd${warn ? ' class="warn"' : ""}>${v}</dd>`).join("");
 
+  el("provenance").hidden = !state.example;
+  el("provenance-text").textContent = state.example ? state.example.note : "";
+
+  state.view = { batch: b, conditions };
   plates(b);
   panels(conditions);
   chart(conditions);
   table();
   evidence();
+}
+
+function picker(batches) {
+  const host = el("picker");
+  if (batches.length < 2) { host.hidden = true; host.innerHTML = ""; return; }
+  host.hidden = false;
+  host.innerHTML = `<span class="sub">${batches.length} batches in this file</span>`;
+  for (const b of batches) {
+    const button = document.createElement("button");
+    button.textContent = b.date;
+    if (!b.usable) { button.className = "low"; button.title = "day-7 reference activity too low"; }
+    button.setAttribute("aria-pressed", String(b.date === state.batch));
+    button.addEventListener("click", () => { state.batch = b.date; render(); });
+    host.appendChild(button);
+  }
 }
 
 function plates(batch) {
@@ -357,26 +454,28 @@ function plates(batch) {
   const shade = (v) => (Number.isFinite(v)
     ? `color-mix(in srgb, var(--accent-solid) ${Math.round(6 + 94 * Math.min(1, Math.sqrt(v / top)))}%, var(--s4))`
     : "var(--s4)");
+  const median = (x) => (x.length % 2 ? x[(x.length - 1) / 2] : (x[x.length / 2 - 1] + x[x.length / 2]) / 2);
 
   el("plates").innerHTML = [...byPlate].sort((a, b) => a[0].localeCompare(b[0])).map(([plate, wells]) => {
     const ctrl = wells.filter((w) => w.dose === 0).map((w) => w.values["ns.n"]).filter(Number.isFinite).sort((a, b) => a - b);
-    const med = ctrl.length ? ctrl[Math.floor(ctrl.length / 2)] : NaN;
+    const med = ctrl.length ? median(ctrl) : NaN;
     const seat = new Map(wells.map((w) => [w.well, w]));
     let cells = "";
     for (const r of ["A", "B", "C", "D", "E", "F"]) {
       for (let c = 1; c <= 8; c += 1) {
         const w = seat.get(r + c);
-        const title = w ? `${r}${c} ${w.dose === 0 ? "control" : w.trt + " " + w.dose + " µM"} · ${w.values["ns.n"]} spikes` : `${r}${c}`;
+        const title = w ? `${r}${c} ${w.dose === 0 ? "control" : esc(w.trt) + " " + w.dose + " µM"} · ${w.values["ns.n"]} network spikes` : `${r}${c}`;
         cells += `<div class="well${w && w.dose === 0 ? " ctrl" : ""}" style="background:${shade(w ? w.values["ns.n"] : NaN)}" title="${title}"></div>`;
       }
     }
-    return `<div class="plate"><div class="id"><span>${plate}</span><span>${num(med, 0)}</span></div><div class="grid">${cells}</div></div>`;
+    const label = Number.isInteger(med) ? String(med) : num(med, 1);
+    return `<div class="plate"><div class="id"><span>${esc(plate)}</span><span>${label}</span></div><div class="grid">${cells}</div></div>`;
   }).join("");
 
   el("plate-legend").innerHTML =
     `<span><span class="sw" style="background:${shade(0)}"></span>0</span>`
     + `<span><span class="sw" style="background:${shade(top / 4)}"></span>${Math.round(top / 4)}</span>`
-    + `<span><span class="sw" style="background:${shade(top)}"></span>${Math.round(top)} spikes</span>`
+    + `<span><span class="sw" style="background:${shade(top)}"></span>${Math.round(top)} network spikes</span>`
     + `<span><span class="sw" style="background:var(--s4);box-shadow:inset 0 0 0 1px var(--ink)"></span>control</span>`;
 }
 
@@ -392,12 +491,12 @@ function panels(conditions) {
   const hi = Math.max(1, Math.ceil(Math.max(...all)));
   const W = 158, H = 74, P = { t: 6, r: 6, b: 12, l: 20 };
 
-  el("panels").innerHTML = [...byChem].map(([name, series]) => {
+  el("panels").innerHTML = [...byChem].sort((a, b) => a[0].localeCompare(b[0])).map(([name, series]) => {
     const pts = [...series].sort((a, b) => a.dose - b.dose);
     const dl = Math.log10(pts[0].dose), dh = Math.log10(pts[pts.length - 1].dose);
     const x = (d) => P.l + (dh === dl ? 0.5 : (Math.log10(d) - dl) / (dh - dl)) * (W - P.l - P.r);
     const y = (v) => H - P.b - ((Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo)) * (H - P.t - P.b);
-    const declined = pts.filter((p) => !p.trusted).length;
+    const declined = pts.filter((p) => !p.usable).length;
 
     let g = `<line x1="${P.l}" y1="${y(0)}" x2="${W - P.r}" y2="${y(0)}" stroke="var(--s7)" stroke-width="1"></line>`;
     g += `<text x="${P.l - 4}" y="${y(0) + 3}" text-anchor="end">0</text>`;
@@ -406,30 +505,33 @@ function panels(conditions) {
     const band = pts.map((p) => `${x(p.dose)},${y(p.high)}`).join(" ")
       + " " + [...pts].reverse().map((p) => `${x(p.dose)},${y(p.low)}`).join(" ");
     g += `<polygon points="${band}" fill="var(--accent-solid)" opacity=".13"></polygon>`;
+    g += `<polyline points="${pts.map((p) => `${x(p.dose)},${y(p.day7)}`).join(" ")}" fill="none" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 2" opacity=".8"></polyline>`;
     g += `<polyline points="${pts.map((p) => `${x(p.dose)},${y(p.forecast)}`).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="1.4"></polyline>`;
     for (const p of pts) {
-      g += `<circle cx="${x(p.dose)}" cy="${y(p.day7)}" r="1.7" fill="var(--ink-2)"></circle>`;
-      if (!p.trusted) g += `<circle cx="${x(p.dose)}" cy="${y(p.forecast)}" r="2.6" fill="var(--s1)" stroke="var(--caution)" stroke-width="1.2"></circle>`;
+      g += `<circle cx="${x(p.dose)}" cy="${y(p.day7)}" r="1.7" fill="var(--ink-2)"><title>${esc(name)} ${p.dose} µM, day 7 ${sign(p.day7)}</title></circle>`;
+      if (!p.usable) g += `<circle cx="${x(p.dose)}" cy="${y(p.forecast)}" r="2.6" fill="var(--s1)" stroke="var(--caution)" stroke-width="1.2"><title>${esc(name)} ${p.dose} µM, forecast ${sign(p.forecast)}, declined</title></circle>`;
     }
     g += `<text x="${P.l}" y="${H - 2}">${pts[0].dose}</text>`;
     g += `<text x="${W - P.r}" y="${H - 2}" text-anchor="end">${pts[pts.length - 1].dose} µM</text>`;
-    return `<div class="cr"><div class="hd"><span class="nm" title="${name}">${name}</span>`
+    return `<div class="cr"><div class="hd"><span class="nm" title="${esc(name)}">${esc(name)}</span>`
       + `<span class="tag${declined ? " warn" : ""}">${declined ? declined + " decl" : "ok"}</span></div>`
-      + `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${name} concentration response"></svg></div>`
-        .replace("></svg>", `>${g}</svg>`);
+      + `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(name)} concentration response">${g}</svg></div>`;
   }).join("");
 }
 
 function chart(conditions) {
+  const e = state.constants.evidence.external;
+  el("chart-cap").textContent = `The diagonal is the carry-forward rule. On ${e.batches} held-out earlier batches this model's `
+    + `day-12 error was lower than that rule's on ${e.batches_better_than_persistence}. Distance from the diagonal is what `
+    + "the model adds; hollow points are declined.";
   const W = 720, H = 300, P = { t: 14, r: 14, b: 32, l: 40 };
   const vals = conditions.flatMap((c) => [c.day7, c.low, c.high]).filter(Number.isFinite);
   const lo = Math.min(-1, Math.floor(Math.min(...vals))), hi = Math.max(1, Math.ceil(Math.max(...vals)));
   const x = (v) => P.l + ((v - lo) / (hi - lo)) * (W - P.l - P.r);
   const y = (v) => H - P.b - ((v - lo) / (hi - lo)) * (H - P.t - P.b);
   const step = hi - lo > 12 ? 4 : hi - lo > 6 ? 2 : 1;
-  const q = state.constants.quiet_limit;
 
-  let g = `<rect x="${x(-q)}" y="${P.t}" width="${x(q) - x(-q)}" height="${H - P.t - P.b}" fill="var(--accent-wash)"></rect>`;
+  let g = "";
   for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) {
     g += `<line x1="${P.l}" y1="${y(v)}" x2="${W - P.r}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"></line>`;
     g += `<text x="${P.l - 5}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
@@ -440,23 +542,31 @@ function chart(conditions) {
   g += `<text transform="translate(10 ${(P.t + H - P.b) / 2}) rotate(-90)" text-anchor="middle">forecast day 12</text>`;
   for (const c of conditions) {
     if (!Number.isFinite(c.day7) || !Number.isFinite(c.forecast)) continue;
-    const cx = x(c.day7), col = c.trusted ? "var(--accent)" : "var(--caution)";
+    const cx = x(c.day7), col = c.usable ? "var(--accent)" : "var(--caution)";
+    const label = `${esc(c.name)} ${c.dose} µM`;
     g += `<line x1="${cx}" y1="${y(c.low)}" x2="${cx}" y2="${y(c.high)}" stroke="${col}" stroke-width="1" opacity=".22"></line>`;
-    g += c.trusted
-      ? `<circle cx="${cx}" cy="${y(c.forecast)}" r="3.1" fill="${col}" opacity=".9"><title>${c.name} ${c.dose} µM</title></circle>`
-      : `<circle cx="${cx}" cy="${y(c.forecast)}" r="3.1" fill="var(--s1)" stroke="${col}" stroke-width="1.3"><title>${c.name} ${c.dose} µM, declined</title></circle>`;
+    g += c.usable
+      ? `<circle cx="${cx}" cy="${y(c.forecast)}" r="3.1" fill="${col}" opacity=".9"><title>${label}</title></circle>`
+      : `<circle cx="${cx}" cy="${y(c.forecast)}" r="3.1" fill="var(--s1)" stroke="${col}" stroke-width="1.3"><title>${label}, declined</title></circle>`;
   }
-  const t = conditions.filter((c) => c.trusted).length;
+  const t = conditions.filter((c) => c.usable).length;
   g += `<text x="${W - P.r}" y="${H - P.b - 6}" text-anchor="end">${t} usable / ${conditions.length - t} declined</text>`;
   el("chart").outerHTML = `<svg id="chart" viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="Forecast against day-7 observation">${g}</svg>`;
 }
 
 function table() {
-  const { conditions } = state.result;
+  const { batch, conditions } = state.view;
+  const threshold = state.constants.trust_threshold;
+  const e = state.constants.evidence.external;
   const tabs = [
-    ["early", "Early warning", "Conditions that have barely moved by day 7, ranked by forecast magnitude. On the sealed batches this list found 6 of 10 later large changes where ranking by the day-7 change found none."],
-    ["all", "Largest change", "Ranked over every condition. It fills with conditions that already collapsed by day 7, which the day-7 column shows without a model."],
-    ["declined", "Declined", "Conditions the difficulty model judges unpredictable from day 7. On the sealed batches these were 14% of conditions and carried 51% of all forecast error."],
+    ["all", "All", "Sorted by chemical and concentration, in log2 units relative to same-plate controls. The day-7 value is "
+      + "also the carry-forward prediction; “vs day 7” is how far the model departs from it. Difficulty is the "
+      + `predicted error, and above ${num(threshold, 2)} the forecast is declined.`],
+    ["declined", "Declined", batch.usable
+      ? `Conditions whose predicted error is above ${num(threshold, 2)}: measure these at day 12. On the external test, declining `
+        + `about 15% of conditions this way cut the error on the rest by ${Math.round(100 * e.kept_error_reduction)}%.`
+      : `The batch reference is unusable, so every condition is marked for a day-12 measurement. ${batch.declined} would be `
+        + "declined on difficulty alone."],
   ];
   el("tabs").innerHTML = "";
   for (const [id, label] of tabs) {
@@ -468,36 +578,41 @@ function table() {
   }
   el("table-hint").textContent = tabs.find((t) => t[0] === state.tab)[2];
 
-  let rows;
-  if (state.tab === "early") rows = conditions.filter((c) => c.earlyWarningFlagged).sort((a, b) => a.earlyWarningRank - b.earlyWarningRank);
-  else if (state.tab === "all") rows = conditions.filter((c) => c.reviewFlagged).sort((a, b) => a.reviewRank - b.reviewRank);
-  else rows = conditions.filter((c) => !c.trusted).sort((a, b) => b.difficulty - a.difficulty);
-
-  el("table").tHead.innerHTML = "<tr><th>Rank</th><th>Chemical</th><th>Dose</th><th>Day 7</th><th>Forecast</th><th>80% Interval</th><th>Simple Rule</th><th>Verdict</th></tr>";
+  const rows = (state.tab === "all" ? [...conditions] : conditions.filter((c) => !c.usable)).sort(byNameDose);
+  el("table").tHead.innerHTML = "<tr><th>Chemical</th><th>µM</th><th>Day 7</th><th>Forecast</th><th>80% Interval</th>"
+    + "<th>vs Day 7</th><th>Difficulty</th><th>Verdict</th></tr>";
   const body = el("table").tBodies[0];
-  if (!rows.length) { body.innerHTML = `<tr><td colspan="8" class="dim">No conditions in this list for this batch.</td></tr>`; return; }
-  body.innerHTML = rows.map((c, i) => {
-    const rank = state.tab === "early" ? c.earlyWarningRank : state.tab === "all" ? c.reviewRank : i + 1;
-    return `<tr><td class="n dim">${rank}</td><td>${c.name}</td><td class="n">${c.dose}</td>`
+  if (!rows.length) { body.innerHTML = `<tr><td colspan="8" class="dim">No declined conditions in this batch.</td></tr>`; return; }
+  body.innerHTML = rows.map((c) => {
+    const chip = c.usable ? '<span class="chip ok">usable</span>'
+      : `<span class="chip dec">${c.batchUsable ? "measure day 12" : "batch unusable"}</span>`;
+    return `<tr title="${esc(c.verdict)}"><td>${esc(c.name)}</td><td class="n">${c.dose}</td>`
       + `<td class="n">${sign(c.day7)}</td><td class="n">${sign(c.forecast)}</td>`
-      + `<td class="n dim">${sign(c.low)} … ${sign(c.high)}</td><td class="n dim">${sign(c.persistence)}</td>`
-      + `<td><span class="chip ${c.trusted ? "ok" : "dec"}">${c.trusted ? "usable" : "measure day 12"}</span>`
-      + `${c.flags.low_reference_activity ? '<span class="chip flag">low reference</span>' : ""}</td></tr>`;
+      + `<td class="n dim">${sign(c.low)} … ${sign(c.high)}</td><td class="n dim">${sign(c.forecast - c.day7)}</td>`
+      + `<td class="n${c.trusted ? " dim" : ""}">${num(c.difficulty, 2)}</td>`
+      + `<td>${chip}${c.flags.low_reference_activity ? '<span class="chip flag">low reference</span>' : ""}`
+      + `${c.flags.few_controls ? '<span class="chip flag">few controls</span>' : ""}</td></tr>`;
   }).join("");
 }
 
 function evidence() {
-  const e = state.constants.evidence;
+  const { v1_reserve: r, external: x } = state.constants.evidence;
   el("ev").hidden = false;
-  el("ev-text").textContent = "On three sealed experiment dates with 32 chemicals absent from training, carrying the "
-    + "day-7 reading forward was more accurate than this model. No claim is made that the forecast beats simple "
-    + "methods. What transferred is the triage: declining the conditions it cannot predict removed about half of "
-    + "all forecast error, and the day-7 quality flag identified the whole failing batch before any day-12 data existed.";
-  el("ev-rows").innerHTML = [
-    `forecast <b>${e.product_mean_mae.toFixed(3)}</b> vs simple rule <b>${e.persistence_mean_mae.toFixed(3)}</b> &mdash; the simple rule won`,
-    `usable forecasts only <b>${e.retained_case_mae.toFixed(3)}</b> vs <b>${e.all_case_mae.toFixed(3)}</b> across all conditions`,
-    `intervals observed <b>${(100 * e.observed_coverage_at_nominal).toFixed(1)}%</b> coverage at a nominal ${Math.round(100 * state.constants.interval_level)}% level`,
-  ].map((l) => `<div>${l}</div>`).join("");
+  el("ev-text").textContent = "Each test stayed sealed until the model it tested was locked, and was scored once. Errors are "
+    + "mean absolute error of the day-12 forecast in log2 units, averaged over batches. The first test retired the v1 "
+    + "forecast, and its batches have since joined v2's training data; the second is the evidence for this model.";
+  el("ev-tests").innerHTML = [
+    [`v1 reserve &middot; ${r.batches} later batches (2017), ${r.conditions} conditions`, [
+      `carrying day 7 forward <b>${r.persistence_mae.toFixed(4)}</b> beat the v1 model <b>${r.model_mae.toFixed(4)}</b>`,
+    ]],
+    [`external &middot; ${x.batches} earlier batches (2014–2016), ${x.conditions} conditions, ${x.unseen_chemicals} chemicals unseen in development`, [
+      `this v2 model <b>${x.model_mae.toFixed(3)}</b> vs carrying day 7 forward <b>${x.persistence_mae.toFixed(3)}</b>, better on ${x.batches_better_than_persistence} of ${x.batches} batches`,
+      `declining the ~15% least-predictable conditions cut the error on those kept by <b>${Math.round(100 * x.kept_error_reduction)}%</b>`,
+      `80% intervals covered <b>${Math.round(100 * x["interval_coverage_at_nominal_0.8"])}%</b> of outcomes, a shortfall`,
+      "the quiet-condition early warning did not replicate and is not offered here",
+    ]],
+  ].map(([head, lines]) => `<div class="test"><div class="hd">${head}</div><div class="rows">${lines.map((l) => `<div>${l}</div>`).join("")}</div></div>`).join("");
+  el("ev-limits").innerHTML = state.constants.limits.map((l) => `<div>${esc(l)}</div>`).join("");
 }
 
 boot();
