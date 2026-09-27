@@ -1,0 +1,49 @@
+{
+  "locked_utc": "2026-09-27T16:22:20.038037+00:00",
+  "protocol_sha256": "fe046966f238752498427a51031809e8dc8d359faa2618ef1144a434a7066e0d",
+  "code": {
+    "neuroforecast_v2.py": "7f7a4935d8606fefd84b66f1379b64f2fccf23b4fc1d783414525aae0f202550",
+    "neuroforecast_v2_protocol.json": "fe046966f238752498427a51031809e8dc8d359faa2618ef1144a434a7066e0d",
+    "external_nfa_intake.py": "35bc5e79183ea924066bcce7aec5d0df2532dad5888fc90b4ec4c7305193ab4f",
+    "neuroforecast_data.py": "dcb6910646c111adee45c4278177bf928cede4311238d07a9b5f132bc7782221",
+    "neuroforecast_benchmark.py": "37634dea12596666d6c582b099d8e7cf62cb7792a958f3b3845aa6dd90d10d41",
+    "neuroforecast_representation.py": "af415c1887920644da985d94774961b895ffa823e43bf3c2728f51b8094cea7d",
+    "neuroforecast_gate.py": "9c25616ab76919434aed5fbb08526142dc50810d426e1cc6b777112e93ab4e7b",
+    "neuroforecast_selection_protocol.json": "2938e8e0be979259ce580b752b64cdd326c24dc2778afdae15ae0605489a8c1f",
+    "neuroforecast_representation_protocol.json": "0dfe0eb4647385232375595f8710d726cf383ef028ebeb66125d44a4fdcd5aa1"
+  },
+  "prepared_manifest_sha256": "bac299ccacc0162afc27d6978cb07c518578daedbc63173dc2a75f55952a5384",
+  "development_results_sha256": "0b3b0ffa17b35502bb6e1347ca46236429b4b5513f4f4459c443f092ecee606d",
+  "dev_oof_sha256": "6824a312eeba8d12e7ed48425d14dac7a2f7cf1aea120f5d59a4711c47440394",
+  "models": {
+    "final_v1_refit.joblib": "44320fac2ef69c9234fc23508e72ba9e79f64b35b92140b65b039c0c2adfc1ed",
+    "final_small_refit.joblib": "54b19841d640e4739e744e86ad0f6fbfdcaae9ea8faf920e0ab8562870d05dab",
+    "final_g.joblib": "8d7709e5837aedcde79391afbc915c26f0b91321d971f832bfdd4664e04f8680",
+    "final_g_batch.joblib": "3ab0fdd180c8526883aaa47762244f27fbbffc28207a67f32d637ed36922dbce",
+    "final_sigma_v2.joblib": "2589455712a087a32f7672428b5e9855809782d61a5530d786293c5a8366e8e0"
+  },
+  "locked": {
+    "product": "small_refit",
+    "final_params": {
+      "lambda": 1.0,
+      "lambda_batch": 1.0,
+      "blend": [
+        0.5,
+        0.5
+      ]
+    },
+    "trust": "sigma_v2",
+    "trust_threshold": 1.1436974115619514,
+    "interval_variant": "scaled",
+    "conformal_quantiles": {
+      "0.8": 1.5063963748385074,
+      "0.9": 2.0698617384777385
+    },
+    "warning": "abs_v1_refit",
+    "decision_D": {
+      "h": 2,
+      "c": 0.75
+    }
+  },
+  "external_outcomes_read": false
+}

@@ -1,0 +1,37 @@
+{
+  "frozen_utc": "2026-09-27T16:23:57.769535+00:00",
+  "external_code_sha256": "18e53cbd36a38df4253b9d432c1f1fc43b4de2f8ca48bbc778549ac07f3a7d11",
+  "development_lock_sha256": "5317dfc511087bad71674de68d4f732c052f1040fdf4a82b7df9f3b8c65eea4b",
+  "locked": {
+    "product": "small_refit",
+    "final_params": {
+      "lambda": 1.0,
+      "lambda_batch": 1.0,
+      "blend": [
+        0.5,
+        0.5
+      ]
+    },
+    "trust": "sigma_v2",
+    "trust_threshold": 1.1436974115619514,
+    "interval_variant": "scaled",
+    "conformal_quantiles": {
+      "0.8": 1.5063963748385074,
+      "0.9": 2.0698617384777385
+    },
+    "warning": "abs_v1_refit",
+    "decision_D": {
+      "h": 2,
+      "c": 0.75
+    }
+  },
+  "arm_a_unchanged_v1": {
+    "D:\\kaggle\\AI4S-1\\AI4S\\tools\\neuroforecast_triage.py": "3e7ae0626a2078470802afac82034d4a0c9b26d9060d7a91d6a266ba8c0bbb15",
+    "E:\\kaggle\\AI4S\\experiments\\neuroforecast_gate_v1_1\\development_lock.json": "e81011d946745fb96c8d3f5208e10e6ab73a0f9342b6553897df70c9f8eca4be",
+    "E:\\kaggle\\AI4S\\experiments\\neuroforecast_gate_v1_1\\reserve_summary.json": "6e7073920a3cddf7955f5e943cda0eea63b42f4c25b641a5c524a7fc0f807db6",
+    "E:\\kaggle\\AI4S\\experiments\\neuroforecast_gate_v1_1\\models\\final_extra_trees_relative_day7.joblib": "3b61e3dc55a36e8319fe976c179774b6e354f9beee4e0fa0c4afc5423dfcee00",
+    "E:\\kaggle\\AI4S\\experiments\\neuroforecast_gate_v1_1\\models\\final_extra_trees_activity_coordination.joblib": "6f97e8d6e6844fcd0734b42824414755f04db50286e55cd3c9ad00e4854b3a5d",
+    "E:\\kaggle\\AI4S\\experiments\\neuroforecast_gate_v1_1\\models\\final_sigma.joblib": "4286ac83bde27c99352dc3b65d501c064fe40e58fda1228e43642b1c8b79a57a"
+  },
+  "external_outcomes_read": false
+}

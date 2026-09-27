@@ -1,0 +1,6 @@
+{
+  "event": "v2 candidate list fixed before any development run",
+  "protocol": "experiments/neuroforecast_v2_protocol.json",
+  "sha256": "fe046966f238752498427a51031809e8dc8d359faa2618ef1144a434a7066e0d",
+  "utc": "2026-09-27T16:15:58.412160+00:00"
+}

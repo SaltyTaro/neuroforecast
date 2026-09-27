@@ -1,0 +1,20 @@
+{
+  "checks": {
+    "external_case_ids_absent_from_development": true,
+    "external_dates_absent_from_development": true,
+    "v1_refit_feature_count_matches_saved_columns": true,
+    "small_refit_feature_count_matches_saved_columns": true,
+    "g_feature_count_matches_saved_columns": true,
+    "g_batch_feature_count_matches_saved_columns": true,
+    "sigma_v2_feature_count_matches_saved_columns": true,
+    "saved_external_forecasts_replay": 8.881784197001252e-16
+  },
+  "replay_max_difference": {
+    "v1_refit": 0.0,
+    "small_refit": 0.0,
+    "g": 0.0,
+    "g_batch": 0.0,
+    "sigma_v2": 0.0
+  },
+  "audited_utc": "2026-09-27T16:24:58.340575+00:00"
+}
