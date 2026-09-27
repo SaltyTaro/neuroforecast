@@ -29,7 +29,7 @@ In the external test, declining the least predictable 15% of conditions cut erro
 - An early-warning ranking for conditions still quiet at day 7 did not replicate.
 - A day-7 chemical-level call reached 89.1% agreement with EPA's final call, short of the pre-registered 90%.
 
-All 148 published numbers are recomputed from per-case evidence by a script in the repository. The external development run reproduces byte for byte from a fresh clone.
+All 148 published numbers are recomputed from per-case evidence by a script in the repository. The external development run reproduces byte for byte from a fresh clone on the author's platform (Windows).
 
 ## 中文摘要
 
@@ -197,7 +197,7 @@ The v2 protocol added a sealed replication of the **unchanged v1 tool** (Arm A) 
 **Audits.**
 - **Leakage.** The v1 audit deletes every observation after day 7, then mutates every future value and control, and requires bit-identical inputs both times. The v2 audit confirms that no external condition, date or chemical reached any fit.
 - **Replay.** Saved models reproduce their recorded forecasts to within 9e-16.
-- **Reproducibility.** A fresh v2 `prepare` and `develop` from the public repository reproduces every prepared file, every out-of-fold prediction and all five model files **byte for byte**.
+- **Reproducibility.** A fresh v2 `prepare` and `develop` from the public repository reproduced every prepared file, every out-of-fold prediction and all five model files **byte for byte**. That was verified on Windows; on other systems the CSV line endings differ.
 - **Verified numbers.** `verify_published_numbers.py` recomputes 148 published numbers from the per-case evidence tables at the precision each is quoted to. It caught three drifts in our own drafts before publication.
 
 ---
@@ -444,7 +444,7 @@ python -X utf8 -B -m unittest discover -s tests -v         # includes exact repl
 node tests/test_web_triage_v2.mjs                          # browser port against Python, every sealed condition
 ```
 
-To re-run the external test from source, use `tools/fetch_epa_refinement.py`, which downloads the pinned EPA files (about 3 MB) and verifies their checksums. Then run `tools/reproduce_external.py` with `prepare`, `develop`, `freeze`, `external --unseal` and `audit`. `develop` takes about three minutes and is byte-reproducible.
+To re-run the external test from source, use `tools/fetch_epa_refinement.py`, which downloads the pinned EPA files (about 3 MB) and verifies their checksums. Then run `tools/reproduce_external.py` with `prepare`, `develop`, `freeze`, `external --unseal` and `audit`. `develop` takes about three minutes and is byte-reproducible on Windows. Elsewhere, compare file contents, because CSV line endings differ.
 
 The v1 gate reproduces from the v1 archive with `tools/fetch_epa_data.py` and `tools/neuroforecast_gate.py`.
 
