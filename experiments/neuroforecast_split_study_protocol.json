@@ -1,0 +1,62 @@
+{
+  "name": "NeuroForecast split-optimism study",
+  "version": "1.0",
+  "written": "2026-10-08T06:45:00Z",
+  "status": "Written and hashed before any run of the study code. Development data only: both sealed tests are spent.",
+  "question": "How much do weaker validation designs overstate the accuracy and interval coverage of day-7 to day-12 forecasts on neuronal MEA assays, compared with the design a lab meets in use (a new culture batch testing new chemicals)? Do they change which model looks best?",
+  "disclosure": [
+    "A feasibility probe on 2026-10-08 used one model (Extra Trees with max_features 0.5 and min_samples_leaf 2 on the same 13 inputs), one fold assignment per design, and intervals from a random calibration quarter. Its date-macro MAE was 0.590 (random condition), 0.599 (chemical held out), 0.669 (batch held out) and 0.706 (batch and chemical held out); pooled coverage at nominal 0.80 was 0.80, 0.79, 0.74 and 0.735. The hypotheses below were written after seeing that probe.",
+    "All 41 batches were already used by the locked v3 model study (2026-10-07), so batch_chemical performance is known for the v2 recipe (0.690 on the v3 folds) and for LightGBM and ridge on other feature sets.",
+    "This protocol is self-attested unless its SHA-256 appears in a public commit before the study's results do."
+  ],
+  "data": {
+    "cases": "evaluation/v3/prepared/cases.csv",
+    "features": "evaluation/v3/prepared/features.csv",
+    "usable_conditions": 2243,
+    "batches": 41,
+    "chemicals": 243,
+    "inputs": "the 13 columns of SMALL_COLUMNS in tools/neuroforecast_harness.py (activity and coordination readouts at days 5 and 7 relative to same-plate controls, and log concentration); nothing after day 7",
+    "target": "day-12 log2 replicate-mean network spikes relative to the same-plate day-12 control median (the target of both sealed tests)"
+  },
+  "designs": {
+    "random_condition": "conditions assigned to folds at random; culture batches and chemicals are shared between training and test",
+    "chemical": "chemicals held out; the test chemicals' culture batches also appear in training",
+    "batch": "culture batches held out; the test chemicals may appear in training on other batches",
+    "batch_chemical": "culture batches held out and every chemical tested on them purged from training (the design of both sealed tests and the v3 study)"
+  },
+  "folds": {
+    "outer": 9,
+    "inner": 4,
+    "repetitions": 5,
+    "seed": 20261008,
+    "assignment": "tools/neuroforecast_harness.fold_assignment with repetition r = 0..4: a seeded random permutation of conditions, chemicals or batches, dealt round-robin into folds. Inner folds apply the same design inside each outer training set (neuroforecast_harness.inner_splits)."
+  },
+  "models": {
+    "carry_forward": "the day-7 value; no fit",
+    "calibrated_day7": "isotonic regression of day 12 on day 7 alone",
+    "ridge": "ridge regression (alpha 30) on standardised inputs with median imputation; target is day 12 minus day 7",
+    "lightgbm": "LightGBM with the v3 study's parameters (400 trees, learning rate 0.03, 15 leaves, min_child_samples 20, subsample 0.8 every iteration, colsample_bytree 0.8, reg_lambda 1, L1 objective), median imputation; target is day 12 minus day 7",
+    "extra_trees_v2": "the shipped v2 recipe: Extra Trees with 256 trees, max_depth 12, min_samples_leaf 4, max_features 1.0, median imputation; target is day 12 directly"
+  },
+  "fitting": "Every model is fit on the usable training conditions only, with random_state 20261008. Outer test predictions come from the model refit on the whole outer training set.",
+  "intervals": "Constant-width split-conformal intervals per outer fold, at levels 0.80 and 0.90: half-width is the ceil((n+1) level)-th smallest absolute inner out-of-fold residual of the same model under the same design.",
+  "metrics": {
+    "date_macro_mae": "absolute error averaged over doses within a chemical, then over chemicals within a batch, then equally over batches; per batch, losses are averaged over the 5 repetitions",
+    "apparent_coverage": "each design's own intervals on its own outer test folds: pooled, batch mean, and the worst fifth of batches (mean of the lowest 8 of 41 batch coverages), averaged over repetitions",
+    "transfer_coverage": "an interval half-width validated under design X (the conformal quantile of all of that model's outer out-of-fold absolute residuals under X, same repetition) applied to the same model's batch_chemical outer out-of-fold residuals: pooled and worst fifth, averaged over repetitions",
+    "optimism": "1 - MAE(design X) / MAE(batch_chemical), same model",
+    "ranking": "models ordered by date-macro MAE under each design; Kendall tau of each design's order against batch_chemical; the best model under each design"
+  },
+  "inference": "Design comparison: batch-paired bootstrap (10,000 resamples, seed 20261008) of the per-batch loss difference between design X and batch_chemical for the same model, after averaging over repetitions.",
+  "hypotheses": {
+    "H1_primary": "For extra_trees_v2, the chemical design's date-macro MAE is at least 5% below batch_chemical's (optimism >= 0.05), and the paired 95% interval of the difference lies wholly below zero.",
+    "H2": "The same holds for the random_condition design.",
+    "H3": "For extra_trees_v2 at nominal 0.80, transfer coverage from the chemical design and from the random_condition design, each measured on batch_chemical residuals, is at most 0.77.",
+    "H4_descriptive": "Optimism for every learned model; whether holding out batches alone recovers most of the gap (batch shift against chemical novelty); apparent worst-fifth coverage by design; ranking agreement and the best model per design."
+  },
+  "outputs": {
+    "full": "E:/kaggle/AI4S/experiments/neuroforecast_split_study",
+    "release": "evaluation/harness/split_study/: per-case out-of-fold predictions and interval half-widths for every design, repetition and model (oof.csv.gz), the summary (summary.json) and the lock (lock.json)"
+  },
+  "lock": "tools/neuroforecast_split_study.py records the SHA-256 of this protocol, of itself and of tools/neuroforecast_harness.py before its first run, and refuses to run if any of them changes afterwards. The analysis is recomputed from oof.csv.gz alone."
+}
