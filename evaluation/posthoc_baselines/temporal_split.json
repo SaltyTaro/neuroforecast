@@ -1,0 +1,274 @@
+{
+  "status": "post hoc, descriptive; outside the pre-registered split study; nothing locked is changed",
+  "rules": {
+    "min_history_batches": 10,
+    "size_matched_draws": 5,
+    "period_split": 20160701,
+    "purge": "every chemical tested in the test batch is dropped from training"
+  },
+  "forward": {
+    "test_batches": 31,
+    "first_test_batch": 20150128,
+    "conditions": 1890,
+    "interleaved": {
+      "date_macro_mae": {
+        "carry_forward": 0.9598333170938274,
+        "calibrated_day7": 0.8532125804000914,
+        "extra_trees_v2": 0.6467299239309513
+      },
+      "edge_over_calibrated": 0.24200610869135986,
+      "edge_over_carry_forward": 0.3262060063833656
+    },
+    "forward": {
+      "date_macro_mae": {
+        "carry_forward": 0.9598333170938274,
+        "calibrated_day7": 0.8941157821815577,
+        "extra_trees_v2": 0.6864991796580464
+      },
+      "edge_over_calibrated": 0.2322032634486627,
+      "edge_over_carry_forward": 0.2847725043170819
+    },
+    "size_matched": {
+      "date_macro_mae": {
+        "carry_forward": 0.9598333170938274,
+        "calibrated_day7": 0.8654037731444336,
+        "extra_trees_v2": 0.6583587214664769
+      },
+      "edge_over_calibrated": 0.2392467633064057,
+      "edge_over_carry_forward": 0.3140905720382283
+    },
+    "interleaved_vs_forward": {
+      "carry_forward": {
+        "a": 0.9598333170938274,
+        "b": 0.9598333170938274,
+        "relative": 0.0,
+        "difference": 0.0,
+        "low": 0.0,
+        "high": 0.0,
+        "batches_better": 0,
+        "batches": 31
+      },
+      "calibrated_day7": {
+        "a": 0.8532125804000914,
+        "b": 0.8941157821815577,
+        "relative": -0.04574709740797367,
+        "difference": -0.040903201781466364,
+        "low": -0.06973051373371945,
+        "high": -0.010426296169989403,
+        "batches_better": 22,
+        "batches": 31
+      },
+      "extra_trees_v2": {
+        "a": 0.6467299239309513,
+        "b": 0.6864991796580464,
+        "relative": -0.05793052184986536,
+        "difference": -0.03976925572709515,
+        "low": -0.09193108905334042,
+        "high": 0.015814352817885742,
+        "batches_better": 22,
+        "batches": 31
+      }
+    },
+    "size_matched_vs_forward": {
+      "carry_forward": {
+        "a": 0.9598333170938274,
+        "b": 0.9598333170938274,
+        "relative": 0.0,
+        "difference": 2.686023446673766e-17,
+        "low": 1.7906822977825105e-18,
+        "high": 5.551115123125783e-17,
+        "batches_better": 2,
+        "batches": 31
+      },
+      "calibrated_day7": {
+        "a": 0.8654037731444336,
+        "b": 0.8941157821815577,
+        "relative": -0.0321121823474243,
+        "difference": -0.02871200903712423,
+        "low": -0.057654105828976975,
+        "high": -0.0003028444067089432,
+        "batches_better": 22,
+        "batches": 31
+      },
+      "extra_trees_v2": {
+        "a": 0.6583587214664769,
+        "b": 0.6864991796580464,
+        "relative": -0.040991248096737154,
+        "difference": -0.028140458191569434,
+        "low": -0.06940468332200644,
+        "high": 0.015111246725381807,
+        "batches_better": 21,
+        "batches": 31
+      }
+    },
+    "interleaved_vs_size_matched": {
+      "carry_forward": {
+        "a": 0.9598333170938274,
+        "b": 0.9598333170938274,
+        "relative": 0.0,
+        "difference": -2.686023446673766e-17,
+        "low": -5.551115123125783e-17,
+        "high": -1.7906822977825105e-18,
+        "batches_better": 6,
+        "batches": 31
+      },
+      "calibrated_day7": {
+        "a": 0.8532125804000914,
+        "b": 0.8654037731444336,
+        "relative": -0.014087288642208762,
+        "difference": -0.012191192744342124,
+        "low": -0.03391883295766353,
+        "high": 0.009512584043126474,
+        "batches_better": 15,
+        "batches": 31
+      },
+      "extra_trees_v2": {
+        "a": 0.6467299239309513,
+        "b": 0.6583587214664769,
+        "relative": -0.01766331508394503,
+        "difference": -0.011628797535525714,
+        "low": -0.03623577376073744,
+        "high": 0.010802699108355105,
+        "batches_better": 19,
+        "batches": 31
+      }
+    }
+  },
+  "period": {
+    "test_batches": 24,
+    "first_test_batch": 20140716,
+    "conditions": 983,
+    "interleaved": {
+      "date_macro_mae": {
+        "carry_forward": 0.9822450162027364,
+        "calibrated_day7": 0.82253574771409,
+        "extra_trees_v2": 0.6588355774225846
+      },
+      "edge_over_calibrated": 0.19901891285144113,
+      "edge_over_carry_forward": 0.32925536240481146
+    },
+    "period": {
+      "date_macro_mae": {
+        "carry_forward": 0.9822450162027364,
+        "calibrated_day7": 0.8174421043346092,
+        "extra_trees_v2": 0.7310251490755836
+      },
+      "edge_over_calibrated": 0.10571630064170512,
+      "edge_over_carry_forward": 0.2557608977221838
+    },
+    "size_matched": {
+      "date_macro_mae": {
+        "carry_forward": 0.9822450162027364,
+        "calibrated_day7": 0.8669688775986817,
+        "extra_trees_v2": 0.6781458128109522
+      },
+      "edge_over_calibrated": 0.21779682023964797,
+      "edge_over_carry_forward": 0.3095960767176016
+    },
+    "interleaved_vs_period": {
+      "carry_forward": {
+        "a": 0.9822450162027364,
+        "b": 0.9822450162027364,
+        "relative": 0.0,
+        "difference": 0.0,
+        "low": 0.0,
+        "high": 0.0,
+        "batches_better": 0,
+        "batches": 24
+      },
+      "calibrated_day7": {
+        "a": 0.82253574771409,
+        "b": 0.8174421043346092,
+        "relative": 0.006231197723326254,
+        "difference": 0.005093643379481071,
+        "low": -0.01773927443188554,
+        "high": 0.02929273371210785,
+        "batches_better": 10,
+        "batches": 24
+      },
+      "extra_trees_v2": {
+        "a": 0.6588355774225846,
+        "b": 0.7310251490755836,
+        "relative": -0.09875114658406237,
+        "difference": -0.0721895716529989,
+        "low": -0.1125408005651246,
+        "high": -0.034193730049954595,
+        "batches_better": 18,
+        "batches": 24
+      }
+    },
+    "size_matched_vs_period": {
+      "carry_forward": {
+        "a": 0.9822450162027364,
+        "b": 0.9822450162027364,
+        "relative": 0.0,
+        "difference": 9.25185853854297e-18,
+        "low": 0.0,
+        "high": 2.312964634635743e-17,
+        "batches_better": 0,
+        "batches": 24
+      },
+      "calibrated_day7": {
+        "a": 0.8669688775986817,
+        "b": 0.8174421043346092,
+        "relative": 0.060587499715820003,
+        "difference": 0.049526773264072656,
+        "low": 0.008079674675884102,
+        "high": 0.09743165735610797,
+        "batches_better": 10,
+        "batches": 24
+      },
+      "extra_trees_v2": {
+        "a": 0.6781458128109522,
+        "b": 0.7310251490755836,
+        "relative": -0.07233586468468267,
+        "difference": -0.052879336264631205,
+        "low": -0.10022800715301264,
+        "high": -0.009497062078977877,
+        "batches_better": 18,
+        "batches": 24
+      }
+    },
+    "interleaved_vs_size_matched": {
+      "carry_forward": {
+        "a": 0.9822450162027364,
+        "b": 0.9822450162027364,
+        "relative": 0.0,
+        "difference": -9.25185853854297e-18,
+        "low": -2.312964634635743e-17,
+        "high": 0.0,
+        "batches_better": 2,
+        "batches": 24
+      },
+      "calibrated_day7": {
+        "a": 0.82253574771409,
+        "b": 0.8669688775986817,
+        "relative": -0.051251124501333845,
+        "difference": -0.04443312988459158,
+        "low": -0.08017161058807584,
+        "high": -0.01403023160050096,
+        "batches_better": 16,
+        "batches": 24
+      },
+      "extra_trees_v2": {
+        "a": 0.6588355774225846,
+        "b": 0.6781458128109522,
+        "relative": -0.028475049205606173,
+        "difference": -0.019310235388367698,
+        "low": -0.04568570786220359,
+        "high": 0.005242368786993233,
+        "batches_better": 16,
+        "batches": 24
+      }
+    }
+  },
+  "all_41_interleaved": {
+    "date_macro_mae": {
+      "carry_forward": 1.0160398080840376,
+      "calibrated_day7": 0.8808881964114106,
+      "extra_trees_v2": 0.6868394441356459
+    },
+    "edge_over_calibrated": 0.2202876063798862,
+    "edge_over_carry_forward": 0.32400341141078914
+  }
+}

@@ -21,6 +21,8 @@ The tool reads one row per well per recording day, for days 5 and 7 only. The re
 
 **Duplicates.** A repeated (date, plate, well, day) is rejected and must be audited first.
 
+**The day-12 file, for the check only.** Once day 12 is recorded, a second file with the same columns and `DIV` 12 rows (other days are ignored) scores the day-7 report. Pass it as `--day12` on the command line, or use **open day-12 CSV** in the app. Each condition's day-12 truth is the sealed test's target: log2 of the replicate mean of (network spikes + 1) / (same-plate day-12 control median + 1). A condition is scored only when its day-12 control median is at least 5 network spikes. The forecast itself still rejects day-12 rows. `examples/v2/external_*_day12.csv` are real examples.
+
 ## Which component reads what
 
 | Component | Readouts used |
@@ -80,9 +82,9 @@ Two readouts map directly: `meanfiringrate` and `nAE`, with Axion's activity cri
 
 For a chip or another platform, the practical route is:
 1. export spike lists;
-2. compute these 17 readouts with EPA's code;
+2. compute these 17 readouts with EPA's code. `tools/chip_ingest.py` computes 16 of them from spike times, including `ns.n` and `r`, as re-implementations of the criteria above (no `mi`; network-spike duration as a run length). It also compares every readout with EPA's control wells. It has not been checked against EPA's own readouts on EPA wells, and its output lacks `mi` and the plate, treatment and concentration columns, so the tool cannot read it directly yet. Use it to see whether a platform is in range, not as a substitute for EPA's code;
 3. run the tool;
-4. recalibrate the intervals and thresholds on the lab's own first batches;
+4. recalibrate the intervals on the lab's own checked batches (`--history`, or **load past records** in the app);
 5. validate prospectively in a sealed test before trusting the forecast.
 
 Accuracy off EPA's platform is **not** established.

@@ -1,3 +1,5 @@
+> **Historical planning record (September 2026), kept for transparency.** It predates both sealed tests and is superseded by the [technical report](../technical_report.md); some expectations here were later withdrawn or failed.
+
 This final selection sprint was authorized on September 20, 2026 IST. It starts from public measured functional responses. The earlier DosePilot and OxyGuard outcomes remain unchanged. Their 15% and 20% gates are historical internal criteria, not requirements imposed by the competition.
 
 The audit is limited to three dataset candidates: (1) DeePhys, including its acute quinpirole experiment; (2) the TUNI comparative human/rat MEA release, including matched pharmacology recordings; and (3) the EPA rat cortical neuronal network formation assay, whose data record explicitly lists raw measurements across development for 136 unique compounds and ten repeat experiments. Related papers and metadata may be inspected to assess prior work and data interpretation, without expanding this into an open-ended topic search.

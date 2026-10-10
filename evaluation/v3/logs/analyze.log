@@ -1,0 +1,139 @@
+{
+  "outer_date_macro_mae": {
+    "persistence_day7": 1.0160398080840376,
+    "control_reference": 1.3862771133070726,
+    "v2_incumbent": 0.6903273818784471,
+    "et_small_ctx": 0.6835583472227432,
+    "et_full_ctx": 0.679899740918914,
+    "et_small_chem": 0.6794611194913674,
+    "ridge_full_ctx": 0.8802591015218078,
+    "lgbm_small_ctx": 0.7217405889271505,
+    "lgbm_full_ctx": 0.7175129415727076,
+    "mlp_full_ctx": 0.8617461498932383,
+    "tabpfn_small_ctx": 0.7339300628458927,
+    "tabpfn_full_ctx": 0.7230213602857808,
+    "pct": 0.7106257838214582,
+    "pct_no_context": 0.7422005536043689,
+    "pct_no_relations": 0.7167539036394762,
+    "pct_no_aux": 0.7141203682748598,
+    "ens_v2_pct": 0.6683545615190574,
+    "ens_tab": 0.6934319309095368,
+    "ens_all": 0.6742646578725778
+  },
+  "nested_v3_date_macro_mae": 0.6945770649937157,
+  "final_pick": "ens_v2_pct",
+  "swap_rule": {
+    "relative_gain": -0.006156040201831248,
+    "gain_ok": false,
+    "interval_ok": false,
+    "dates_ok": true,
+    "trust_ok": true,
+    "final_is_learned_change": true,
+    "swap": false
+  }
+}
+{
+  "selected_by_fold": [
+    "ens_v2_pct",
+    "ens_all",
+    "tabpfn_full_ctx",
+    "ens_all",
+    "ens_all",
+    "ens_all",
+    "ens_v2_pct",
+    "ens_all",
+    "ens_v2_pct"
+  ],
+  "calibration": {
+    "incumbent": {
+      "pooled_scaled_0.8": {
+        "date_mean": 0.8243017145456171,
+        "pooled": 0.8131966116807846,
+        "worst_quintile_dates": 0.6011904761904763,
+        "mean_width": 2.420976958031405,
+        "dates": 41
+      },
+      "date_scaled_0.8": {
+        "date_mean": 0.8123705562729953,
+        "pooled": 0.8011591618368257,
+        "worst_quintile_dates": 0.5773809523809523,
+        "mean_width": 2.3351786070493756,
+        "dates": 41
+      },
+      "pooled_scaled_0.9": {
+        "date_mean": 0.9097772146552636,
+        "pooled": 0.9045920641997325,
+        "worst_quintile_dates": 0.7366071428571428,
+        "mean_width": 3.216048311215463,
+        "dates": 41
+      },
+      "date_scaled_0.9": {
+        "date_mean": 0.9036268609439341,
+        "pooled": 0.8979045920641997,
+        "worst_quintile_dates": 0.7247023809523809,
+        "mean_width": 3.1177198343342765,
+        "dates": 41
+      }
+    },
+    "nested_v3": {
+      "pooled_scaled_0.8": {
+        "date_mean": 0.8096273645054132,
+        "pooled": 0.7935800267498886,
+        "worst_quintile_dates": 0.5714285714285714,
+        "mean_width": 2.2583244251395618,
+        "dates": 41
+      },
+      "date_scaled_0.8": {
+        "date_mean": 0.7997530924360193,
+        "pooled": 0.7842175657601427,
+        "worst_quintile_dates": 0.5595238095238095,
+        "mean_width": 2.2024083315982694,
+        "dates": 41
+      },
+      "pooled_scaled_0.9": {
+        "date_mean": 0.9042603737725687,
+        "pooled": 0.896121266161391,
+        "worst_quintile_dates": 0.7452651515151516,
+        "mean_width": 2.9649204726037977,
+        "dates": 41
+      },
+      "date_scaled_0.9": {
+        "date_mean": 0.8972917326575863,
+        "pooled": 0.8885421310744539,
+        "worst_quintile_dates": 0.7333603896103895,
+        "mean_width": 2.9033100117321227,
+        "dates": 41
+      }
+    },
+    "final": {
+      "pooled_scaled_0.8": {
+        "date_mean": 0.8128477213843066,
+        "pooled": 0.8074008024966562,
+        "worst_quintile_dates": 0.5788690476190477,
+        "mean_width": 2.2931786585497016,
+        "dates": 41
+      },
+      "date_scaled_0.8": {
+        "date_mean": 0.8045836277543595,
+        "pooled": 0.7980383415069104,
+        "worst_quintile_dates": 0.5729166666666667,
+        "mean_width": 2.2272839405515246,
+        "dates": 41
+      },
+      "pooled_scaled_0.9": {
+        "date_mean": 0.9067944250871081,
+        "pooled": 0.9041462327240303,
+        "worst_quintile_dates": 0.7574404761904762,
+        "mean_width": 3.0150511237976367,
+        "dates": 41
+      },
+      "date_scaled_0.9": {
+        "date_mean": 0.9015415478830113,
+        "pooled": 0.8983504235399019,
+        "worst_quintile_dates": 0.7485119047619048,
+        "mean_width": 2.9330137502026665,
+        "dates": 41
+      }
+    }
+  }
+}

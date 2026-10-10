@@ -1,4 +1,6 @@
-**NeuroForecast: day-7 trust triage for later changes in neuronal function.** Working project selected September 20, 2026 IST. The reserved validation was completed on September 21: **the learned forecast lost to carrying day 7 forward, and the reliability layer generalized.** The project scope narrowed accordingly; see [reserve results](neuroforecast_reserve_results.md).
+> **Historical planning record (September 2026), kept for transparency.** It predates both sealed tests and is superseded by the [technical report](../technical_report.md); some expectations here were later withdrawn or failed.
+
+**NeuroForecast: day-7 trust triage for later changes in neuronal function.** Working project selected September 20, 2026 IST. The reserved validation was completed on September 21: **the learned forecast lost to carrying day 7 forward, and the reliability layer generalized.** The project scope narrowed accordingly; see [reserve results](../neuroforecast_reserve_results.md).
 
 A researcher running a chemical-exposure study can measure electrical activity before a neuronal culture has finished developing. The proposed tool uses day-7 measurements and matched controls to forecast the day-12 network-spike readout, then highlights conditions that may warrant closer observation or an additional functional measurement. It should display the measurements, the forecast, the simple comparator, and evidence about reliability together.
 
@@ -23,4 +25,4 @@ That gate is now closed. The reserved evaluation did not support a forecasting a
 
 A five-minute demonstration should show one actual day-7 input, its control-quality display, the forecast alongside persistence and the smaller model, the reliability verdict (trusted or declined), a later observed result revealed for evaluation, and the 20171004 batch as the failure example. The current executable examples provide the inputs for that demonstration. Biological validation on living chips remains a future extension; this public-data project validates a workflow on chemical-exposed rat MEA cultures.
 
-Target release freeze: October 8. Target submission: October 9. Official deadline: October 10, 2026, 21:29:59 IST. The [campaign plan](campaign_plan.md) tracks the report, public code, demo, mandatory organizer registration, and submission requirements. [Selection results](neuroforecast_selection_results.md) contain the exact numbers and commands.
+Target release freeze: October 8. Target submission: October 9. Official deadline: October 10, 2026, 21:29:59 IST. The campaign plan tracks the report, public code, demo, mandatory organizer registration, and submission requirements. [Selection results](../neuroforecast_selection_results.md) contain the exact numbers and commands.

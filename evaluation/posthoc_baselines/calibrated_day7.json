@@ -1,0 +1,68 @@
+{
+  "status": "post hoc, descriptive; both sealed sets were already spent",
+  "study_41_batches": {
+    "batches": 41,
+    "conditions": 2243,
+    "date_macro_mae": {
+      "v2": 0.6903273818784471,
+      "carry_forward": 1.0160398080840376,
+      "calibrated_day7": 0.8808881964114106
+    },
+    "v2_minus_calibrated_interval": [
+      -0.2923978063924375,
+      -0.09722089459555612
+    ],
+    "batches_v2_better_than_calibrated": 33,
+    "calibrated_minus_carry_forward_interval": [
+      -0.1955592273618008,
+      -0.08822283486037111
+    ],
+    "share_of_v2_gain_from_calibration": 0.4149415275526485,
+    "v2_reduction_vs_calibrated": 0.21632803721207294
+  },
+  "external_24_batches": {
+    "batches": 24,
+    "conditions": 927,
+    "date_macro_mae": {
+      "v2": 0.7345496278472572,
+      "carry_forward": 0.9801005503187815,
+      "calibrated_day7": 0.81322434106731
+    },
+    "v2_minus_calibrated_interval": [
+      -0.16081531756482825,
+      0.001843962206169585
+    ],
+    "batches_v2_better_than_calibrated": 15,
+    "calibrated_minus_carry_forward_interval": [
+      -0.26696643390532016,
+      -0.09676670877036542
+    ],
+    "share_of_v2_gain_from_calibration": 0.6795991950338673,
+    "v2_reduction_vs_calibrated": 0.09674416916345219
+  },
+  "external_kept_conditions": {
+    "conditions": 792,
+    "batches": 24,
+    "date_macro_mae": {
+      "v2": 0.5414746197687683,
+      "calibrated_day7": 0.5544474584640542
+    },
+    "v2_minus_calibrated_interval": [
+      -0.07221180353209293,
+      0.04821524049952392
+    ],
+    "batches_v2_better_than_calibrated": 14,
+    "share_of_pooled_gain_from_declined": 0.4889546067357335,
+    "share_of_pooled_gain_from_day7_at_most_minus_1": 0.7962909703357264
+  },
+  "batch_difficulty": {
+    "study_41_batches": {
+      "batches": 41,
+      "spearman": 0.6545296167247389
+    },
+    "external_24_batches": {
+      "batches": 24,
+      "spearman": 0.6
+    }
+  }
+}

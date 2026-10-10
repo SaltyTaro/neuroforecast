@@ -12,3 +12,5 @@ joblib==1.5.3
 # its prepare and develop stages reproduce byte for byte with the versions above as well. rdata reads the EPA refinement release.
 rdata==1.1.0
 xarray==2026.7.0
+# The split study (tools/neuroforecast_split_study.py) also fits LightGBM.
+lightgbm==4.6.0

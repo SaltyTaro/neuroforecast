@@ -147,6 +147,8 @@ check("only batch 20171004 is called unusable", low.length === 1 && low[0] === 2
 /* --- the examples the page ships ---------------------------------------- */
 const EXAMPLES = [
   ["app/examples/v2/external_20160120_day5_day7.csv", external, 20160120],
+  ["app/examples/v2/external_20141231_day5_day7.csv", external, 20141231],
+  ["app/examples/v2/external_20140924_day5_day7.csv", external, 20140924],
   ["app/examples/v2/reserve_20171004_low_quality_day5_day7.csv", reserve, 20171004],
   ["app/examples/v2/reserve_20171011_usable_day5_day7.csv", reserve, 20171011],
 ];

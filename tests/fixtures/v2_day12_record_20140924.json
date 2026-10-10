@@ -1,0 +1,1077 @@
+{
+  "schema": "neuroforecast-admission-record/1",
+  "created_utc": "2026-10-08T06:47:01Z",
+  "tool": {
+    "name": "NeuroForecast",
+    "model": "v2",
+    "implementation": "python"
+  },
+  "locked_models": {
+    "final_small_refit.joblib": "54b19841d640e4739e744e86ad0f6fbfdcaae9ea8faf920e0ab8562870d05dab",
+    "final_sigma_v2.joblib": "2589455712a087a32f7672428b5e9855809782d61a5530d786293c5a8366e8e0",
+    "development_lock.json": "5317dfc511087bad71674de68d4f732c052f1040fdf4a82b7df9f3b8c65eea4b"
+  },
+  "input": {
+    "file": "external_20140924_day5_day7.csv",
+    "sha256": "39440b06d3b5c45d7b3e2b23069e4ad35f4e6bbca30b200978d4a011a2447622",
+    "days": [
+      5,
+      7
+    ]
+  },
+  "decision_rule": {
+    "trust_threshold": 1.1436974115619514,
+    "interval_level": 0.8,
+    "interval_scale": 1.5063963748385074,
+    "batch_rule": "reference unusable when at least half the conditions sit on plates whose day-7 control median is below one network spike"
+  },
+  "interval_calibration": null,
+  "batches": [
+    {
+      "batch": 20140924,
+      "verdict": "usable",
+      "reasons": [],
+      "conditions": 42,
+      "chemicals": 6,
+      "declined": 4,
+      "provisional": 38,
+      "day7_reference_network_spikes": 22.298131136347614,
+      "low_reference_fraction": 0.0
+    }
+  ],
+  "conditions": [
+    {
+      "batch": 20140924,
+      "chemical": "5,5-Diphenylhydantoin",
+      "identity": "DTXSID8020541",
+      "dose_uM": 0.03,
+      "day7_log2": -0.1150452081216371,
+      "forecast_log2": -0.08809128138138987,
+      "interval80_log2": [
+        -0.5128986424051143,
+        0.3367160796423345
+      ],
+      "carry_forward_log2": -0.1150452081216371,
+      "difficulty": 0.28200237873598555,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": 0.023377801849576323,
+        "reference_usable": true,
+        "forecast_abs_error": 0.11146908323096619,
+        "carry_forward_abs_error": 0.13842300997121343,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "5,5-Diphenylhydantoin",
+      "identity": "DTXSID8020541",
+      "dose_uM": 0.1,
+      "day7_log2": 0.4474048480058366,
+      "forecast_log2": 0.03564662692567075,
+      "interval80_log2": [
+        -0.4165994386147377,
+        0.48789269246607925
+      ],
+      "carry_forward_log2": 0.4474048480058366,
+      "difficulty": 0.3002171759666451,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": 0.15311162219009763,
+        "reference_usable": true,
+        "forecast_abs_error": 0.11746499526442689,
+        "carry_forward_abs_error": 0.2942932258157389,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "5,5-Diphenylhydantoin",
+      "identity": "DTXSID8020541",
+      "dose_uM": 0.3,
+      "day7_log2": 0.11304818162031362,
+      "forecast_log2": -0.10929321129882733,
+      "interval80_log2": [
+        -0.5643640109637306,
+        0.34577758836607586
+      ],
+      "carry_forward_log2": 0.11304818162031362,
+      "difficulty": 0.3020923358991015,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.2803643759478281,
+        "reference_usable": true,
+        "forecast_abs_error": 0.17107116464900077,
+        "carry_forward_abs_error": 0.3934125575681417,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "5,5-Diphenylhydantoin",
+      "identity": "DTXSID8020541",
+      "dose_uM": 1.0,
+      "day7_log2": -0.12055787867603414,
+      "forecast_log2": 0.029274695018515002,
+      "interval80_log2": [
+        -0.4952249620511907,
+        0.5537743520882207
+      ],
+      "carry_forward_log2": -0.12055787867603414,
+      "difficulty": 0.34818170425160144,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.16856088378618234,
+        "reference_usable": true,
+        "forecast_abs_error": 0.19783557880469735,
+        "carry_forward_abs_error": 0.0480030051101482,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "5,5-Diphenylhydantoin",
+      "identity": "DTXSID8020541",
+      "dose_uM": 3.0,
+      "day7_log2": -0.14335645072662306,
+      "forecast_log2": 0.03417143251912529,
+      "interval80_log2": [
+        -0.5335573573257169,
+        0.6019002223639673
+      ],
+      "carry_forward_log2": -0.14335645072662306,
+      "difficulty": 0.3768787547073759,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.2934990757668697,
+        "reference_usable": true,
+        "forecast_abs_error": 0.327670508285995,
+        "carry_forward_abs_error": 0.1501426250402466,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "5,5-Diphenylhydantoin",
+      "identity": "DTXSID8020541",
+      "dose_uM": 10.0,
+      "day7_log2": -0.03697774350387553,
+      "forecast_log2": 0.17026580097434843,
+      "interval80_log2": [
+        -0.24750257102589082,
+        0.5880341729745877
+      ],
+      "carry_forward_log2": -0.03697774350387553,
+      "difficulty": 0.27732964509093827,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.3562632451312873,
+        "reference_usable": true,
+        "forecast_abs_error": 0.5265290461056358,
+        "carry_forward_abs_error": 0.31928550162741176,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "5,5-Diphenylhydantoin",
+      "identity": "DTXSID8020541",
+      "dose_uM": 30.0,
+      "day7_log2": 0.5711988853177178,
+      "forecast_log2": 0.023161680948785696,
+      "interval80_log2": [
+        -0.771897114831067,
+        0.8182204767286384
+      ],
+      "carry_forward_log2": 0.5711988853177178,
+      "difficulty": 0.5277885748132437,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.55717637811235,
+        "reference_usable": true,
+        "forecast_abs_error": 0.5803380590611357,
+        "carry_forward_abs_error": 1.1283752634300677,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Amoxicillin",
+      "identity": "DTXSID3037044",
+      "dose_uM": 0.03,
+      "day7_log2": -0.31924318955408315,
+      "forecast_log2": 0.09981711255817913,
+      "interval80_log2": [
+        -0.4406722489310634,
+        0.6403064740474217
+      ],
+      "carry_forward_log2": -0.31924318955408315,
+      "difficulty": 0.3587962441473517,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.06679983295933226,
+        "reference_usable": true,
+        "forecast_abs_error": 0.16661694551751138,
+        "carry_forward_abs_error": 0.2524433565947509,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Amoxicillin",
+      "identity": "DTXSID3037044",
+      "dose_uM": 0.1,
+      "day7_log2": 0.21711446050667613,
+      "forecast_log2": -0.06655595394472609,
+      "interval80_log2": [
+        -0.5731269092994707,
+        0.44001500141001854
+      ],
+      "carry_forward_log2": 0.21711446050667613,
+      "difficulty": 0.33627998833245426,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": 0.20189415860227036,
+        "reference_usable": true,
+        "forecast_abs_error": 0.26845011254699647,
+        "carry_forward_abs_error": 0.015220301904405764,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Amoxicillin",
+      "identity": "DTXSID3037044",
+      "dose_uM": 0.3,
+      "day7_log2": 0.13543922883268342,
+      "forecast_log2": 0.08974962816209588,
+      "interval80_log2": [
+        -0.31810569954239626,
+        0.497604955866588
+      ],
+      "carry_forward_log2": 0.13543922883268342,
+      "difficulty": 0.2707490103646964,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.7695056631869264,
+        "reference_usable": true,
+        "forecast_abs_error": 0.8592552913490222,
+        "carry_forward_abs_error": 0.9049448920196098,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Amoxicillin",
+      "identity": "DTXSID3037044",
+      "dose_uM": 1.0,
+      "day7_log2": 0.1480577587215979,
+      "forecast_log2": 0.06876107733094981,
+      "interval80_log2": [
+        -0.38316934961356697,
+        0.5206915042754666
+      ],
+      "carry_forward_log2": 0.1480577587215979,
+      "difficulty": 0.3000076437338518,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.09869153955609153,
+        "reference_usable": true,
+        "forecast_abs_error": 0.16745261688704133,
+        "carry_forward_abs_error": 0.24674929827768943,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Amoxicillin",
+      "identity": "DTXSID3037044",
+      "dose_uM": 3.0,
+      "day7_log2": 0.08228963681998198,
+      "forecast_log2": 0.01960938835887134,
+      "interval80_log2": [
+        -0.5496642986721982,
+        0.588883075389941
+      ],
+      "carry_forward_log2": 0.08228963681998198,
+      "difficulty": 0.3779043129283276,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.5035557780424701,
+        "reference_usable": true,
+        "forecast_abs_error": 0.5231651664013415,
+        "carry_forward_abs_error": 0.5858454148624521,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Amoxicillin",
+      "identity": "DTXSID3037044",
+      "dose_uM": 10.0,
+      "day7_log2": 0.114619023256179,
+      "forecast_log2": 0.15790595313791403,
+      "interval80_log2": [
+        -0.3170694147103641,
+        0.6328813209861922
+      ],
+      "carry_forward_log2": 0.114619023256179,
+      "difficulty": 0.31530570292244475,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.305550225118527,
+        "reference_usable": true,
+        "forecast_abs_error": 0.46345617825644103,
+        "carry_forward_abs_error": 0.420169248374706,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Amoxicillin",
+      "identity": "DTXSID3037044",
+      "dose_uM": 30.0,
+      "day7_log2": -0.8370901480429873,
+      "forecast_log2": 0.2839082886102903,
+      "interval80_log2": [
+        -0.3803072148894439,
+        0.9481237921100245
+      ],
+      "carry_forward_log2": -0.8370901480429873,
+      "difficulty": 0.4409300995370101,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.8733337292924367,
+        "reference_usable": true,
+        "forecast_abs_error": 1.157242017902727,
+        "carry_forward_abs_error": 0.036243581249449375,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos",
+      "identity": "DTXSID4020458",
+      "dose_uM": 0.03,
+      "day7_log2": 0.22550447185599554,
+      "forecast_log2": -0.046080827069417296,
+      "interval80_log2": [
+        -0.8929635940858142,
+        0.8008019399469796
+      ],
+      "carry_forward_log2": 0.22550447185599554,
+      "difficulty": 0.5621911876329273,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.5751095682033472,
+        "reference_usable": true,
+        "forecast_abs_error": 0.52902874113393,
+        "carry_forward_abs_error": 0.8006140400593428,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos",
+      "identity": "DTXSID4020458",
+      "dose_uM": 0.1,
+      "day7_log2": 0.00211134357471538,
+      "forecast_log2": -0.0695779521928205,
+      "interval80_log2": [
+        -0.5807815995749844,
+        0.44162569518934347
+      ],
+      "carry_forward_log2": 0.00211134357471538,
+      "difficulty": 0.33935533563466475,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.0872005603478512,
+        "reference_usable": true,
+        "forecast_abs_error": 1.0176226081550306,
+        "carry_forward_abs_error": 1.0893119039225665,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos",
+      "identity": "DTXSID4020458",
+      "dose_uM": 0.3,
+      "day7_log2": -0.2423161369592812,
+      "forecast_log2": 0.024487052931742862,
+      "interval80_log2": [
+        -0.34930548117003796,
+        0.3982795870335237
+      ],
+      "carry_forward_log2": -0.2423161369592812,
+      "difficulty": 0.24813690496424162,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.0386949441951547,
+        "reference_usable": true,
+        "forecast_abs_error": 1.0631819971268976,
+        "carry_forward_abs_error": 0.7963788072358735,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos",
+      "identity": "DTXSID4020458",
+      "dose_uM": 1.0,
+      "day7_log2": -0.47197578342645563,
+      "forecast_log2": -0.08578287706166299,
+      "interval80_log2": [
+        -0.603217563864621,
+        0.431651809741295
+      ],
+      "carry_forward_log2": -0.47197578342645563,
+      "difficulty": 0.3434917233244334,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.2851333834363179,
+        "reference_usable": true,
+        "forecast_abs_error": 1.199350506374655,
+        "carry_forward_abs_error": 0.8131576000098623,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos",
+      "identity": "DTXSID4020458",
+      "dose_uM": 3.0,
+      "day7_log2": -0.24722200469875955,
+      "forecast_log2": -0.00685660558161355,
+      "interval80_log2": [
+        -0.5552451478185986,
+        0.5415319366553716
+      ],
+      "carry_forward_log2": -0.24722200469875955,
+      "difficulty": 0.3640400039436996,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.3009319535018025,
+        "reference_usable": true,
+        "forecast_abs_error": 1.294075347920189,
+        "carry_forward_abs_error": 1.0537099488030428,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos",
+      "identity": "DTXSID4020458",
+      "dose_uM": 10.0,
+      "day7_log2": -0.43793778743534834,
+      "forecast_log2": 0.17825910789532642,
+      "interval80_log2": [
+        -0.4007043489996651,
+        0.7572225647903179
+      ],
+      "carry_forward_log2": -0.43793778743534834,
+      "difficulty": 0.38433673007017094,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.015909519379554,
+        "reference_usable": true,
+        "forecast_abs_error": 1.1941686272748804,
+        "carry_forward_abs_error": 0.5779717319442057,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos",
+      "identity": "DTXSID4020458",
+      "dose_uM": 30.0,
+      "day7_log2": -4.5302198391947845,
+      "forecast_log2": -6.737478464564901,
+      "interval80_log2": [
+        -8.547597185958331,
+        -4.927359743171471
+      ],
+      "carry_forward_log2": -4.5302198391947845,
+      "difficulty": 1.201621798636818,
+      "decision": "measure day 12",
+      "reasons": [
+        "difficulty_above_threshold"
+      ],
+      "day12": {
+        "measured_log2": -7.199986884192429,
+        "reference_usable": true,
+        "forecast_abs_error": 0.462508419627528,
+        "carry_forward_abs_error": 2.669767044997644,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos oxon",
+      "identity": "DTXSID1038666",
+      "dose_uM": 0.03,
+      "day7_log2": -0.8098331656946022,
+      "forecast_log2": -3.8536188455482866e-05,
+      "interval80_log2": [
+        -0.502955934242013,
+        0.502878861865102
+      ],
+      "carry_forward_log2": -0.8098331656946022,
+      "difficulty": 0.3338546258168422,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.0809056989109451,
+        "reference_usable": true,
+        "forecast_abs_error": 1.0808671627224897,
+        "carry_forward_abs_error": 0.27107253321634295,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos oxon",
+      "identity": "DTXSID1038666",
+      "dose_uM": 0.1,
+      "day7_log2": -0.2796731975288666,
+      "forecast_log2": -0.03177443214384646,
+      "interval80_log2": [
+        -0.49518762127586397,
+        0.43163875698817106
+      ],
+      "carry_forward_log2": -0.2796731975288666,
+      "difficulty": 0.3076303135565482,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.2544465665223026,
+        "reference_usable": true,
+        "forecast_abs_error": 1.2226721343784561,
+        "carry_forward_abs_error": 0.9747733689934359,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos oxon",
+      "identity": "DTXSID1038666",
+      "dose_uM": 0.3,
+      "day7_log2": -0.38250456944360905,
+      "forecast_log2": -0.007959957211532132,
+      "interval80_log2": [
+        -0.5152270705117228,
+        0.49930715608865855
+      ],
+      "carry_forward_log2": -0.38250456944360905,
+      "difficulty": 0.33674212297183204,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.15058460150164665,
+        "reference_usable": true,
+        "forecast_abs_error": 0.1426246442901145,
+        "carry_forward_abs_error": 0.2319199679419624,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos oxon",
+      "identity": "DTXSID1038666",
+      "dose_uM": 1.0,
+      "day7_log2": -0.6804868922912156,
+      "forecast_log2": -0.06634840162476188,
+      "interval80_log2": [
+        -0.6833804008143858,
+        0.5506835975648621
+      ],
+      "carry_forward_log2": -0.6804868922912156,
+      "difficulty": 0.4096079952766566,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.2458162819814171,
+        "reference_usable": true,
+        "forecast_abs_error": 1.1794678803566552,
+        "carry_forward_abs_error": 0.5653293896902015,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos oxon",
+      "identity": "DTXSID1038666",
+      "dose_uM": 3.0,
+      "day7_log2": -0.9763828180460608,
+      "forecast_log2": -0.08253327648220969,
+      "interval80_log2": [
+        -0.7132993827201436,
+        0.5482328297557243
+      ],
+      "carry_forward_log2": -0.9763828180460608,
+      "difficulty": 0.4187251886513302,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.215055427794223,
+        "reference_usable": true,
+        "forecast_abs_error": 1.1325221513120132,
+        "carry_forward_abs_error": 0.23867260974816218,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos oxon",
+      "identity": "DTXSID1038666",
+      "dose_uM": 10.0,
+      "day7_log2": -4.135845502672078,
+      "forecast_log2": -1.1413952996765377,
+      "interval80_log2": [
+        -3.7792195972513136,
+        1.496428997898238
+      ],
+      "carry_forward_log2": -4.135845502672078,
+      "difficulty": 1.7510824784463268,
+      "decision": "measure day 12",
+      "reasons": [
+        "difficulty_above_threshold"
+      ],
+      "day12": {
+        "measured_log2": -1.4112554633214114,
+        "reference_usable": true,
+        "forecast_abs_error": 0.26986016364487364,
+        "carry_forward_abs_error": 2.724590039350667,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Chlorpyrifos oxon",
+      "identity": "DTXSID1038666",
+      "dose_uM": 30.0,
+      "day7_log2": -4.5302198391947845,
+      "forecast_log2": -1.4187643145952193,
+      "interval80_log2": [
+        -4.434919093746637,
+        1.597390464556198
+      ],
+      "carry_forward_log2": -4.5302198391947845,
+      "difficulty": 2.0022318358770366,
+      "decision": "measure day 12",
+      "reasons": [
+        "difficulty_above_threshold"
+      ],
+      "day12": {
+        "measured_log2": -7.199986884192429,
+        "reference_usable": true,
+        "forecast_abs_error": 5.781222569597209,
+        "carry_forward_abs_error": 2.669767044997644,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Dexamethasone",
+      "identity": "DTXSID3020384",
+      "dose_uM": 0.03,
+      "day7_log2": -0.3117627725667744,
+      "forecast_log2": -0.02317420276627455,
+      "interval80_log2": [
+        -0.5704227329000715,
+        0.5240743273675224
+      ],
+      "carry_forward_log2": -0.3117627725667744,
+      "difficulty": 0.3632832229780588,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.6253239435734341,
+        "reference_usable": true,
+        "forecast_abs_error": 0.6021497408071596,
+        "carry_forward_abs_error": 0.3135611710066597,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Dexamethasone",
+      "identity": "DTXSID3020384",
+      "dose_uM": 0.1,
+      "day7_log2": -0.546992985616912,
+      "forecast_log2": -0.23057548627177024,
+      "interval80_log2": [
+        -0.7752204353550011,
+        0.31406946281146053
+      ],
+      "carry_forward_log2": -0.546992985616912,
+      "difficulty": 0.3615548723964629,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.36905297696411393,
+        "reference_usable": true,
+        "forecast_abs_error": 0.1384774906923437,
+        "carry_forward_abs_error": 0.17794000865279808,
+        "inside_interval80": true
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Dexamethasone",
+      "identity": "DTXSID3020384",
+      "dose_uM": 0.3,
+      "day7_log2": -0.4113624331335911,
+      "forecast_log2": -0.04551505900870296,
+      "interval80_log2": [
+        -0.5507840733943653,
+        0.45975395537695934
+      ],
+      "carry_forward_log2": -0.4113624331335911,
+      "difficulty": 0.3354157131716607,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.8568983627355055,
+        "reference_usable": true,
+        "forecast_abs_error": 0.8113833037268025,
+        "carry_forward_abs_error": 0.44553592960191435,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Dexamethasone",
+      "identity": "DTXSID3020384",
+      "dose_uM": 1.0,
+      "day7_log2": -0.5125553001207195,
+      "forecast_log2": -0.146648110423082,
+      "interval80_log2": [
+        -0.7259929415934325,
+        0.4326967207472685
+      ],
+      "carry_forward_log2": -0.5125553001207195,
+      "difficulty": 0.3845899000072003,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.7748164810119693,
+        "reference_usable": true,
+        "forecast_abs_error": 0.6281683705888873,
+        "carry_forward_abs_error": 0.26226118089124983,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Dexamethasone",
+      "identity": "DTXSID3020384",
+      "dose_uM": 3.0,
+      "day7_log2": -0.735979915965656,
+      "forecast_log2": -0.03181162926094788,
+      "interval80_log2": [
+        -0.6217448163938815,
+        0.5581215578719858
+      ],
+      "carry_forward_log2": -0.735979915965656,
+      "difficulty": 0.3916188308646037,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.9196245514077398,
+        "reference_usable": true,
+        "forecast_abs_error": 0.8878129221467919,
+        "carry_forward_abs_error": 0.18364463544208376,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Dexamethasone",
+      "identity": "DTXSID3020384",
+      "dose_uM": 10.0,
+      "day7_log2": -0.5902853938054792,
+      "forecast_log2": -0.11482642196952468,
+      "interval80_log2": [
+        -0.6103773478035157,
+        0.3807245038644664
+      ],
+      "carry_forward_log2": -0.5902853938054792,
+      "difficulty": 0.32896449706812153,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.296001540534608,
+        "reference_usable": true,
+        "forecast_abs_error": 1.1811751185650832,
+        "carry_forward_abs_error": 0.7057161467291287,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Dexamethasone",
+      "identity": "DTXSID3020384",
+      "dose_uM": 30.0,
+      "day7_log2": -0.13562641062560152,
+      "forecast_log2": -0.02723697892047969,
+      "interval80_log2": [
+        -0.576185951968459,
+        0.5217119941274996
+      ],
+      "carry_forward_log2": -0.13562641062560152,
+      "difficulty": 0.3644120380380158,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.6683528305325813,
+        "reference_usable": true,
+        "forecast_abs_error": 0.6411158516121016,
+        "carry_forward_abs_error": 0.5327264199069798,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Diazepam",
+      "identity": "DTXSID4020406",
+      "dose_uM": 0.03,
+      "day7_log2": 0.004309548747610599,
+      "forecast_log2": 0.026005066726220515,
+      "interval80_log2": [
+        -0.37255186714297506,
+        0.42456200059541604
+      ],
+      "carry_forward_log2": 0.004309548747610599,
+      "difficulty": 0.2645764026828083,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.730701256245977,
+        "reference_usable": true,
+        "forecast_abs_error": 0.7567063229721975,
+        "carry_forward_abs_error": 0.7350108049935876,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Diazepam",
+      "identity": "DTXSID4020406",
+      "dose_uM": 0.1,
+      "day7_log2": 0.11218744267632325,
+      "forecast_log2": 0.05456623547503321,
+      "interval80_log2": [
+        -0.37478038713852885,
+        0.48391285808859524
+      ],
+      "carry_forward_log2": 0.11218744267632325,
+      "difficulty": 0.28501570355915784,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.7366869234705457,
+        "reference_usable": true,
+        "forecast_abs_error": 0.7912531589455789,
+        "carry_forward_abs_error": 0.848874366146869,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Diazepam",
+      "identity": "DTXSID4020406",
+      "dose_uM": 0.3,
+      "day7_log2": -0.7630726023980557,
+      "forecast_log2": -0.25037847840640687,
+      "interval80_log2": [
+        -0.889082937366382,
+        0.3883259805535682
+      ],
+      "carry_forward_log2": -0.7630726023980557,
+      "difficulty": 0.4239949522106671,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.5899029176936081,
+        "reference_usable": true,
+        "forecast_abs_error": 1.3395244392872012,
+        "carry_forward_abs_error": 0.8268303152955524,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Diazepam",
+      "identity": "DTXSID4020406",
+      "dose_uM": 1.0,
+      "day7_log2": -0.6860526463806496,
+      "forecast_log2": 0.09006169661919541,
+      "interval80_log2": [
+        -0.43538978853478116,
+        0.6155131817731719
+      ],
+      "carry_forward_log2": -0.6860526463806496,
+      "difficulty": 0.34881356190883517,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.3343368249978433,
+        "reference_usable": true,
+        "forecast_abs_error": 1.4243985216170387,
+        "carry_forward_abs_error": 0.6482841786171938,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Diazepam",
+      "identity": "DTXSID4020406",
+      "dose_uM": 3.0,
+      "day7_log2": -0.5768377407607771,
+      "forecast_log2": 0.06513923938945952,
+      "interval80_log2": [
+        -0.6280390828917152,
+        0.7583175616706342
+      ],
+      "carry_forward_log2": -0.5768377407607771,
+      "difficulty": 0.46015665853914883,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -1.32727991168424,
+        "reference_usable": true,
+        "forecast_abs_error": 1.3924191510736994,
+        "carry_forward_abs_error": 0.7504421709234629,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Diazepam",
+      "identity": "DTXSID4020406",
+      "dose_uM": 10.0,
+      "day7_log2": -0.6930823899988462,
+      "forecast_log2": -0.03488159226228308,
+      "interval80_log2": [
+        -0.8840903830136116,
+        0.8143271984890456
+      ],
+      "carry_forward_log2": -0.6930823899988462,
+      "difficulty": 0.5637352857028534,
+      "decision": "provisional forecast",
+      "reasons": [],
+      "day12": {
+        "measured_log2": -0.9802947399819555,
+        "reference_usable": true,
+        "forecast_abs_error": 0.9454131477196724,
+        "carry_forward_abs_error": 0.2872123499831093,
+        "inside_interval80": false
+      }
+    },
+    {
+      "batch": 20140924,
+      "chemical": "Diazepam",
+      "identity": "DTXSID4020406",
+      "dose_uM": 30.0,
+      "day7_log2": -4.5302198391947845,
+      "forecast_log2": -6.737478464564901,
+      "interval80_log2": [
+        -8.547597185958331,
+        -4.927359743171471
+      ],
+      "carry_forward_log2": -4.5302198391947845,
+      "difficulty": 1.201621798636818,
+      "decision": "measure day 12",
+      "reasons": [
+        "difficulty_above_threshold"
+      ],
+      "day12": {
+        "measured_log2": -1.211622288365725,
+        "reference_usable": true,
+        "forecast_abs_error": 5.525856176199175,
+        "carry_forward_abs_error": 3.3185975508290593,
+        "inside_interval80": false
+      }
+    }
+  ],
+  "day12_check": {
+    "input": {
+      "file": "external_20140924_day12.csv",
+      "sha256": "0c00170f41b0b55d127814b6bb22dad2cb7670a612ca7af937a8364337204c9b",
+      "days": [
+        12
+      ]
+    },
+    "definition": "Day-12 truth is the sealed test's target: log2 of the replicate mean of (network spikes + 1) / (same-plate day-12 control median + 1). A condition is scored when its day-12 control median is at least 5 network spikes. Batch errors are mean absolute errors averaged within each chemical, then over chemicals; provisional and declined errors are plain means over conditions.",
+    "batches": [
+      {
+        "batch": 20140924,
+        "conditions_in_report": 42,
+        "conditions_measured": 42,
+        "conditions_scored": 42,
+        "reference_unusable": 0,
+        "forecast_error": 0.9588819865269427,
+        "carry_forward_error": 0.7249339176613484,
+        "forecast_closer": 15,
+        "interval80_coverage": 0.38095238095238093,
+        "provisional": {
+          "conditions": 38,
+          "forecast_error": 0.7429893711858633,
+          "carry_forward_error": 0.5016974437263584
+        },
+        "declined": {
+          "conditions": 4,
+          "forecast_error": 3.0098618322671964,
+          "carry_forward_error": 2.8456804200437533
+        }
+      }
+    ]
+  },
+  "evidence": {
+    "v1_reserve": {
+      "batches": 3,
+      "conditions": 224,
+      "model_mae": 0.7716,
+      "persistence_mae": 0.6088,
+      "note": "v1 lost to persistence"
+    },
+    "external": {
+      "batches": 24,
+      "conditions": 927,
+      "unseen_chemicals": 105,
+      "model_mae": 0.735,
+      "persistence_mae": 0.98,
+      "batches_better_than_persistence": 19,
+      "kept_error_reduction": 0.27,
+      "interval_coverage_at_nominal_0.8": 0.702
+    }
+  },
+  "limits": [
+    "Validated on EPA rat cortical cultures on 48-well microelectrode arrays; not on organ chips, human cells, or clinical toxicity.",
+    "Intervals covered 70% of external outcomes at a nominal 80% level; read them as approximate.",
+    "The batch rule marks a degenerate day-7 reference, not a failed forecast: it fired on 3 of 41 batches, and on 2 of them the forecast still beat carrying day 7 forward.",
+    "Every externally declined condition was already strongly suppressed at day 7; a decline means recovery or progression is undetermined, not that there is no effect.",
+    "Forecast magnitudes are not probabilities. Units are log2 of the same-plate control-relative network-spike count."
+  ]
+}

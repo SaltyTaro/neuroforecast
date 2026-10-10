@@ -1,6 +1,6 @@
 """Recompute every headline number in the README and reports from the published per-case tables.
 
-This reads only evaluation/*.csv and models/development_lock.json, never a summary file, so it is an
+This reads only per-case evidence (evaluation/**.csv) and models/development_lock.json, never a summary file, so it is an
 independent check that the prose matches the evidence. It needs no download and runs in a second.
 """
 
@@ -262,6 +262,570 @@ SIGNAL = {
     "browser replay external conditions": 983,
     "browser replay reserve-batch conditions": 245,
 }
+
+
+V3 = {
+    # The model study of October 7-8, 2026 (technical report section 9; evaluation/v3). Development only:
+    # both sealed sets were spent before it. Outer folds of the locked nested, chemical-purged protocol.
+    "v3 usable conditions": 2243,
+    "v3 batches with usable conditions": 41,
+    "v3 chemicals": 243,
+    "v3 plates": 169,
+    "v3 wells": 7900,
+    "v3 v2-recipe date-macro MAE": 0.690,
+    "v3 v2+PCT ensemble date-macro MAE": 0.668,
+    "v3 dose-series Extra Trees date-macro MAE": 0.679,
+    "v3 nested date-macro MAE": 0.695,
+    "v3 PCT date-macro MAE": 0.711,
+    "v3 LightGBM (all features) date-macro MAE": 0.718,
+    "v3 TabPFN v2 (all features) date-macro MAE": 0.723,
+    "v3 MLP date-macro MAE": 0.862,
+    "v3 ridge date-macro MAE": 0.880,
+    "v3 carry-forward date-macro MAE": 1.016,
+    "v3 batch-blind PCT date-macro MAE": 0.742,
+    "v3 batches ensemble beats v2": 30,
+    "v3 batches nested beats v2": 25,
+    "v3 batches PCT beats v2": 21,
+    "v3 batches dose-series Extra Trees beats v2": 22,
+    "v3 batches LightGBM beats v2": 21,
+    "v3 batches TabPFN beats v2": 18,
+    "v3 batches MLP beats v2": 9,
+    "v3 batches ridge beats v2": 9,
+    "v3 batches carry-forward beats v2": 4,
+    "v3 nested minus v2, interval low": -0.038,
+    "v3 nested minus v2, interval high": 0.050,
+    "v3 ensemble minus v2, interval low": -0.060,
+    "v3 ensemble minus v2, interval high": 0.020,
+    "v3 external-cohort ensemble date-macro MAE": 0.614,
+    "v3 external-cohort v2 date-macro MAE": 0.663,
+    "v3 external-cohort ensemble minus v2, interval low": -0.092,
+    "v3 external-cohort ensemble minus v2, interval high": -0.009,
+    "v3 external-cohort batches ensemble beats v2": 20,
+    "v3 batch-blind minus PCT, interval low": -0.012,
+    "v3 batch-blind minus PCT, interval high": 0.079,
+    "v3 batches where the batch-blind PCT is worse": 26,
+    "v3 twin day-12 network spikes, PCT": 0.704,
+    "v3 twin day-12 network spikes, carry-forward": 1.016,
+    "v3 twin day-12 mutual information, PCT": 0.137,
+    "v3 twin day-12 mutual information, carry-forward": 0.282,
+    "v3 twin targets where PCT beats carry-forward": 36,
+    "v3 twin targets where PCT beats per-target Extra Trees": 16,
+    "v3 twin mean error ratio, PCT to per-target Extra Trees": 1.02,
+    "v31 batch-weighted batch-mean coverage at 0.80": 0.81,
+    "v31 batch-weighted batch-mean coverage at 0.90": 0.90,
+    "v31 batch-weighted worst-fifth coverage at 0.80": 0.58,
+    "v31 two-level worst-fifth coverage at 0.80": 0.68,
+    "v31 two-level share of batches within 0.1 of nominal at 0.80": 0.90,
+    "v31 two-level width increase over batch-weighted at 0.80": 0.25,
+    "v31 batch-adaptive worst-fifth gain at 0.80": 0.026,
+    "v31 rank correlation of predicted and realised batch difficulty": -0.07,
+}
+
+
+def v3_paired(a: pd.Series, b: pd.Series, seed: int = 20261007, n: int = 10000) -> tuple[float, float, int]:
+    """Paired bootstrap over batches, exactly as neuroforecast_v3_analyze.paired_dates: (low, high, batches a better)."""
+    common = a.index.intersection(b.index)
+    d = (a.loc[common] - b.loc[common]).to_numpy()
+    boot = d[np.random.default_rng(seed).integers(len(d), size=(n, len(d)))].mean(1)
+    return float(np.quantile(boot, 0.025)), float(np.quantile(boot, 0.975)), int((d < 0).sum())
+
+
+def v3_coverage(frame: pd.DataFrame, method: str, level: str) -> dict:
+    lo, hi = frame[f"lo__{method}__{level}"], frame[f"hi__{method}__{level}"]
+    per = pd.DataFrame({"date": frame.date, "hit": (frame.target >= lo) & (frame.target <= hi), "width": hi - lo})
+    per_date = per.groupby("date").hit.mean()
+    return {"mean": float(per_date.mean()), "worst": float(per_date.sort_values().head(max(1, len(per_date) // 5)).mean()),
+            "share": float((per_date >= float(level) - 0.1).mean()), "width": float(per.width.mean())}
+
+
+def v3(found: dict) -> None:
+    base = ROOT / "evaluation/v3"
+    table = pd.read_csv(base / "analysis/outer_case_table.csv", dtype={"identity": str})
+    cases = pd.read_csv(base / "prepared/cases.csv", dtype={"identity": str})
+    wells = pd.read_csv(base / "prepared/wells.csv.gz", usecols=["date", "Plate.SN", "well"], dtype=str)
+    usable = table.usable.astype(bool)
+
+    def losses(column: str, mask: pd.Series = usable) -> pd.Series:
+        part = table.loc[mask, ["date", "identity", "target"]].assign(prediction=table.loc[mask, column])
+        return gate.date_losses(part)
+
+    found["v3 usable conditions"] = int(usable.sum())
+    found["v3 batches with usable conditions"] = int(table.loc[usable].date.nunique())
+    found["v3 chemicals"] = int(cases.identity.nunique())
+    found["v3 plates"] = int(wells[["date", "Plate.SN"]].drop_duplicates().shape[0])
+    found["v3 wells"] = int(len(wells))
+    names = {"v2-recipe": "v2_incumbent", "v2+PCT ensemble": "ens_v2_pct", "dose-series Extra Trees": "et_small_chem",
+             "nested": "nested_v3", "PCT": "pct", "LightGBM (all features)": "lgbm_full_ctx", "TabPFN v2 (all features)": "tabpfn_full_ctx",
+             "MLP": "mlp_full_ctx", "ridge": "ridge_full_ctx", "carry-forward": "persistence_day7", "batch-blind PCT": "pct_no_context"}
+    loss = {label: losses(f"pred__{column}") for label, column in names.items()}
+    for label in names:
+        found[f"v3 {label} date-macro MAE"] = float(loss[label].mean())
+    for label, key in [("ensemble", "v2+PCT ensemble"), ("nested", "nested"), ("PCT", "PCT"), ("dose-series Extra Trees", "dose-series Extra Trees"),
+                       ("LightGBM", "LightGBM (all features)"), ("TabPFN", "TabPFN v2 (all features)"), ("MLP", "MLP"), ("ridge", "ridge"),
+                       ("carry-forward", "carry-forward")]:
+        found[f"v3 batches {label} beats v2"] = v3_paired(loss[key], loss["v2-recipe"])[2]
+    for label, key in [("nested", "nested"), ("ensemble", "v2+PCT ensemble")]:
+        low, high, _ = v3_paired(loss[key], loss["v2-recipe"])
+        found[f"v3 {label} minus v2, interval low"], found[f"v3 {label} minus v2, interval high"] = low, high
+    external_cohort = usable & (table.cohort == "external28")
+    ens_ext, v2_ext = losses("pred__ens_v2_pct", external_cohort), losses("pred__v2_incumbent", external_cohort)
+    found["v3 external-cohort ensemble date-macro MAE"] = float(ens_ext.mean())
+    found["v3 external-cohort v2 date-macro MAE"] = float(v2_ext.mean())
+    low, high, better = v3_paired(ens_ext, v2_ext)
+    found["v3 external-cohort ensemble minus v2, interval low"] = low
+    found["v3 external-cohort ensemble minus v2, interval high"] = high
+    found["v3 external-cohort batches ensemble beats v2"] = better
+    low, high, _ = v3_paired(loss["batch-blind PCT"], loss["PCT"])
+    found["v3 batch-blind minus PCT, interval low"], found["v3 batch-blind minus PCT, interval high"] = low, high
+    found["v3 batches where the batch-blind PCT is worse"] = int((loss["batch-blind PCT"] > loss["PCT"]).sum())
+
+    twin = pd.read_csv(base / "analysis/posthoc_twin_cases.csv", dtype={"identity": str})
+    targets = [c[len("truth__"):] for c in twin.columns if c.startswith("truth__")]
+    scores = {}
+    for name in targets:
+        cols = {k: twin[f"{k}__{name}"] for k in ["truth", "pct", "et", "persistence"]}
+        ok = twin.usable.astype(bool) & np.isfinite(cols["truth"]) & np.isfinite(cols["pct"]) & np.isfinite(cols["et"]) & np.isfinite(cols["persistence"])
+        frame = twin.loc[ok, ["date", "identity"]].assign(target=cols["truth"][ok])
+        scores[name] = {k: float(gate.date_losses(frame.assign(prediction=cols[k][ok])).mean()) for k in ["pct", "et", "persistence"]}
+    found["v3 twin day-12 network spikes, PCT"] = scores["normalized_ns_d12"]["pct"]
+    found["v3 twin day-12 network spikes, carry-forward"] = scores["normalized_ns_d12"]["persistence"]
+    found["v3 twin day-12 mutual information, PCT"] = scores["contrast__mi__d12"]["pct"]
+    found["v3 twin day-12 mutual information, carry-forward"] = scores["contrast__mi__d12"]["persistence"]
+    found["v3 twin targets where PCT beats carry-forward"] = sum(s["pct"] < s["persistence"] for s in scores.values())
+    found["v3 twin targets where PCT beats per-target Extra Trees"] = sum(s["pct"] < s["et"] for s in scores.values())
+    found["v3 twin mean error ratio, PCT to per-target Extra Trees"] = float(np.mean([s["pct"] / s["et"] for s in scores.values()]))
+
+    intervals = pd.read_csv(base / "analysis/v31_interval_cases.csv")
+    kept = intervals.loc[intervals.usable.astype(bool)]
+    weighted8, weighted9 = v3_coverage(kept, "batch_weighted", "0.8"), v3_coverage(kept, "batch_weighted", "0.9")
+    two8, adaptive8 = v3_coverage(kept, "two_level", "0.8"), v3_coverage(kept, "batch_adaptive", "0.8")
+    found["v31 batch-weighted batch-mean coverage at 0.80"] = weighted8["mean"]
+    found["v31 batch-weighted batch-mean coverage at 0.90"] = weighted9["mean"]
+    found["v31 batch-weighted worst-fifth coverage at 0.80"] = weighted8["worst"]
+    found["v31 two-level worst-fifth coverage at 0.80"] = two8["worst"]
+    found["v31 two-level share of batches within 0.1 of nominal at 0.80"] = two8["share"]
+    found["v31 two-level width increase over batch-weighted at 0.80"] = two8["width"] / weighted8["width"] - 1
+    found["v31 batch-adaptive worst-fifth gain at 0.80"] = adaptive8["worst"] - weighted8["worst"]
+    realised = (kept.prediction - kept.target).abs().groupby(kept.date).median()
+    predicted = kept.groupby("date").batch_difficulty.first()
+    found["v31 rank correlation of predicted and realised batch difficulty"] = float(realised.rank().corr(predicted.rank()))
+
+
+DAY12 = {
+    # Post hoc, October 8, 2026: the calibrated day-7 baseline (tools/posthoc_calibrated_day7.py) and the three held-out
+    # example batches the day-12 check ships, chosen by rule (best, median, largest loss to carry-forward).
+    "calibrated day-7 41-batch date-macro MAE": 0.881,
+    "41-batch v2 minus calibrated day-7 interval low": -0.29,
+    "41-batch v2 minus calibrated day-7 interval high": -0.10,
+    "41-batch batches where v2 beats calibrated day 7": 33,
+    "41-batch share of v2 gain over carry-forward from calibration": 0.41,
+    "41-batch v2 error reduction vs calibrated day 7": 0.22,
+    "external calibrated day-7 date-macro MAE": 0.813,
+    "external v2 minus calibrated day-7 interval low": -0.161,
+    "external v2 minus calibrated day-7 interval high": 0.002,
+    "external batches where v2 beats calibrated day 7": 15,
+    "external share of v2 gain over carry-forward from calibration": 0.68,
+    "external v2 error reduction vs calibrated day 7": 0.10,
+    "external kept conditions": 792,
+    "external kept v2 date-macro MAE": 0.541,
+    "external kept calibrated day-7 date-macro MAE": 0.554,
+    "external kept v2 minus calibrated day-7 interval low": -0.072,
+    "external kept v2 minus calibrated day-7 interval high": 0.048,
+    "external kept batches where v2 beats calibrated day 7": 14,
+    "external share of v2 pooled gain from declined conditions": 0.49,
+    "external share of v2 pooled gain from day 7 at most -1": 0.80,
+    "41-batch rank correlation of batch-mean difficulty and batch MAE": 0.65,
+    "external rank correlation of batch-mean difficulty and batch MAE": 0.60,
+    "external median per-batch v2 MAE": 0.69,
+    "external 20141231 v2 date-macro MAE": 0.678,
+    "external 20141231 persistence date-macro MAE": 1.092,
+    "external 20141231 v2 rank of 24": 12,
+    "external 20140924 v2 date-macro MAE": 0.959,
+    "external 20140924 persistence date-macro MAE": 0.725,
+    "external 20140924 coverage at nominal 0.80": 0.38,
+    "external 20160120 coverage at nominal 0.80": 0.93,
+    "external 20160120 conditions where the forecast is closer": 27,
+    "external 20160120 provisional forecast MAE": 0.27,
+    "external 20160120 provisional persistence MAE": 0.42,
+    "external 20160120 declined forecast MAE": 0.55,
+    "external 20160120 declined persistence MAE": 3.20,
+}
+
+
+def day12(found: dict) -> None:
+    import posthoc_calibrated_day7 as calibrated
+
+    for prefix, cases, v2, carry, seed in [
+            ("41-batch", calibrated.study_cases(), "pred__v2_incumbent", "pred__persistence_day7", 20261007),
+            ("external", calibrated.external_cases(), "prediction", "day7", 20260927)]:
+        result = calibrated.summary(cases, v2, carry, seed)
+        if prefix == "41-batch":
+            found["calibrated day-7 41-batch date-macro MAE"] = result["date_macro_mae"]["calibrated_day7"]
+        else:
+            found["external calibrated day-7 date-macro MAE"] = result["date_macro_mae"]["calibrated_day7"]
+        found[f"{prefix} v2 minus calibrated day-7 interval low"], found[f"{prefix} v2 minus calibrated day-7 interval high"] = \
+            result["v2_minus_calibrated_interval"]
+        found[f"{prefix} batches where v2 beats calibrated day 7"] = result["batches_v2_better_than_calibrated"]
+        found[f"{prefix} share of v2 gain over carry-forward from calibration"] = result["share_of_v2_gain_from_calibration"]
+        found[f"{prefix} v2 error reduction vs calibrated day 7"] = result["v2_reduction_vs_calibrated"]
+        sigma = "sigma__incumbent" if prefix == "41-batch" else "trust_score"
+        found[f"{prefix} rank correlation of batch-mean difficulty and batch MAE"] = \
+            calibrated.batch_difficulty(cases, sigma, v2)["spearman"]
+        if prefix == "external":
+            kept = calibrated.kept_external(cases)
+            found["external kept conditions"] = kept["conditions"]
+            found["external kept v2 date-macro MAE"] = kept["date_macro_mae"]["v2"]
+            found["external kept calibrated day-7 date-macro MAE"] = kept["date_macro_mae"]["calibrated_day7"]
+            found["external kept v2 minus calibrated day-7 interval low"], \
+                found["external kept v2 minus calibrated day-7 interval high"] = kept["v2_minus_calibrated_interval"]
+            found["external kept batches where v2 beats calibrated day 7"] = kept["batches_v2_better_than_calibrated"]
+            found["external share of v2 pooled gain from declined conditions"] = kept["share_of_pooled_gain_from_declined"]
+            found["external share of v2 pooled gain from day 7 at most -1"] = kept["share_of_pooled_gain_from_day7_at_most_minus_1"]
+
+    cases = pd.read_csv(ROOT / "evaluation/external/arm_b_cases.csv", dtype={"identity": str, "spid": str})
+    b = cases.loc[cases.primary.astype(bool) & cases.usable.astype(bool)].copy()
+    b["persistence"] = b.day7
+    v2_losses = gate.date_losses(b.assign(prediction=b.prediction))
+    carry_losses = gate.date_losses(b.assign(prediction=b.persistence))
+    found["external median per-batch v2 MAE"] = float(v2_losses.median())
+    for date in [20141231, 20140924]:
+        found[f"external {date} v2 date-macro MAE"] = float(v2_losses.loc[date])
+        found[f"external {date} persistence date-macro MAE"] = float(carry_losses.loc[date])
+    found["external 20141231 v2 rank of 24"] = int(v2_losses.rank().loc[20141231])
+    inside = (b.target >= b["low_0.8"]) & (b.target <= b["high_0.8"])
+    for date in [20140924, 20160120]:
+        found[f"external {date} coverage at nominal 0.80"] = float(inside[b.date == date].mean())
+    one = b.loc[b.date == 20160120]
+    forecast, carry = (one.prediction - one.target).abs(), (one.persistence - one.target).abs()
+    kept = ~one.declined.astype(bool)
+    found["external 20160120 conditions where the forecast is closer"] = int((forecast < carry).sum())
+    found["external 20160120 provisional forecast MAE"] = float(forecast[kept].mean())
+    found["external 20160120 provisional persistence MAE"] = float(carry[kept].mean())
+    found["external 20160120 declined forecast MAE"] = float(forecast[~kept].mean())
+    found["external 20160120 declined persistence MAE"] = float(carry[~kept].mean())
+
+
+HARNESS = {
+    # The split-optimism study (protocol experiments/neuroforecast_split_study_protocol.json, committed publicly before
+    # its first run) from its per-case out-of-fold table, and the post hoc replay of the lab's own recalibration.
+    "split study ET date-macro MAE, random condition": 0.598,
+    "split study ET date-macro MAE, chemical": 0.615,
+    "split study ET date-macro MAE, batch": 0.688,
+    "split study ET date-macro MAE, batch and chemical": 0.702,
+    "split study LightGBM date-macro MAE, chemical": 0.616,
+    "split study LightGBM date-macro MAE, batch and chemical": 0.690,
+    "split study calibrated day-7 date-macro MAE, random condition": 0.855,
+    "split study calibrated day-7 date-macro MAE, batch and chemical": 0.887,
+    "split study ET optimism, random condition": 0.15,
+    "split study ET optimism, chemical": 0.12,
+    "split study ET optimism, batch": 0.02,
+    "split study LightGBM optimism, random condition": 0.14,
+    "split study LightGBM optimism, chemical": 0.11,
+    "split study ridge optimism, random condition": 0.05,
+    "split study calibrated day-7 optimism, random condition": 0.04,
+    "split study ET chemical minus batch and chemical, interval low": -0.139,
+    "split study ET chemical minus batch and chemical, interval high": -0.045,
+    "split study ET random minus batch and chemical, interval low": -0.157,
+    "split study ET random minus batch and chemical, interval high": -0.058,
+    "split study ET batches where chemical design looks better": 33,
+    "split study ET transfer coverage at 0.80, random condition": 0.747,
+    "split study ET transfer coverage at 0.80, chemical": 0.761,
+    "split study ET transfer coverage at 0.80, batch": 0.796,
+    "split study ET transfer worst-fifth coverage at 0.80, chemical": 0.552,
+    "split study ET apparent coverage at 0.80, batch and chemical": 0.812,
+    "split study ET apparent worst-fifth coverage at 0.80, batch and chemical": 0.616,
+    "split study ET advantage over calibrated day 7, random condition": 0.30,
+    "split study ET advantage over calibrated day 7, batch and chemical": 0.21,
+    "recalibration batches evaluated": 22,
+    "recalibration shipped pooled coverage at 0.80": 0.694,
+    "recalibration shipped worst-fifth coverage at 0.80": 0.338,
+    "recalibration expanding pooled coverage at 0.80": 0.850,
+    "recalibration expanding worst-fifth coverage at 0.80": 0.553,
+    "recalibration expanding width increase at 0.80": 0.62,
+    "recalibration last-6 pooled coverage at 0.80": 0.801,
+    "recalibration last-6 worst-fifth coverage at 0.80": 0.532,
+    "recalibration last-6 width increase at 0.80": 0.42,
+    "recalibration shipped pooled coverage at 0.90": 0.807,
+    "recalibration expanding pooled coverage at 0.90": 0.928,
+    "recalibration last-6 pooled coverage at 0.90": 0.903,
+}
+
+
+CHIP = {
+    # Chip ingestion (ingestion only) of Zenodo 4679064, from the shipped per-compartment readouts and domain table.
+    "chip recordings": 10,
+    "chip compartments read as wells": 40,
+    "chip electrodes": 760,
+    "chip recordings with network activity": 10,
+    "chip readout values inside EPA control 1-99%": 0.59,
+    "chip correlation values inside EPA control range": 0.90,
+    "chip bursting-electrode values inside EPA control range": 0.88,
+    "chip active-electrode values inside EPA control range": 0.75,
+    "chip firing-rate values inside EPA control range": 0.42,
+    "chip network-spike values inside EPA control range": 0.35,
+    "chip burst-count rank correlation with the authors' detector": 0.90,
+    "chip burst-count ratio, ours to the authors'": 0.27,
+}
+
+
+def chip(found: dict) -> None:
+    base = ROOT / "evaluation/chip_ingestion"
+    table = pd.read_csv(base / "zenodo_4679064_readouts.csv")
+    domain = pd.read_csv(base / "zenodo_4679064_domain.csv")
+    summary = json.loads((base / "zenodo_4679064_summary.json").read_text(encoding="utf-8"))
+    found["chip recordings"] = int(table.recording.nunique())
+    found["chip compartments read as wells"] = int(len(table))
+    found["chip electrodes"] = int(table.electrodes.sum())
+    found["chip recordings with network activity"] = int((table.groupby("recording")["ns.n"].median() >= 1).sum())
+    inside = domain.dropna(subset=["inside_epa_1_99"]).assign(inside=lambda f: f.inside_epa_1_99.astype(str) == "True")
+    found["chip readout values inside EPA control 1-99%"] = float(inside.inside.mean())
+    share = inside.groupby("readout").inside.mean()
+    for label, readout in [("correlation", "r"), ("bursting-electrode", "nABE"), ("active-electrode", "nAE"),
+                           ("firing-rate", "meanfiringrate"), ("network-spike", "ns.n")]:
+        found[f"chip {label} values inside EPA control range"] = float(share[readout])
+    burst = summary["burst_sanity_check"]   # computed from the raw recordings, which are not shipped
+    found["chip burst-count rank correlation with the authors' detector"] = burst["spearman_per_electrode_burst_count"]
+    found["chip burst-count ratio, ours to the authors'"] = burst["bursts_ours"] / burst["bursts_authors"]
+
+
+def harness(found: dict) -> None:
+    import neuroforecast_harness as h
+    import neuroforecast_split_study as study
+    import posthoc_lab_recalibration as recalibration
+
+    table = pd.read_csv(ROOT / "evaluation/harness/split_study/oof.csv.gz", dtype={"identity": str})
+    by = {d: table.loc[table.design == d] for d in h.DESIGNS}
+    names = {"random_condition": "random condition", "chemical": "chemical", "batch": "batch", "batch_chemical": "batch and chemical"}
+    models = {"ET": "extra_trees_v2", "LightGBM": "lightgbm", "ridge": "ridge", "calibrated day-7": "calibrated_day7"}
+    losses = {(d, m): study.batch_losses(by[d], m) for d in h.DESIGNS for m in models.values()}
+    for label, model in models.items():
+        for design, name in names.items():
+            key = f"split study {label} date-macro MAE, {name}"
+            if key in HARNESS:
+                found[key] = float(losses[(design, model)].mean())
+            key = f"split study {label} optimism, {name}"
+            if key in HARNESS:
+                found[key] = 1 - losses[(design, model)].mean() / losses[("batch_chemical", model)].mean()
+    for design, name in [("chemical", "chemical"), ("random_condition", "random")]:
+        diff = h.paired(losses[(design, "extra_trees_v2")], losses[("batch_chemical", "extra_trees_v2")])
+        found[f"split study ET {name} minus batch and chemical, interval low"] = diff["low"]
+        found[f"split study ET {name} minus batch and chemical, interval high"] = diff["high"]
+        if design == "chemical":
+            found["split study ET batches where chemical design looks better"] = diff["batches_better"]
+    reference = by["batch_chemical"]
+    for design, name in [("random_condition", "random condition"), ("chemical", "chemical"), ("batch", "batch")]:
+        transfer = study.transfer_coverage(by[design], reference, "extra_trees_v2", 0.8)
+        found[f"split study ET transfer coverage at 0.80, {name}"] = transfer["pooled"]
+        if design == "chemical":
+            found["split study ET transfer worst-fifth coverage at 0.80, chemical"] = transfer["worst_fifth"]
+    apparent = study.apparent_coverage(reference, "extra_trees_v2", 0.8)
+    found["split study ET apparent coverage at 0.80, batch and chemical"] = apparent["pooled"]
+    found["split study ET apparent worst-fifth coverage at 0.80, batch and chemical"] = apparent["worst_fifth"]
+    for design, name in [("random_condition", "random condition"), ("batch_chemical", "batch and chemical")]:
+        found[f"split study ET advantage over calibrated day 7, {name}"] = \
+            1 - losses[(design, "extra_trees_v2")].mean() / losses[(design, "calibrated_day7")].mean()
+
+    replay = recalibration.run()
+    for level in ["0.8", "0.9"]:
+        entry, tag = replay["levels"][level], "0.80" if level == "0.8" else "0.90"
+        found[f"recalibration shipped pooled coverage at {tag}"] = entry["expanding"]["shipped"]["pooled"]
+        for name, key in [("expanding", "expanding"), ("last-6", "last_6_batches")]:
+            found[f"recalibration {name} pooled coverage at {tag}"] = entry[key]["lab"]["pooled"]
+            if level == "0.8":
+                found[f"recalibration {name} worst-fifth coverage at 0.80"] = entry[key]["lab"]["worst_fifth"]
+                found[f"recalibration {name} width increase at 0.80"] = entry[key]["lab"]["mean_width"] / entry[key]["shipped"]["mean_width"] - 1
+        if level == "0.8":
+            found["recalibration batches evaluated"] = entry["expanding"]["batches_evaluated"]
+            found["recalibration shipped worst-fifth coverage at 0.80"] = entry["expanding"]["shipped"]["worst_fifth"]
+
+
+REVIEW3 = {
+    # Post hoc analyses added after the third mock review, from their shipped evidence: the temporal split
+    # (evaluation/posthoc_baselines/temporal_split_predictions.csv.gz), the decision-value tables (saved predictions
+    # only) and the oracle constants of the recalibration replay.
+    "temporal external reference-split v2 date-macro MAE (927 conditions)": 0.666,
+    "temporal period test batches": 24,
+    "temporal period conditions": 983,
+    "temporal period interleaved v2 date-macro MAE": 0.659,
+    "temporal period size-matched v2 date-macro MAE": 0.678,
+    "temporal period v2 date-macro MAE": 0.731,
+    "temporal period interleaved calibrated day-7 date-macro MAE": 0.823,
+    "temporal period calibrated day-7 date-macro MAE": 0.817,
+    "temporal period optimism of interleaved": 0.10,
+    "temporal period interleaved minus period, interval low": -0.113,
+    "temporal period interleaved minus period, interval high": -0.034,
+    "temporal period batches where interleaved looks better": 18,
+    "temporal period optimism of size-matched": 0.07,
+    "temporal period size-matched minus period, interval low": -0.100,
+    "temporal period size-matched minus period, interval high": -0.009,
+    "temporal period edge over calibrated, interleaved": 0.20,
+    "temporal period edge over calibrated, period": 0.11,
+    "temporal forward test batches": 31,
+    "temporal forward interleaved v2 date-macro MAE": 0.647,
+    "temporal forward size-matched v2 date-macro MAE": 0.658,
+    "temporal forward v2 date-macro MAE": 0.686,
+    "temporal forward optimism of interleaved": 0.06,
+    "temporal forward interleaved minus forward, interval low": -0.092,
+    "temporal forward interleaved minus forward, interval high": 0.016,
+    "temporal forward batches where interleaved looks better": 22,
+    "temporal forward optimism of size-matched": 0.04,
+    "temporal forward size-matched minus forward, interval low": -0.069,
+    "temporal forward size-matched minus forward, interval high": 0.015,
+    "split study ET advantage over calibrated day 7, chemical": 0.29,
+    "decision collapsed conditions": 433,
+    "decision collapsed carry-forward date-macro MAE": 2.207,
+    "decision collapsed calibrated date-macro MAE": 2.019,
+    "decision collapsed v2 date-macro MAE": 1.407,
+    "decision collapsed v2 date-macro MAE, rounded": 1.41,
+    "decision collapsed calibrated date-macro MAE, rounded": 2.02,
+    "decision collapsed v2 minus calibrated, interval low": -0.842,
+    "decision collapsed v2 minus calibrated, interval high": -0.382,
+    "decision lowered conditions": 341,
+    "decision lowered carry-forward date-macro MAE": 0.873,
+    "decision lowered calibrated date-macro MAE": 0.786,
+    "decision lowered v2 date-macro MAE": 0.699,
+    "decision lowered v2 minus calibrated, interval low": -0.202,
+    "decision lowered v2 minus calibrated, interval high": 0.043,
+    "decision lowered v2 gain over calibrated": 0.11,
+    "decision near-control conditions": 1333,
+    "decision near-control carry-forward date-macro MAE": 0.549,
+    "decision near-control calibrated date-macro MAE": 0.519,
+    "decision near-control v2 date-macro MAE": 0.473,
+    "decision near-control v2 minus calibrated, interval low": -0.141,
+    "decision near-control v2 minus calibrated, interval high": 0.017,
+    "decision near-control v2 gain over calibrated": 0.09,
+    "decision raised conditions": 136,
+    "decision raised carry-forward date-macro MAE": 0.918,
+    "decision raised calibrated date-macro MAE": 0.492,
+    "decision raised v2 date-macro MAE": 0.450,
+    "decision raised v2 minus calibrated, interval low": -0.095,
+    "decision raised v2 minus calibrated, interval high": 0.010,
+    "decision raised v2 gain over calibrated": 0.09,
+    "decision three-line rule kept conditions": 1810,
+    "decision three-line rule calibrated date-macro MAE": 0.577,
+    "decision three-line rule v2 date-macro MAE": 0.510,
+    "decision three-line rule v2 gain over calibrated": 0.12,
+    "decision three-line rule batches where v2 is better": 30,
+    "decision three-line rule batches": 40,
+    "decision three-line rule v2 minus calibrated, interval low": -0.164,
+    "decision three-line rule v2 minus calibrated, interval high": 0.016,
+    "decision external large changes": 255,
+    "decision external tool no-large-change NPV": 0.864,
+    "decision external tool large changes missed": 103,
+    "decision external day-7 no-large-change NPV": 0.876,
+    "decision external day-7 large changes missed": 88,
+    "decision external large changes already 2-fold at day 7": 0.65,
+    "decision external large changes declined": 119,
+    "decision external confident calls": 33,
+    "decision external confident calls large and right sign": 33,
+    "decision external confident share of kept": 0.04,
+    "recalibration oracle same width as expanding, factor": 1.62,
+    "recalibration oracle same width as expanding, pooled coverage": 0.862,
+    "recalibration oracle same width as expanding, worst fifth": 0.648,
+    "recalibration oracle same width as last-6, factor": 1.42,
+    "recalibration oracle same width as last-6, pooled coverage": 0.816,
+    "recalibration oracle same width as last-6, worst fifth": 0.576,
+    "recalibration oracle nominal, factor": 1.32,
+    "recalibration oracle nominal, pooled coverage": 0.801,
+    "recalibration oracle nominal, worst fifth": 0.543,
+    "recalibration oracle nominal, scale": 1.98,
+    "recalibration expanding final scale": 1.97,
+    "chip median network spikes per 15 minutes": 574,
+}
+
+
+def review3(found: dict) -> None:
+    import neuroforecast_harness as h
+    import posthoc_decision_value as decision
+    import posthoc_lab_recalibration as recalibration
+    import posthoc_temporal_split as temporal
+
+    bench = h.load_benchmark()
+    reference = h.reference_predictions(bench)
+    arm = pd.read_csv(ROOT / "evaluation/external/arm_b_cases.csv", dtype={"identity": str})
+    arm = arm.loc[arm.primary.astype(bool) & arm.usable.astype(bool)].merge(reference[["case_id", "v2"]], on="case_id")
+    found["temporal external reference-split v2 date-macro MAE (927 conditions)"] = float(h.date_losses(arm, "v2").mean())
+
+    result = temporal.analyze(pd.read_csv(temporal.PREDICTIONS, dtype={"identity": str}))
+    et = "extra_trees_v2"
+    for design in ("period", "forward"):
+        r = result[design]
+        found[f"temporal {design} test batches"] = r["test_batches"]
+        found[f"temporal {design} interleaved v2 date-macro MAE"] = r["interleaved"]["date_macro_mae"][et]
+        found[f"temporal {design} size-matched v2 date-macro MAE"] = r["size_matched"]["date_macro_mae"][et]
+        found[f"temporal {design} v2 date-macro MAE"] = r[design]["date_macro_mae"][et]
+        for name, key in [("interleaved", f"interleaved_vs_{design}"), ("size-matched", f"size_matched_vs_{design}")]:
+            c = r[key][et]
+            found[f"temporal {design} optimism of {name}"] = -c["relative"]
+            found[f"temporal {design} {name} minus {design}, interval low"] = c["low"]
+            found[f"temporal {design} {name} minus {design}, interval high"] = c["high"]
+        found[f"temporal {design} batches where interleaved looks better"] = r[f"interleaved_vs_{design}"][et]["batches_better"]
+    p = result["period"]
+    found["temporal period conditions"] = p["conditions"]
+    found["temporal period interleaved calibrated day-7 date-macro MAE"] = p["interleaved"]["date_macro_mae"]["calibrated_day7"]
+    found["temporal period calibrated day-7 date-macro MAE"] = p["period"]["date_macro_mae"]["calibrated_day7"]
+    found["temporal period edge over calibrated, interleaved"] = p["interleaved"]["edge_over_calibrated"]
+    found["temporal period edge over calibrated, period"] = p["period"]["edge_over_calibrated"]
+
+    table = pd.read_csv(ROOT / "evaluation/harness/split_study/oof.csv.gz", dtype={"identity": str})
+    import neuroforecast_split_study as study
+    chem = table.loc[table.design == "chemical"]
+    found["split study ET advantage over calibrated day 7, chemical"] = \
+        1 - study.batch_losses(chem, "extra_trees_v2").mean() / study.batch_losses(chem, "calibrated_day7").mean()
+
+    value = decision.run()
+    bands = dict(zip(["collapsed", "lowered", "near-control", "raised"], value["where_ml_helps"]["bands"].values()))
+    for name, r in bands.items():
+        m, d = r["date_macro_mae"], r["v2_minus_calibrated"]
+        found[f"decision {name} conditions"] = r["conditions"]
+        found[f"decision {name} carry-forward date-macro MAE"] = m["carry_forward"]
+        found[f"decision {name} calibrated date-macro MAE"] = m["calibrated_day7"]
+        found[f"decision {name} v2 date-macro MAE"] = m["v2"]
+        found[f"decision {name} v2 minus calibrated, interval low"] = d["low"]
+        found[f"decision {name} v2 minus calibrated, interval high"] = d["high"]
+        found[f"decision {name} v2 gain over calibrated"] = 1 - m["v2"] / m["calibrated_day7"]
+    found["decision collapsed v2 date-macro MAE, rounded"] = found["decision collapsed v2 date-macro MAE"]
+    found["decision collapsed calibrated date-macro MAE, rounded"] = found["decision collapsed calibrated date-macro MAE"]
+    keep = value["where_ml_helps"]["three_line_rule_keeps"]
+    found["decision three-line rule kept conditions"] = keep["conditions"]
+    found["decision three-line rule calibrated date-macro MAE"] = keep["date_macro_mae"]["calibrated_day7"]
+    found["decision three-line rule v2 date-macro MAE"] = keep["date_macro_mae"]["v2"]
+    found["decision three-line rule v2 gain over calibrated"] = 1 - keep["date_macro_mae"]["v2"] / keep["date_macro_mae"]["calibrated_day7"]
+    found["decision three-line rule batches where v2 is better"] = keep["v2_minus_calibrated"]["batches_better"]
+    found["decision three-line rule batches"] = keep["v2_minus_calibrated"]["batches"]
+    found["decision three-line rule v2 minus calibrated, interval low"] = keep["v2_minus_calibrated"]["low"]
+    found["decision three-line rule v2 minus calibrated, interval high"] = keep["v2_minus_calibrated"]["high"]
+    b = value["binary_call"]
+    found["decision external large changes"] = b["large_changes"]["anticipated_confidently"] + b["large_changes"]["declined"] \
+        + b["large_changes"]["kept_not_confident"]
+    found["decision external tool no-large-change NPV"] = b["tool_no_large_change_call"]["npv"]
+    found["decision external tool large changes missed"] = b["tool_no_large_change_call"]["large_changes_missed"]
+    found["decision external day-7 no-large-change NPV"] = b["day7_no_large_change_call"]["npv"]
+    found["decision external day-7 large changes missed"] = b["day7_no_large_change_call"]["large_changes_missed"]
+    found["decision external large changes already 2-fold at day 7"] = b["large_already_2_fold_at_day7"]
+    found["decision external large changes declined"] = b["large_changes"]["declined"]
+    found["decision external confident calls"] = b["kept_intervals_excluding_zero"]
+    found["decision external confident calls large and right sign"] = b["confident_calls_large_and_right_sign"]
+    found["decision external confident share of kept"] = b["kept_intervals_excluding_zero"] / b["kept"]
+
+    replay = recalibration.run()["levels"]["0.8"]
+    for name, key in [("expanding", "expanding"), ("last-6", "last_6_batches")]:
+        o = replay[key]["oracle_constant_same_width"]
+        found[f"recalibration oracle same width as {name}, factor"] = o["factor"]
+        found[f"recalibration oracle same width as {name}, pooled coverage"] = o["pooled"]
+        found[f"recalibration oracle same width as {name}, worst fifth"] = o["worst_fifth"]
+    o = replay["oracle_constant_nominal"]
+    found["recalibration oracle nominal, factor"] = o["factor"]
+    found["recalibration oracle nominal, pooled coverage"] = o["pooled"]
+    found["recalibration oracle nominal, worst fifth"] = o["worst_fifth"]
+    found["recalibration oracle nominal, scale"] = o["factor"] * replay["shipped_scale"]
+    found["recalibration expanding final scale"] = replay["expanding"]["lab_scale_last"]
+
+    summary = json.loads((ROOT / "evaluation/chip_ingestion/zenodo_4679064_summary.json").read_text(encoding="utf-8"))
+    table = pd.read_csv(ROOT / "evaluation/chip_ingestion/zenodo_4679064_readouts.csv")
+    median = float(table.groupby("recording")["ns.n"].median().median())
+    assert abs(median - summary["reference_check"]["median_network_spikes_per_15_min"]) < 1e-9
+    found["chip median network spikes per 15 minutes"] = int(round(median))
 
 
 def paired_interval(frame: pd.DataFrame, a: str, b: str) -> list[float]:
@@ -622,8 +1186,18 @@ if __name__ == "__main__":
     found = recompute()
     external(found)
     signal(found)
+    v3(found)
+    day12(found)
+    harness(found)
+    chip(found)
+    review3(found)
     PUBLISHED.update(EXTERNAL)
     PUBLISHED.update(SIGNAL)
+    PUBLISHED.update(V3)
+    PUBLISHED.update(DAY12)
+    PUBLISHED.update(HARNESS)
+    PUBLISHED.update(CHIP)
+    PUBLISHED.update(REVIEW3)
     failures = []
     decimals = written_decimals()
     for label, published in PUBLISHED.items():

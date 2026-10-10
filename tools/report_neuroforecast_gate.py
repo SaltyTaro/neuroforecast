@@ -133,14 +133,17 @@ def reserve_figure(res: dict, figures: Path) -> None:
     x = np.arange(len(dates) + 1)
     width = 0.2
     fig, ax = plt.subplots(figsize=(8, 4))
-    for k, (m, color) in enumerate(zip(models, [ORANGE, BLUE, GREY, "#8C8C8C"])):
+    # Names as the technical report uses them; the legend sits above the bars so none is hidden.
+    names = ["v1 forecast (retired)", "small activity/coordination model", "carry day 7 forward", "assume control level"]
+    for k, (m, color, name) in enumerate(zip(models, [ORANGE, BLUE, GREY, "#8C8C8C"], names)):
         values = [res["per_date_losses"][m][d] for d in dates] + [res["date_macro_mae"][m]]
-        ax.bar(x + (k - 1.5) * width, values, width=width, color=color, label=label(m))
+        ax.bar(x + (k - 1.5) * width, values, width=width, color=color, label=name)
     ax.set_xticks(x)
     ax.set_xticklabels([f"reserve {d}" for d in dates] + ["mean of dates"], fontsize=9)
     ax.set_ylabel("Date-macro MAE")
-    ax.set_title("Single reserve scoring: three later dates with chemically disjoint identities", fontsize=10)
-    ax.legend(fontsize=8)
+    ax.set_ylim(0, 1.75)
+    ax.set_title("Sealed test 1: three later batches, chemicals disjoint; carrying day 7 forward won", fontsize=10)
+    ax.legend(fontsize=8, loc="upper left", ncol=2, frameon=False)
     ax.spines[["top", "right"]].set_visible(False)
     save_figure(fig, figures, "gate_reserve_comparison")
 

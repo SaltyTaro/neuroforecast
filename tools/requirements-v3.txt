@@ -1,0 +1,18 @@
+# NeuroForecast v3 model study: exact environment (Python 3.14, Windows, RTX 4060 laptop GPU, driver CUDA 13.1).
+# torch was installed from https://download.pytorch.org/whl/cu128 ; TabPFN uses its v2 weights (no licence login).
+# The analysis, figures and verifier need only numpy, pandas, scikit-learn, scipy, matplotlib and pillow.
+joblib==1.5.3
+lightgbm==4.6.0
+matplotlib==3.10.8
+numpy==2.4.2
+pandas==3.0.0
+pillow==12.3.0
+rdata==1.1.0
+scikit-learn==1.9.0
+scipy==1.17.1
+tabpfn==9.1.0
+threadpoolctl==3.6.0
+torch==2.11.0+cu128
+xarray==2026.9.0
+openpyxl==3.1.5
+et_xmlfile==2.0.0

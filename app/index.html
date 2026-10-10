@@ -135,8 +135,19 @@
   .cr .tag{font-family:var(--mono);font-size:10px;color:var(--ink-2);flex:none}
   .cr .tag.warn{color:var(--caution)}
   .cr svg{display:block;width:100%;height:auto}
+  .cr[role=button]{cursor:zoom-in}
+  .cr[role=button]:hover{box-shadow:0 0 0 1px var(--line-2)}
+  .cr[role=button]:focus-visible{outline:2px solid var(--accent-solid);outline-offset:1px}
+  dialog.zoom{border:var(--hair) solid var(--line-2);border-radius:8px;background:var(--s1);color:var(--ink);
+    padding:14px 16px 16px;width:min(720px,calc(100vw - 32px));max-height:calc(100vh - 32px)}
+  dialog.zoom::backdrop{background:#0008}
+  dialog.zoom .zhd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:8px}
+  dialog.zoom .znm{font-size:14px;font-weight:590}
+  dialog.zoom svg{display:block;width:100%;height:auto}
+  dialog.zoom table{margin-top:10px}
 
   .chartwrap{overflow-x:auto}
+  #chart{display:block;width:100%;max-width:720px;height:auto}
   svg text{font-family:var(--mono);font-size:9.5px;fill:var(--ink-2)}
 
   /* ---- table ---- */
@@ -162,6 +173,10 @@
   .ev .test .hd{font-family:var(--mono);font-size:11px;color:var(--ink)}
   footer{max-width:1240px;margin:0 auto;padding:0 16px 40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:3px}
   footer a{color:var(--accent)}
+  .twin-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
+  .twin-tag{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:999px;background:var(--caution-wash);color:var(--caution);text-transform:none;letter-spacing:0}
+  select{font:inherit;font-family:var(--mono);font-size:12px;color:var(--ink);background:var(--s1);border:var(--hair) solid var(--line-2);border-radius:5px;padding:3px 6px;max-width:100%}
+  .twin-note{font-family:var(--mono);font-size:11px;color:var(--ink-2);max-width:80ch}
   .err{border-left:2px solid var(--alert);background:var(--alert-wash);color:var(--alert);padding:9px 12px;border-radius:0 4px 4px 0;font-size:12px;margin:12px 16px}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -171,7 +186,7 @@
     <div class="run-top">
       <div class="run-title">
         <h1>NeuroForecast Triage</h1>
-        <span class="sub">day-7 decision &middot; microelectrode array &middot; model v2</span>
+        <span class="sub">day-7 decision &middot; microelectrode array &middot; model v2 &middot; <a href="score.html">score your own model on held-out batches</a></span>
       </div>
       <div class="seg" id="controls"><span class="sub mono">loading models</span></div>
     </div>
@@ -196,6 +211,21 @@
       <h2>About this example</h2>
       <p class="cap" id="provenance-text"></p>
     </section>
+    <section class="block" id="check-block">
+      <h2>Day-12 check</h2>
+      <div id="check-body"></div>
+    </section>
+    <section class="block" id="calib-block">
+      <h2>Interval calibration</h2>
+      <div id="calib-body"></div>
+    </section>
+    <section class="block">
+      <h2>Admission record</h2>
+      <p class="cap">What a lab files with the batch: per condition, whether the forecast may stand in provisionally or
+        day 12 must be measured, and why, with the model and input hashes. After the check it also holds the outcome.</p>
+      <div class="seg"><button id="record">download record (JSON)</button></div>
+      <p class="cap" id="record-note" hidden></p>
+    </section>
     <section class="block">
       <h2>Day-7 activity by well</h2>
       <div class="plates" id="plates"></div>
@@ -208,14 +238,15 @@
   <main class="main">
     <section class="block">
       <h2>Concentration response, observed day 7 and forecast day 12</h2>
-      <p class="cap">One panel per chemical, shared scale, log concentration across. The blue line is the day-12
-        forecast with its 80% interval. Grey dots are the day-7 measurement, and the dashed line carries them
+      <p class="cap">One panel per chemical, each on its own vertical scale (log2 relative to controls), log
+        concentration across. The blue line is the day-12 forecast with its 80% interval. Grey dots are the day-7 measurement, and the dashed line carries them
         forward unchanged: the simple rule the model has to beat. Zero is the plate's untreated control level.</p>
       <div class="legend">
         <span><svg width="14" height="8" aria-hidden="true"><line x1="0" y1="4" x2="14" y2="4" stroke="var(--accent)" stroke-width="1.4"></line></svg>forecast, day 12</span>
         <span><span class="sw" style="background:color-mix(in srgb, var(--accent-solid) 18%, transparent)"></span>80% interval</span>
         <span><svg width="14" height="8" aria-hidden="true"><line x1="0" y1="4" x2="14" y2="4" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 2"></line><circle cx="7" cy="4" r="1.7" fill="var(--ink-2)"></circle></svg>day 7, carried forward</span>
         <span><svg width="8" height="8" aria-hidden="true"><circle cx="4" cy="4" r="2.6" fill="var(--s1)" stroke="var(--caution)" stroke-width="1.2"></circle></svg>declined</span>
+        <span id="measured-legend" hidden><svg width="8" height="8" aria-hidden="true"><path d="M4 0.6 L7.4 4 L4 7.4 L0.6 4 Z" fill="var(--ink)"></path></svg>measured day 12</span>
       </div>
       <div class="panels" id="panels"></div>
     </section>
@@ -235,6 +266,19 @@
       <div class="tablewrap"><table id="table"><thead></thead><tbody></tbody></table></div>
     </section>
 
+    <section class="block" id="twin-block">
+      <div class="twin-head">
+        <h2>Day-12 functional profile <span class="twin-tag">research preview</span></h2>
+        <div class="seg" id="twin-controls"></div>
+      </div>
+      <p class="cap">A second model, the batch-context transformer, reads every well of this batch at once: the
+        controls, every plate and each chemical's whole dose series. It forecasts the day-12 change of all 17
+        readouts. Across 41 batches in cross-validation it beat carrying day 7 forward on all 36 profile targets and
+        was about as accurate as 36 separately trained tree models. It has not been scored on a sealed test; the
+        day-12 forecast above remains v2's.</p>
+      <div id="twin-body"></div>
+    </section>
+
     <section class="ev" id="ev" hidden>
       <h2>Held-out evidence</h2>
       <p id="ev-text"></p>
@@ -244,19 +288,40 @@
   </main>
 </div>
 
+<dialog class="zoom" id="zoom" aria-labelledby="zoom-name">
+  <div class="zhd"><span class="znm" id="zoom-name"></span><button id="zoom-close">close</button></div>
+  <div id="zoom-body"></div>
+</dialog>
+
 <footer>
   <div>EPA network formation assay: v2 is trained and tested on the EPA refinement release (<a href="https://github.com/USEPA/CompTox-DNT-NFA-Refinement">USEPA/CompTox-DNT-NFA-Refinement</a>, commit 01adf3e); v1 used DOI 10.23719/1503191 (U.S. public domain), accompanying Shafer et al. 2019. Rat cortical cultures on microelectrode arrays &mdash; not organ chips, human cells, or clinical toxicity.</div>
-  <div>Models evaluate in this page; nothing is uploaded. <a href="https://github.com/SaltyTaro/neuroforecast">github.com/SaltyTaro/neuroforecast</a></div>
+  <div>Models evaluate in this page; nothing is uploaded. <a href="score.html">Validation harness scorer</a> &middot; <a href="https://github.com/SaltyTaro/neuroforecast">github.com/SaltyTaro/neuroforecast</a></div>
 </footer>
 
 <script type="module">
-import { parseCSV, prepareRowsV2, buildFeaturesV2, triageV2, ExactForest } from "./triage.js";
+import { parseCSV, prepareRowsV2, prepareRowsDay12, buildFeaturesV2, triageV2, day12TruthV2, ExactForest } from "./triage.js";
+import { PCTEnsemble, twinForecast } from "./twin.js";
+import { day12Check, admissionRecord, labCalibration, withScale } from "./check.js";
 
 const EXAMPLES = [
   {
-    id: "external", label: "20160120 held out", file: "examples/v2/external_20160120_day5_day7.csv",
-    tag: "held out from v2",
-    note: "A batch from the sealed external test (2014–2016). No v2 fit saw this date or any of its six chemicals.",
+    id: "best", label: "20160120 best", file: "examples/v2/external_20160120_day5_day7.csv",
+    day12: "examples/v2/external_20160120_day12.csv", tag: "held out from v2 · best of 24 batches",
+    note: "A batch from the sealed external test (2014–2016); no v2 fit saw this date or any of its six chemicals. "
+      + "It is v2's best batch of the 24 (error 0.29 against 0.62 for carrying day 7 forward); the median batch's error "
+      + "was 0.69. Its day-12 recordings are public, so the check below can reveal them.",
+  },
+  {
+    id: "median", label: "20141231 median", file: "examples/v2/external_20141231_day5_day7.csv",
+    day12: "examples/v2/external_20141231_day12.csv", tag: "held out from v2 · median batch",
+    note: "The held-out batch whose v2 error is closest to the median of the 24 (0.68 against 1.09 for carrying day 7 "
+      + "forward). No v2 fit saw this date or its chemicals.",
+  },
+  {
+    id: "lost", label: "20140924 v2 lost", file: "examples/v2/external_20140924_day5_day7.csv",
+    day12: "examples/v2/external_20140924_day12.csv", tag: "held out from v2 · carry-forward won",
+    note: "The held-out batch where carrying day 7 forward beat v2 by the widest margin (0.72 against v2's 0.96), and "
+      + "its 80% intervals held only 38% of outcomes. It is here so the failure is visible, not only the wins.",
   },
   {
     id: "low", label: "20171004 low quality", file: "examples/v2/reserve_20171004_low_quality_day5_day7.csv",
@@ -265,19 +330,20 @@ const EXAMPLES = [
       + "fixed rule that fires when at least half the conditions sit on plates whose day-7 control median is below one "
       + "network spike. Here all six plates had a control median of zero.",
   },
-  {
-    id: "usable", label: "20171011 usable", file: "examples/v2/reserve_20171011_usable_day5_day7.csv",
-    tag: "in v2 training data",
-    note: "This batch is in v2's training data, so its forecasts show how the tool reads a normal batch, not held-out accuracy.",
-  },
 ];
+// Two earlier held-out batches, checked against their day 12 by the command-line tool: a lab's history, for the demo.
+const EXAMPLE_HISTORY = ["examples/v2/record_20140924_checked.json", "examples/v2/record_20141231_checked.json"];
 const el = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
 const sign = (x, d = 2) => (Number.isFinite(x) ? (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(d) : "—");
 const num = (x, d = 2) => (Number.isFinite(x) ? x.toFixed(d) : "—");
 const capital = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const byNameDose = (a, b) => String(a.name).localeCompare(String(b.name)) || a.dose - b.dose;
-const state = { models: null, constants: null, result: null, rows: null, batch: null, example: null, source: "", tab: "all" };
+const state = { models: null, constants: null, result: null, rows: null, batch: null, example: null, source: "", tab: "all",
+  cases: null, bytes: null, lockedModels: null, check: null, baseResult: null, history: null, calibration: null, calibError: null,
+  twin: { model: null, results: null, chemical: null, busy: false, ms: 0 } };
+const decode = (buffer) => new TextDecoder("utf-8").decode(buffer);
+const hashFlags = () => new Set(location.hash.replace(/^#/, "").split(/[,&+]/).filter(Boolean));
 
 async function get(url) {
   const response = await fetch(url);
@@ -289,14 +355,33 @@ async function boot() {
   try {
     const manifest = await (await get("models/v2/manifest.json")).json();
     state.constants = manifest.constants;
+    state.lockedModels = manifest.generated_from;
     state.models = {};
     for (const [label, spec] of Object.entries(manifest.models)) {
       state.models[label] = new ExactForest(await (await get("models/v2/" + spec.file)).arrayBuffer(), spec);
     }
     controls();
-    await load(EXAMPLES[0]);
+    el("record").addEventListener("click", downloadRecord);
+    el("zoom-close").addEventListener("click", () => el("zoom").close());
+    el("zoom").addEventListener("click", (event) => { if (event.target === el("zoom")) el("zoom").close(); });
   } catch (error) {
     fail("Could not load the models: " + error.message);
+    return;
+  }
+  await followHash();
+  window.addEventListener("hashchange", followHash);
+}
+
+/* Direct links for demos, on first load and on an open page: #best, #median, #lost, #low, #check, #twin. */
+async function followHash() {
+  const flags = hashFlags();
+  const example = EXAMPLES.find((x) => flags.has(x.id)) || (state.result ? null : EXAMPLES[0]);
+  if (example && example !== state.example) await load(example);
+  if (flags.has("history") && !state.history) await useExampleHistory();
+  if (flags.has("check") && !state.check) await revealDay12();
+  if (flags.has("twin")) {
+    if (!state.twin.results) await twinCompute();
+    el("twin-block").scrollIntoView({ block: "start" });
   }
 }
 
@@ -338,9 +423,9 @@ function controls() {
     reader.onload = () => {
       press(null);
       state.example = null;
-      run(reader.result, file.name);
+      run(new Uint8Array(reader.result), file.name);
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
     event.target.value = "";
   });
 }
@@ -349,26 +434,35 @@ async function load(example) {
   press(example.id);
   state.example = example;
   try {
-    run(await (await get(example.file)).text(), example.file.split("/").pop());
+    run(new Uint8Array(await (await get(example.file)).arrayBuffer()), example.file.split("/").pop());
   } catch (error) {
     fail(error.message);
   }
 }
 
-function run(text, source) {
+function run(bytes, source) {
   el("error").hidden = true;
   try {
-    const { rows } = prepareRowsV2(parseCSV(text), state.constants.readouts);
+    const { rows } = prepareRowsV2(parseCSV(decode(bytes)), state.constants.readouts);
     const cases = buildFeaturesV2(rows, state.constants);
     if (!cases.length) {
       throw new Error("No condition has at least two replicate wells, each with same-plate controls, on both day 5 and day 7.");
     }
     state.rows = rows;
-    state.result = triageV2(cases, state.models, state.constants);
+    state.cases = cases;
+    state.bytes = bytes;
+    state.check = null;
+    state.twin.results = null;
+    state.twin.chemical = null;
+    state.baseResult = triageV2(cases, state.models, state.constants);
+    state.result = state.baseResult;
+    state.calibration = null;
+    state.calibError = null;
     state.source = source;
     state.batch = state.result.batches[0].date;
     el("work").hidden = false;
     render();
+    if (state.history) applyHistory();
   } catch (error) {
     fail(error.message);
   }
@@ -421,11 +515,15 @@ function render() {
   el("provenance-text").textContent = state.example ? state.example.note : "";
 
   state.view = { batch: b, conditions };
+  checkPanel();
+  calibPanel();
+  el("measured-legend").hidden = !state.check;
   plates(b);
   panels(conditions);
   chart(conditions);
   table();
   evidence();
+  twinPanel();
 }
 
 function picker(batches) {
@@ -480,78 +578,165 @@ function plates(batch) {
 }
 
 /* Concentration-response small multiples: the figure this assay is actually read as. */
-function panels(conditions) {
+function measuredOf(c) {
+  const row = state.check ? state.check.result.rows.get(c.key) : null;
+  return row ? row.measured : NaN;
+}
+
+function chemicalSeries(conditions) {
   const byChem = new Map();
   for (const c of conditions) {
     if (!byChem.has(c.name)) byChem.set(c.name, []);
     byChem.get(c.name).push(c);
   }
-  const all = conditions.flatMap((c) => [c.day7, c.low, c.high]).filter(Number.isFinite);
+  return [...byChem].sort((a, b) => a[0].localeCompare(b[0])).map(([name, series]) => [name, [...series].sort((a, b) => a.dose - b.dose)]);
+}
+
+/* One chemical's panel. `big` draws the enlarged version: gridlines, every concentration labelled, larger marks. */
+function panelSvg(name, pts, big = false) {
+  const W = big ? 640 : 158, H = big ? 300 : 74;
+  const P = big ? { t: 12, r: 16, b: 34, l: 34 } : { t: 6, r: 6, b: 12, l: 20 };
+  const k = big ? 1.7 : 1;
+  // Each panel gets its own range, at least -1 to +1, so modest forecasts and their errors stay visible.
+  const all = pts.flatMap((c) => [c.day7, c.low, c.high, measuredOf(c)]).filter(Number.isFinite);
   const lo = Math.min(-1, Math.floor(Math.min(...all)));
   const hi = Math.max(1, Math.ceil(Math.max(...all)));
-  const W = 158, H = 74, P = { t: 6, r: 6, b: 12, l: 20 };
+  const dl = Math.log10(pts[0].dose), dh = Math.log10(pts[pts.length - 1].dose);
+  const x = (d) => P.l + (dh === dl ? 0.5 : (Math.log10(d) - dl) / (dh - dl)) * (W - P.l - P.r);
+  const y = (v) => H - P.b - ((Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo)) * (H - P.t - P.b);
 
-  el("panels").innerHTML = [...byChem].sort((a, b) => a[0].localeCompare(b[0])).map(([name, series]) => {
-    const pts = [...series].sort((a, b) => a.dose - b.dose);
-    const dl = Math.log10(pts[0].dose), dh = Math.log10(pts[pts.length - 1].dose);
-    const x = (d) => P.l + (dh === dl ? 0.5 : (Math.log10(d) - dl) / (dh - dl)) * (W - P.l - P.r);
-    const y = (v) => H - P.b - ((Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo)) * (H - P.t - P.b);
-    const declined = pts.filter((p) => !p.usable).length;
-
-    let g = `<line x1="${P.l}" y1="${y(0)}" x2="${W - P.r}" y2="${y(0)}" stroke="var(--s7)" stroke-width="1"></line>`;
-    g += `<text x="${P.l - 4}" y="${y(0) + 3}" text-anchor="end">0</text>`;
+  let g = "";
+  if (big) {
+    const step = hi - lo > 12 ? 4 : hi - lo > 6 ? 2 : 1;
+    for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) {
+      g += `<line x1="${P.l}" y1="${y(v)}" x2="${W - P.r}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"></line>`;
+      g += `<text x="${P.l - 5}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
+    }
+    for (const p of pts) g += `<text x="${x(p.dose)}" y="${H - P.b + 13}" text-anchor="middle">${p.dose}</text>`;
+    g += `<text x="${(P.l + W - P.r) / 2}" y="${H - 4}" text-anchor="middle">concentration (µM, log scale)</text>`;
+    g += `<text transform="translate(10 ${(P.t + H - P.b) / 2}) rotate(-90)" text-anchor="middle">log2 vs control</text>`;
+  }
+  g += `<line x1="${P.l}" y1="${y(0)}" x2="${W - P.r}" y2="${y(0)}" stroke="var(--s7)" stroke-width="1"></line>`;
+  if (!big) {
+    if (Math.abs(y(0) - y(hi)) > 11 && Math.abs(y(0) - y(lo)) > 11) g += `<text x="${P.l - 4}" y="${y(0) + 3}" text-anchor="end">0</text>`;
     g += `<text x="${P.l - 4}" y="${y(hi) + 7}" text-anchor="end">${hi}</text>`;
     g += `<text x="${P.l - 4}" y="${y(lo)}" text-anchor="end">${lo}</text>`;
-    const band = pts.map((p) => `${x(p.dose)},${y(p.high)}`).join(" ")
-      + " " + [...pts].reverse().map((p) => `${x(p.dose)},${y(p.low)}`).join(" ");
-    g += `<polygon points="${band}" fill="var(--accent-solid)" opacity=".13"></polygon>`;
-    g += `<polyline points="${pts.map((p) => `${x(p.dose)},${y(p.day7)}`).join(" ")}" fill="none" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 2" opacity=".8"></polyline>`;
-    g += `<polyline points="${pts.map((p) => `${x(p.dose)},${y(p.forecast)}`).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="1.4"></polyline>`;
-    for (const p of pts) {
-      g += `<circle cx="${x(p.dose)}" cy="${y(p.day7)}" r="1.7" fill="var(--ink-2)"><title>${esc(name)} ${p.dose} µM, day 7 ${sign(p.day7)}</title></circle>`;
-      if (!p.usable) g += `<circle cx="${x(p.dose)}" cy="${y(p.forecast)}" r="2.6" fill="var(--s1)" stroke="var(--caution)" stroke-width="1.2"><title>${esc(name)} ${p.dose} µM, forecast ${sign(p.forecast)}, declined</title></circle>`;
-    }
+  }
+  const band = pts.map((p) => `${x(p.dose)},${y(p.high)}`).join(" ")
+    + " " + [...pts].reverse().map((p) => `${x(p.dose)},${y(p.low)}`).join(" ");
+  g += `<polygon points="${band}" fill="var(--accent-solid)" opacity=".13"></polygon>`;
+  g += `<polyline points="${pts.map((p) => `${x(p.dose)},${y(p.day7)}`).join(" ")}" fill="none" stroke="var(--ink-2)" stroke-width="${k}" stroke-dasharray="${2 * k} ${2 * k}" opacity=".8"></polyline>`;
+  g += `<polyline points="${pts.map((p) => `${x(p.dose)},${y(p.forecast)}`).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="${1.4 * k}"></polyline>`;
+  for (const p of pts) {
+    g += `<circle cx="${x(p.dose)}" cy="${y(p.day7)}" r="${1.7 * k}" fill="var(--ink-2)"><title>${esc(name)} ${p.dose} µM, day 7 ${sign(p.day7)}</title></circle>`;
+    if (!p.usable) g += `<circle cx="${x(p.dose)}" cy="${y(p.forecast)}" r="${2.6 * k}" fill="var(--s1)" stroke="var(--caution)" stroke-width="${1.2 * k}"><title>${esc(name)} ${p.dose} µM, forecast ${sign(p.forecast)}, declined</title></circle>`;
+  }
+  for (const p of pts) {
+    const m = measuredOf(p);
+    if (!Number.isFinite(m)) continue;
+    const cx = x(p.dose), cy = y(m), s = 3 * k;
+    g += `<path d="M${cx} ${cy - s} L${cx + s} ${cy} L${cx} ${cy + s} L${cx - s} ${cy} Z" fill="var(--ink)">`
+      + `<title>${esc(name)} ${p.dose} µM, measured day 12 ${sign(m)} (forecast ${sign(p.forecast)}, day 7 ${sign(p.day7)})</title></path>`;
+  }
+  if (!big) {
     g += `<text x="${P.l}" y="${H - 2}">${pts[0].dose}</text>`;
     g += `<text x="${W - P.r}" y="${H - 2}" text-anchor="end">${pts[pts.length - 1].dose} µM</text>`;
-    return `<div class="cr"><div class="hd"><span class="nm" title="${esc(name)}">${esc(name)}</span>`
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(name)} concentration response">${g}</svg>`;
+}
+
+function panels(conditions) {
+  const series = chemicalSeries(conditions);
+  el("panels").innerHTML = series.map(([name, pts], i) => {
+    const declined = pts.filter((p) => !p.usable).length;
+    return `<div class="cr" role="button" tabindex="0" data-i="${i}" title="Enlarge ${esc(name)}">`
+      + `<div class="hd"><span class="nm">${esc(name)}</span>`
       + `<span class="tag${declined ? " warn" : ""}">${declined ? declined + " decl" : "ok"}</span></div>`
-      + `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(name)} concentration response">${g}</svg></div>`;
+      + `${panelSvg(name, pts)}</div>`;
   }).join("");
+  for (const node of el("panels").querySelectorAll(".cr")) {
+    const open = () => zoom(...series[Number(node.dataset.i)]);
+    node.addEventListener("click", open);
+    node.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); open(); } });
+  }
+}
+
+function zoom(name, pts) {
+  const checked = Boolean(state.check);
+  const head = ["µM", "day 7", "forecast", "80% interval", ...(checked ? ["day 12"] : []), "verdict"];
+  const rows = pts.map((p) => {
+    const m = measuredOf(p);
+    return `<tr><td class="n">${p.dose}</td><td class="n">${sign(p.day7)}</td><td class="n">${sign(p.forecast)}</td>`
+      + `<td class="n">[${sign(p.low)}, ${sign(p.high)}]</td>${checked ? `<td class="n">${sign(m)}</td>` : ""}`
+      + `<td>${p.usable ? '<span class="chip ok">usable</span>' : '<span class="chip dec">declined</span>'}</td></tr>`;
+  }).join("");
+  el("zoom-name").textContent = `${name} · batch ${pts[0].date}`;
+  el("zoom-body").innerHTML = panelSvg(name, pts, true)
+    + `<div class="tablewrap"><table><thead><tr>${head.map((h) => `<th${h === "µM" ? ' style="text-transform:none"' : ""}>${h}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  el("zoom").showModal();
 }
 
 function chart(conditions) {
   const e = state.constants.evidence.external;
-  el("chart-cap").textContent = `The diagonal is the carry-forward rule. On ${e.batches} held-out earlier batches this model's `
-    + `day-12 error was lower than that rule's on ${e.batches_better_than_persistence}. Distance from the diagonal is what `
-    + "the model adds; hollow points are declined.";
   const W = 720, H = 300, P = { t: 14, r: 14, b: 32, l: 40 };
-  const vals = conditions.flatMap((c) => [c.day7, c.low, c.high]).filter(Number.isFinite);
-  const lo = Math.min(-1, Math.floor(Math.min(...vals))), hi = Math.max(1, Math.ceil(Math.max(...vals)));
-  const x = (v) => P.l + ((v - lo) / (hi - lo)) * (W - P.l - P.r);
-  const y = (v) => H - P.b - ((v - lo) / (hi - lo)) * (H - P.t - P.b);
-  const step = hi - lo > 12 ? 4 : hi - lo > 6 ? 2 : 1;
+  // Scale to the kept forecasts. Declined conditions can sit far out (a silent well is -8 or below) and would
+  // squeeze every usable point into a corner, so anything beyond the range is pinned to the edge as a triangle.
+  const plotted = conditions.filter((c) => Number.isFinite(c.day7) && Number.isFinite(c.forecast));
+  const kept = plotted.filter((c) => c.usable);
+  const basis = kept.length ? kept : plotted;
+  const range = (vals) => [Math.min(-1, Math.floor(Math.min(...vals))), Math.max(1, Math.ceil(Math.max(...vals)))];
+  const [xlo, xhi] = range(basis.map((c) => c.day7).filter(Number.isFinite));
+  const [ylo, yhi] = range(basis.flatMap((c) => [c.day7, c.low, c.high, measuredOf(c)]).filter(Number.isFinite));
+  const clampX = (v) => Math.max(xlo, Math.min(xhi, v)), clampY = (v) => Math.max(ylo, Math.min(yhi, v));
+  const outsideX = (v) => Number.isFinite(v) && (v < xlo || v > xhi);
+  const outsideY = (v) => Number.isFinite(v) && (v < ylo || v > yhi);
+  const x = (v) => P.l + ((clampX(v) - xlo) / (xhi - xlo)) * (W - P.l - P.r);
+  const y = (v) => H - P.b - ((clampY(v) - ylo) / (yhi - ylo)) * (H - P.t - P.b);
+  const stepOf = (lo, hi) => (hi - lo > 12 ? 4 : hi - lo > 6 ? 2 : 1);
 
   let g = "";
-  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) {
+  for (let v = Math.ceil(ylo / stepOf(ylo, yhi)) * stepOf(ylo, yhi); v <= yhi; v += stepOf(ylo, yhi)) {
     g += `<line x1="${P.l}" y1="${y(v)}" x2="${W - P.r}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"></line>`;
     g += `<text x="${P.l - 5}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
+  }
+  for (let v = Math.ceil(xlo / stepOf(xlo, xhi)) * stepOf(xlo, xhi); v <= xhi; v += stepOf(xlo, xhi)) {
     g += `<text x="${x(v)}" y="${H - P.b + 12}" text-anchor="middle">${v}</text>`;
   }
-  g += `<line x1="${x(lo)}" y1="${y(lo)}" x2="${x(hi)}" y2="${y(hi)}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 4"></line>`;
+  // The carry-forward diagonal, where both axes overlap.
+  const dlo = Math.max(xlo, ylo), dhi = Math.min(xhi, yhi);
+  g += `<line x1="${x(dlo)}" y1="${y(dlo)}" x2="${x(dhi)}" y2="${y(dhi)}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 4"></line>`;
   g += `<text x="${(P.l + W - P.r) / 2}" y="${H - 4}" text-anchor="middle">observed day 7 (log2 vs control)</text>`;
-  g += `<text transform="translate(10 ${(P.t + H - P.b) / 2}) rotate(-90)" text-anchor="middle">forecast day 12</text>`;
-  for (const c of conditions) {
-    if (!Number.isFinite(c.day7) || !Number.isFinite(c.forecast)) continue;
-    const cx = x(c.day7), col = c.usable ? "var(--accent)" : "var(--caution)";
-    const label = `${esc(c.name)} ${c.dose} µM`;
+  g += `<text transform="translate(10 ${(P.t + H - P.b) / 2}) rotate(-90)" text-anchor="middle">${state.check ? "day 12: forecast and measured" : "forecast day 12"}</text>`;
+  let offScale = 0;
+  for (const c of plotted) {
+    const cx = x(c.day7), cy = y(c.forecast), col = c.usable ? "var(--accent)" : "var(--caution)";
+    const m = measuredOf(c);
+    const label = `${esc(c.name)} ${c.dose} µM: day 7 ${sign(c.day7)}, forecast ${sign(c.forecast)}`
+      + `${Number.isFinite(m) ? `, measured day 12 ${sign(m)}` : ""}${c.usable ? "" : ", declined"}`;
+    if (Number.isFinite(m)) {
+      g += `<line x1="${cx}" y1="${cy}" x2="${cx}" y2="${y(m)}" stroke="var(--ink)" stroke-width="1" opacity=".25"></line>`;
+      g += `<path d="M${cx} ${y(m) - 3} L${cx + 3} ${y(m)} L${cx} ${y(m) + 3} L${cx - 3} ${y(m)} Z" fill="var(--ink)" opacity=".8"><title>${label}</title></path>`;
+    }
+    if (outsideX(c.day7) || outsideY(c.forecast)) {
+      offScale += 1;
+      const down = c.forecast < ylo || (!outsideY(c.forecast) && c.day7 < xlo);
+      const d = down ? `M${cx - 3.5} ${cy - 3} L${cx + 3.5} ${cy - 3} L${cx} ${cy + 3} Z` : `M${cx - 3.5} ${cy + 3} L${cx + 3.5} ${cy + 3} L${cx} ${cy - 3} Z`;
+      g += `<path d="${d}" fill="var(--s1)" stroke="${col}" stroke-width="1.3"><title>${label} (off scale)</title></path>`;
+      continue;
+    }
     g += `<line x1="${cx}" y1="${y(c.low)}" x2="${cx}" y2="${y(c.high)}" stroke="${col}" stroke-width="1" opacity=".22"></line>`;
     g += c.usable
-      ? `<circle cx="${cx}" cy="${y(c.forecast)}" r="3.1" fill="${col}" opacity=".9"><title>${label}</title></circle>`
-      : `<circle cx="${cx}" cy="${y(c.forecast)}" r="3.1" fill="var(--s1)" stroke="${col}" stroke-width="1.3"><title>${label}, declined</title></circle>`;
+      ? `<circle cx="${cx}" cy="${cy}" r="3.1" fill="${col}" opacity=".9"><title>${label}</title></circle>`
+      : `<circle cx="${cx}" cy="${cy}" r="3.1" fill="var(--s1)" stroke="${col}" stroke-width="1.3"><title>${label}</title></circle>`;
   }
   const t = conditions.filter((c) => c.usable).length;
   g += `<text x="${W - P.r}" y="${H - P.b - 6}" text-anchor="end">${t} usable / ${conditions.length - t} declined</text>`;
-  el("chart").outerHTML = `<svg id="chart" viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="Forecast against day-7 observation">${g}</svg>`;
+  el("chart-cap").textContent = `The diagonal is the carry-forward rule. On ${e.batches} held-out earlier batches this model's `
+    + `day-12 error was lower than that rule's on ${e.batches_better_than_persistence}. Distance from the diagonal is what `
+    + "the model adds; hollow points are declined. The axes span the usable forecasts"
+    + (offScale ? `; ${offScale} condition${offScale > 1 ? "s lie" : " lies"} beyond them, pinned to the edge as triangles (hover for values)` : "")
+    + (state.check ? ". Black diamonds are the measured day 12, joined to their forecast." : ".");
+  el("chart").outerHTML = `<svg id="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Forecast against day-7 observation">${g}</svg>`;
 }
 
 function table() {
@@ -560,7 +745,7 @@ function table() {
   const e = state.constants.evidence.external;
   const tabs = [
     ["all", "All", "Sorted by chemical and concentration, in log2 units relative to same-plate controls. The day-7 value is "
-      + "also the carry-forward prediction; “vs day 7” is how far the model departs from it. Difficulty is the "
+      + `also the carry-forward prediction${state.check ? "" : "; “vs day 7” is how far the model departs from it"}. Difficulty is the `
       + `predicted error, and above ${num(threshold, 2)} the forecast is declined.`],
     ["declined", "Declined", batch.usable
       ? `Conditions whose predicted error is above ${num(threshold, 2)}: measure these at day 12. On the external test, declining `
@@ -579,20 +764,202 @@ function table() {
   el("table-hint").textContent = tabs.find((t) => t[0] === state.tab)[2];
 
   const rows = (state.tab === "all" ? [...conditions] : conditions.filter((c) => !c.usable)).sort(byNameDose);
-  el("table").tHead.innerHTML = "<tr><th>Chemical</th><th>µM</th><th>Day 7</th><th>Forecast</th><th>80% Interval</th>"
-    + "<th>vs Day 7</th><th>Difficulty</th><th>Verdict</th></tr>";
+  const checked = state.check ? state.check.result.rows : null;
+  el("table").tHead.innerHTML = "<tr><th>Chemical</th><th style='text-transform:none'>µM</th><th>Day 7</th><th>Forecast</th><th>80% Interval</th>"
+    + (checked ? "" : "<th>vs Day 7</th>") + "<th>Difficulty</th><th>Verdict</th>"
+    + (checked ? "<th>Day 12</th><th>Forecast err</th><th>Carry err</th>" : "") + "</tr>";
+  if (checked) {
+    el("table-hint").textContent += " Day 12 is the measured value; ○ marks one outside the 80% interval. The smaller "
+      + "of the two absolute errors is in full ink.";
+  }
   const body = el("table").tBodies[0];
-  if (!rows.length) { body.innerHTML = `<tr><td colspan="8" class="dim">No declined conditions in this batch.</td></tr>`; return; }
+  const span = checked ? 10 : 8;
+  if (!rows.length) { body.innerHTML = `<tr><td colspan="${span}" class="dim">No declined conditions in this batch.</td></tr>`; return; }
+  const after = (c) => {
+    if (!checked) return "";
+    const r = checked.get(c.key);
+    if (!Number.isFinite(r.measured)) return '<td class="n dim">—</td><td class="n dim">—</td><td class="n dim">—</td>';
+    const better = r.forecastError < r.carryError;
+    return `<td class="n">${sign(r.measured)}${r.inside ? "" : ' <span class="dim" title="outside the 80% interval">○</span>'}</td>`
+      + `<td class="n${better ? "" : " dim"}">${num(r.forecastError, 2)}</td><td class="n${better ? " dim" : ""}">${num(r.carryError, 2)}</td>`;
+  };
   body.innerHTML = rows.map((c) => {
     const chip = c.usable ? '<span class="chip ok">usable</span>'
       : `<span class="chip dec">${c.batchUsable ? "measure day 12" : "batch unusable"}</span>`;
     return `<tr title="${esc(c.verdict)}"><td>${esc(c.name)}</td><td class="n">${c.dose}</td>`
       + `<td class="n">${sign(c.day7)}</td><td class="n">${sign(c.forecast)}</td>`
-      + `<td class="n dim">${sign(c.low)} … ${sign(c.high)}</td><td class="n dim">${sign(c.forecast - c.day7)}</td>`
+      + `<td class="n dim">${sign(c.low)} … ${sign(c.high)}</td>${checked ? "" : `<td class="n dim">${sign(c.forecast - c.day7)}</td>`}`
       + `<td class="n${c.trusted ? " dim" : ""}">${num(c.difficulty, 2)}</td>`
       + `<td>${chip}${c.flags.low_reference_activity ? '<span class="chip flag">low reference</span>' : ""}`
-      + `${c.flags.few_controls ? '<span class="chip flag">few controls</span>' : ""}</td></tr>`;
+      + `${c.flags.few_controls ? '<span class="chip flag">few controls</span>' : ""}</td>${after(c)}</tr>`;
   }).join("");
+}
+
+/* ---------------------------------------------------------------- day-12 check and admission record */
+
+function checkPanel() {
+  const body = el("check-body");
+  const example = state.example;
+  if (!state.check) {
+    const reveal = example && example.day12
+      ? '<button id="check-reveal">reveal measured day 12</button>' : "";
+    body.innerHTML = `<p class="cap">When day 12 has been recorded, score this day-7 report against it with the sealed
+      test's own definition. The check never feeds back into a forecast.${example && example.day12
+        ? " This batch's day-12 recordings are public." : ""}</p>
+      <div class="seg">${reveal}<label class="file"><input type="file" id="day12-upload" accept=".csv,text/csv"> open day-12 CSV</label></div>`;
+    if (el("check-reveal")) el("check-reveal").addEventListener("click", revealDay12);
+    el("day12-upload").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => applyDay12(new Uint8Array(reader.result), file.name);
+      reader.readAsArrayBuffer(file);
+      event.target.value = "";
+    });
+    return;
+  }
+  const b = state.check.result.batches.find((x) => x.batch === state.view.batch.date);
+  if (!b || !b.conditions_scored) {
+    body.innerHTML = `<p class="cap">The day-12 file (${esc(state.check.input.file)}) has no scorable condition for this batch.</p>`;
+    return;
+  }
+  const won = b.forecast_error < b.carry_forward_error;
+  const pct = (x) => `${Math.round(100 * x)}%`;
+  body.innerHTML = `<dl class="kv">
+      <dt>forecast error</dt><dd${won ? "" : ' class="warn"'}>${num(b.forecast_error, 2)}</dd>
+      <dt>carry day 7 forward</dt><dd>${num(b.carry_forward_error, 2)}</dd>
+      <dt>forecast closer</dt><dd>${b.forecast_closer} of ${b.conditions_scored}</dd>
+      <dt>inside 80% interval</dt><dd${b.interval80_coverage < 0.7 ? ' class="warn"' : ""}>${pct(b.interval80_coverage)}</dd>
+      <dt>provisional (${b.provisional.conditions})</dt><dd>${num(b.provisional.forecast_error, 2)} vs ${num(b.provisional.carry_forward_error, 2)}</dd>
+      <dt>declined (${b.declined.conditions})</dt><dd>${b.declined.conditions ? `${num(b.declined.forecast_error, 2)} vs ${num(b.declined.carry_forward_error, 2)}` : "—"}</dd>
+    </dl>
+    <p class="cap">${won ? "The forecast beat carrying day 7 forward on this batch." : "Carrying day 7 forward beat the forecast on this batch."}
+      Errors are mean absolute log2 errors, averaged within each chemical, then over chemicals; the provisional and
+      declined rows give forecast against carry-forward. ${b.reference_unusable ? `${b.reference_unusable} conditions had an unusable day-12 reference and are not scored. ` : ""}Source: ${esc(state.check.input.file)}.</p>`;
+}
+
+async function revealDay12() {
+  if (!state.example || !state.example.day12) return;
+  try {
+    const bytes = new Uint8Array(await (await get(state.example.day12)).arrayBuffer());
+    applyDay12(bytes, state.example.day12.split("/").pop());
+  } catch (error) {
+    fail(error.message);
+  }
+}
+
+function applyDay12(bytes, file) {
+  try {
+    const { rows } = prepareRowsDay12(parseCSV(decode(bytes)), state.constants.readouts);
+    const truth = day12TruthV2(rows, state.constants);
+    const result = day12Check(state.result.conditions, truth);
+    if (!result.batches.some((b) => b.conditions_measured)) {
+      throw new Error("No condition in the day-12 file matches this report's batch, chemical and concentration.");
+    }
+    state.check = { result, input: { file, bytes }, truth };
+    render();
+  } catch (error) {
+    el("check-body").insertAdjacentHTML("beforeend", `<p class="cap" style="color:var(--alert)">${esc(error.message)}</p>`);
+  }
+}
+
+/* The lab's own calibration: refit the interval scale from earlier checked admission records. */
+function calibPanel() {
+  const body = el("calib-body");
+  const shipped = num(state.constants.interval_quantile, 3);
+  const c = state.calibration;
+  const exampleButton = state.example && state.example.id === "best"
+    ? '<button id="calib-example">use example lab history</button>' : "";
+  const loader = '<label class="file"><input type="file" id="calib-upload" accept=".json,application/json" multiple> load past records</label>';
+  if (!c) {
+    body.innerHTML = `<p class="cap">Intervals use the scale fitted on EPA's development batches (${shipped} × difficulty at 80%).
+      On 24 new batches they held only 70% of outcomes, so a lab should refit the scale on its own checked batches: load two
+      or more earlier admission records that include a day-12 check. Forecasts and verdicts do not change.${exampleButton
+        ? " The example history is two earlier held-out batches (2014-09-24 and 2014-12-31), already checked." : ""}</p>
+      <div class="seg">${exampleButton}${loader}</div>
+      ${state.calibError ? `<p class="cap" style="color:var(--alert)">${esc(state.calibError)}</p>` : ""}`;
+  } else {
+    body.innerHTML = `<dl class="kv">
+        <dt>shipped scale (80%)</dt><dd>${shipped}</dd>
+        <dt>this lab's scale</dt><dd${c.scale > c.shipped_scale ? ' class="warn"' : ""}>${num(c.scale, 3)}</dd>
+        <dt>history batches</dt><dd>${c.history_batches.length}</dd>
+        <dt>history conditions</dt><dd>${c.history_conditions}</dd>
+        <dt>inside at shipped scale</dt><dd${c.history_coverage_at_shipped_scale < 0.7 ? ' class="warn"' : ""}>${Math.round(100 * c.history_coverage_at_shipped_scale)}%</dd>
+      </dl>
+      <p class="cap">At the shipped width, ${Math.round(100 * c.history_coverage_at_shipped_scale)}% of this lab's earlier outcomes fell
+        inside the 80% interval, so the intervals ${c.scale > c.shipped_scale ? "widen" : "narrow"} to the lab's own scale.
+        Forecasts and verdicts are unchanged; the panels, table and record now use this scale. Replayed in date order over the
+        24 held-out batches, refitting on every earlier batch raised coverage from 69% to 85% (on the last six batches only,
+        80%), for intervals 62% (42%) wider.</p>
+      <div class="seg"><button id="calib-reset">use the shipped scale</button>${loader}</div>`;
+  }
+  if (el("calib-example")) el("calib-example").addEventListener("click", useExampleHistory);
+  if (el("calib-reset")) el("calib-reset").addEventListener("click", () => { state.history = null; applyHistory(); });
+  el("calib-upload").addEventListener("change", (event) => {
+    const files = [...event.target.files];
+    if (!files.length) return;
+    Promise.all(files.map((f) => f.arrayBuffer().then((b) => ({ file: f.name, bytes: new Uint8Array(b) })))).then((records) => {
+      state.history = records;
+      applyHistory();
+    });
+    event.target.value = "";
+  });
+}
+
+async function useExampleHistory() {
+  try {
+    state.history = await Promise.all(EXAMPLE_HISTORY.map(async (path) =>
+      ({ file: path.split("/").pop(), bytes: new Uint8Array(await (await get(path)).arrayBuffer()) })));
+  } catch (error) {
+    state.calibError = error.message;
+    render();
+    return;
+  }
+  await applyHistory();
+}
+
+async function applyHistory() {
+  state.calibration = null;
+  state.calibError = null;
+  state.result = state.baseResult;
+  if (state.history) {
+    try {
+      state.calibration = await labCalibration({
+        records: state.history, lockedModels: state.lockedModels, constants: state.constants,
+        excludeBatches: new Set(state.baseResult.batches.map((b) => b.date)),
+      });
+      state.result = withScale(state.baseResult, state.calibration.scale);
+    } catch (error) {
+      state.calibError = error.message;
+      state.history = null;
+    }
+  }
+  if (state.check) state.check.result = day12Check(state.result.conditions, state.check.truth);
+  render();
+}
+
+async function downloadRecord() {
+  const note = el("record-note");
+  try {
+    const record = await admissionRecord({
+      result: state.result, constants: state.constants, lockedModels: state.lockedModels,
+      input: { file: state.source, bytes: state.bytes }, check: state.check, calibration: state.calibration,
+    });
+    const blob = new Blob([JSON.stringify(record, null, 2) + "\n"], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `neuroforecast_record_${state.result.batches.map((b) => b.date).join("_")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    const provisional = record.conditions.filter((c) => c.decision === "provisional forecast").length;
+    note.textContent = `Saved ${a.download}: ${provisional} provisional forecasts, ${record.conditions.length - provisional} to measure`
+      + `${record.day12_check ? ", with the day-12 outcome" : ""}; input SHA-256 ${record.input.sha256.slice(0, 12)}….`;
+  } catch (error) {
+    note.textContent = `Could not write the record: ${error.message}. Hashing needs a secure page (https or localhost).`;
+  }
+  note.hidden = false;
 }
 
 function evidence() {
@@ -613,6 +980,142 @@ function evidence() {
     ]],
   ].map(([head, lines]) => `<div class="test"><div class="hd">${head}</div><div class="rows">${lines.map((l) => `<div>${l}</div>`).join("")}</div></div>`).join("");
   el("ev-limits").innerHTML = state.constants.limits.map((l) => `<div>${esc(l)}</div>`).join("");
+}
+
+/* ---------------------------------------------------------------- twin panel (research preview) */
+
+const READOUT_LABEL = {
+  "meanfiringrate": "firing rate", "burst.per.min": "burst rate", "mean.isis": "ISI within bursts",
+  "per.spikes.in.burst": "% spikes in bursts", "mean.dur": "burst duration", "mean.IBIs": "inter-burst interval",
+  "nAE": "active electrodes", "nABE": "bursting electrodes", "ns.n": "network spikes (contrast)",
+  "ns.peak.m": "network spike peak", "ns.durn.m": "network spike duration",
+  "ns.percent.of.spikes.in.ns": "% spikes in network spikes", "ns.mean.insis": "inter-network-spike interval",
+  "ns.durn.sd": "network spike duration SD", "ns.mean.spikes.in.ns": "spikes per network spike",
+  "r": "correlation", "mi": "mutual information",
+};
+const TWIN_BUTTON = '<button id="twin-run">compute profiles &middot; 16 MB model, runs in this page</button>';
+
+async function twinCompute() {
+  if (state.twin.busy) return;
+  state.twin.busy = true;
+  el("twin-body").innerHTML = '<span class="twin-note">loading the transformer and reading every well…</span>';
+  try {
+    if (!state.twin.model) {
+      const manifest = await (await get("models/v3/pct.json")).json();
+      state.twin.model = new PCTEnsemble(await (await get("models/v3/pct.bin")).arrayBuffer(), manifest);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    const started = performance.now();
+    state.twin.results = twinForecast(state.rows, state.cases, state.twin.model);
+    state.twin.ms = performance.now() - started;
+  } catch (error) {
+    el("twin-body").innerHTML = `<span class="twin-note">Could not compute profiles: ${esc(error.message)}</span>`;
+    state.twin.busy = false;
+    return;
+  }
+  state.twin.busy = false;
+  twinPanel();
+}
+
+function twinPanel() {
+  const body = el("twin-body"), controls = el("twin-controls");
+  if (!state.twin.results) {
+    controls.innerHTML = "";
+    body.innerHTML = TWIN_BUTTON;
+    el("twin-run").addEventListener("click", twinCompute);
+    return;
+  }
+  const { conditions } = state.view;
+  const chemicals = [...new Map(conditions.map((c) => [c.identity, c.name])).entries()]
+    .sort((a, b) => String(a[1]).localeCompare(String(b[1])));
+  if (!chemicals.some(([id]) => id === state.twin.chemical)) {
+    // Default to the chemical whose forecast profile moves most from day 7.
+    let best = null, bestScore = -1;
+    for (const [id] of chemicals) {
+      const score = conditions.filter((c) => c.identity === id).reduce((sum, c) => sum + twinShift(c), 0);
+      if (score > bestScore) { best = id; bestScore = score; }
+    }
+    state.twin.chemical = best;
+  }
+  controls.innerHTML = `<select id="twin-chem" aria-label="chemical">${chemicals.map(([id, name]) =>
+    `<option value="${esc(id)}"${id === state.twin.chemical ? " selected" : ""}>${esc(name)}</option>`).join("")}</select>`;
+  el("twin-chem").addEventListener("change", (event) => { state.twin.chemical = event.target.value; twinPanel(); });
+  const doses = conditions.filter((c) => c.identity === state.twin.chemical).sort((a, b) => a.dose - b.dose);
+  const measured = Boolean(state.check);
+  body.innerHTML = twinHeatmap(doses) + twinLegend() + `<p class="twin-note">Each ${measured ? "group of three columns" : "pair of columns"}
+    is one concentration: day 7 as measured (d7), then the transformer's day-12 forecast (${measured ? "fc" : "d12"})${measured ? ", then day 12 as measured (m12)" : ""}.
+    Colour is the readout relative to same-plate controls (blue above, red below; network spikes on a log2 scale).
+    ${state.twin.results.size} conditions, five seeds averaged, computed in this page.${measured
+      ? " The transformer's final fit used all 41 public batches, this one included, so agreement with the measured column"
+        + " is not evidence of accuracy; its held-out evidence is the cross-validation."
+      : ""}</p>`;
+}
+
+function twinLegend() {
+  const stops = [-1, -0.5, -0.2, 0, 0.2, 0.5, 1];
+  return `<div class="legend" style="padding-top:6px"><span>below control</span>${stops.map((v) =>
+    `<span><span class="sw" style="background:${twinColor(v, false)};box-shadow:inset 0 0 0 1px var(--line-2)"></span>${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v)}</span>`).join("")}`
+    + "<span>above control</span></div><p class=\"twin-note\">Scale: contrast with the plate's controls, (x − c) / (|x| + |c|), "
+    + "from −1 to +1. On the network-spike row, ±1.1 log2 shows as ±0.5.</p>";
+}
+
+function twinValues(c) {
+  const manifest = state.twin.model.manifest;
+  const t = state.twin.results.get(c.key);
+  if (!t) return null;
+  const at = (name) => t.twin[manifest.twin_targets.indexOf(name)];
+  const checked = state.check ? state.check.result.rows.get(c.key) : null;
+  const seen = (name) => (checked && checked.profile ? checked.profile[name] : NaN);
+  const rows = [{ label: "network spikes (log2 vs control)", d7: c.features.normalized_ns_d7, d12: at("normalized_ns_d12"),
+    m12: seen("normalized_ns_d12"), log: true }];
+  for (const f of manifest.readouts) {
+    rows.push({ label: READOUT_LABEL[f] || f, d7: c.features[`contrast__${f}__d7`], d12: at(`contrast__${f}__d12`),
+      m12: seen(`contrast__${f}__d12`), log: false });
+  }
+  return rows;
+}
+
+function twinShift(c) {
+  const rows = twinValues(c);
+  if (!rows) return 0;
+  return rows.slice(1).reduce((sum, r) => sum + (Number.isFinite(r.d7) && Number.isFinite(r.d12) ? Math.abs(r.d12 - r.d7) : 0), 0);
+}
+
+function twinColor(v, log) {
+  if (!Number.isFinite(v)) return "var(--s4)";
+  const x = log ? Math.tanh(v / 2) : Math.max(-1, Math.min(1, v));
+  const pct = Math.round(Math.sqrt(Math.abs(x)) * 90);   // square root: modest shifts stay visible
+  return `color-mix(in srgb, ${x >= 0 ? "var(--accent-solid)" : "var(--alert)"} ${pct}%, var(--s1))`;
+}
+
+function twinHeatmap(doses) {
+  const series = doses.map((c) => ({ c, rows: twinValues(c) })).filter((s) => s.rows);
+  if (!series.length) return '<span class="twin-note">No profile for this chemical.</span>';
+  const measured = Boolean(state.check);
+  const cols = measured ? 3 : 2;
+  const labelW = 200, cw = measured ? 19 : 22, gap = 8, ch = 15, top = 40;
+  const W = labelW + series.length * (cols * cw + gap), H = top + series[0].rows.length * ch + 4;
+  let g = "";
+  series.forEach((s, j) => {
+    const x0 = labelW + j * (cols * cw + gap);
+    g += `<text x="${x0 + cols * cw / 2}" y="12" text-anchor="middle">${esc(num(s.c.dose, s.c.dose < 1 ? 2 : 1))} µM</text>`;
+    g += `<text x="${x0 + cw / 2}" y="30" text-anchor="middle">d7</text><text x="${x0 + 1.5 * cw}" y="30" text-anchor="middle">${measured ? "fc" : "d12"}</text>`;
+    if (measured) g += `<text x="${x0 + 2.5 * cw}" y="30" text-anchor="middle">m12</text>`;
+    s.rows.forEach((r, i) => {
+      const y = top + i * ch;
+      const cells = [[0, r.d7, "day 7 measured"], [1, r.d12, "day 12 forecast"]];
+      if (measured) cells.push([2, r.m12, "day 12 measured"]);
+      for (const [k, v, tag] of cells) {
+        g += `<rect x="${x0 + k * cw}" y="${y}" width="${cw - 1}" height="${ch - 1}" rx="1.5" fill="${twinColor(v, r.log)}">`
+          + `<title>${esc(r.label)} · ${esc(num(s.c.dose, 3))} µM · ${tag}: ${num(v, 2)}</title></rect>`;
+      }
+    });
+  });
+  series[0].rows.forEach((r, i) => {
+    g += `<text x="${labelW - 8}" y="${top + i * ch + ch / 2 + 3}" text-anchor="end">${esc(r.label)}</text>`;
+  });
+  return `<div class="chartwrap"><svg viewBox="0 0 ${W} ${H}" width="${W}" role="img" `
+    + `aria-label="Day-7 and forecast day-12 profile by concentration">${g}</svg></div>`;
 }
 
 boot();

@@ -1,0 +1,24 @@
+{
+  "name": "NeuroForecast v3.1 interval study: coverage per culture batch",
+  "written": "2026-10-08",
+  "status": "Fixed before any v3.1 interval was computed; the run records this file's SHA-256 in its output",
+  "question": "The v3 study found batch-mean coverage on target (0.81 at nominal 0.80) but the worst fifth of batches at about 0.58. Can intervals that use each batch's day-5/day-7 information, or a two-level calibration, raise coverage in the worst batches without inflating width?",
+  "disclosure": "Development comparison on the 41 batches of the v3 benchmark, using the locked v3 predictions of the v2 recipe (predictions/v2_incumbent.csv). Not a sealed test. The worst-fifth problem was seen in the v3 results before this protocol was written.",
+  "point_forecast": "v2 recipe (v2_incumbent), its locked inner and outer predictions from the v3 run",
+  "folds": "the v3 outer folds (9) and inner folds (4); every calibration quantity comes from the outer-training dates only",
+  "sigma": "as in v3: Extra Trees on |inner out-of-fold residual| with the v2 sigma columns plus batch context, cross-fitted over the inner folds for calibration scores",
+  "batch_features": "one row per batch, days 5 and 7 only: the 9 v3 batch-context descriptors, the 3 v2 batch covariates, and the batch medians of the plate-control reliability indicators",
+  "methods": {
+    "pooled_scaled": "v2 method: split-conformal quantile of |r|/sigma over calibration conditions",
+    "batch_weighted": "v3 method: the same scores weighted 1/(conditions on the batch)",
+    "batch_adaptive": "scores |r|/(sigma * b), where b is a batch difficulty predicted from the batch features by ridge regression (alpha 10, standardized) on log(median |r|/sigma) of calibration batches; b cross-fitted over inner folds for calibration scores; batch-weighted conformal quantile",
+    "two_level": "per calibration batch, the alpha-level quantile of |r|/sigma; the interval multiplier is the 0.8 conformal quantile of these per-batch quantiles, targeting at least nominal coverage in about 80% of batches"
+  },
+  "levels": [0.8, 0.9],
+  "metrics": ["batch-mean coverage", "worst-fifth batch coverage", "share of batches with coverage >= nominal - 0.1", "mean width"],
+  "success": {
+    "batch_adaptive": "batch-mean coverage within 0.77-0.83 at 0.80, worst-fifth coverage at 0.80 at least 0.05 above batch_weighted, and mean width at most 10% wider",
+    "two_level": "reported as an assurance option: share of batches with coverage >= 0.70 at nominal 0.80, and the width it costs"
+  },
+  "seed": 20261008
+}

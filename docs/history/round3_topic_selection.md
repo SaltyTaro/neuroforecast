@@ -1,3 +1,5 @@
+> **Historical planning record (September 2026), kept for transparency.** It predates both sealed tests and is superseded by the [technical report](../technical_report.md); some expectations here were later withdrawn or failed.
+
 **Working topic selected: NeuroForecast, an early warning tool for later changes in neuronal function.** The public-data selection sprint completed on September 20, 2026 IST. Advance this problem to a bounded validation gate. The current model is an exploratory prototype; its advantage over the strongest small baseline remains uncertain.
 
 The question is concrete: **given day-7 electrical measurements from chemical-exposed neuronal cultures and their matched controls, can we flag substantial changes in the day-12 network-spike readout for chemicals and experiment batches absent from training?** A researcher could use a reliable warning to prioritize follow-up measurements or inspection. Actual savings, safe assay termination, and improved biological decisions still require evidence.
@@ -36,4 +38,4 @@ Other participants can discover these public datasets and topics. Kaggle Writeup
 
 The selected source is rat cortical cultures on MEAs. It is relevant to functional monitoring of neuronal in-vitro systems, including a possible future neural-chip workflow, but it does not validate perfused organ chips, humans, or clinical toxicity. Public cell/toxicology data with a clear connection to organ-chip work can fit the competition's scope; this bridge should be explained explicitly in the eventual Tool & Platform submission.
 
-See [the project brief](neuroforecast_project.md), [full numerical results and reproduction](neuroforecast_selection_results.md), [source catalog](round3_sources.json), and [storage manifest summary](round3_storage_summary.json). All downloaded payloads and generated experimental artifacts are physically on E:.
+See [the project brief](neuroforecast_project.md), [full numerical results and reproduction](../neuroforecast_selection_results.md), [source catalog](round3_sources.json), and storage manifest summary (kept in the run directory). All downloaded payloads and generated experimental artifacts are physically on E:.

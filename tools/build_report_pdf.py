@@ -6,7 +6,9 @@ Needs markdown-it-py and playwright (using the installed Chrome channel). Figure
 from __future__ import annotations
 
 import argparse
+import html
 from pathlib import Path
+import re
 
 from markdown_it import MarkdownIt
 
@@ -15,8 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CSS = """
 @page { size: A4; margin: 18mm 17mm 18mm 17mm; }
 :root { --ink: #0b0b0b; --ink2: #52514e; --rule: #dcdbd6; --tint: #f4f3ef; --accent: #2a78d6; }
-html { font-family: "Segoe UI", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; font-size: 10.2pt; color: var(--ink); }
-body { line-height: 1.45; }
+html { font-family: "Segoe UI", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; font-size: 9.8pt; color: var(--ink); }
+body { line-height: 1.4; }
 h1 { font-size: 17pt; line-height: 1.2; margin: 0 0 6pt; }
 h2 { font-size: 12.5pt; margin: 16pt 0 5pt; padding-top: 4pt; border-top: 1px solid var(--rule); break-after: avoid; }
 h3 { font-size: 10.8pt; margin: 11pt 0 4pt; break-after: avoid; }
@@ -30,17 +32,40 @@ pre code { background: none; padding: 0; }
 table { border-collapse: collapse; width: 100%; margin: 4pt 0 9pt; font-size: 8.8pt; break-inside: avoid; font-variant-numeric: tabular-nums; }
 th, td { border-bottom: 1px solid var(--rule); padding: 3pt 5pt; text-align: left; vertical-align: top; }
 th { color: var(--ink2); font-weight: 600; border-bottom: 1.5px solid #b9b8b1; }
-img { max-width: 100%; display: block; margin: 6pt auto 10pt; break-inside: avoid; }
+figure { margin: 6pt 0 10pt; break-inside: avoid; }
+img { max-width: 100%; max-height: 72mm; width: auto; display: block; margin: 0 auto; }
+figcaption { font-size: 8.4pt; line-height: 1.3; color: var(--ink2); margin: 4pt 6mm 0; text-align: center; }
+figcaption b { color: var(--ink); font-weight: 650; }
 hr { border: none; border-top: 1px solid var(--rule); margin: 10pt 0; }
 strong { font-weight: 650; }
 """
 
 
+FIGURE = re.compile(r'<p><img src="([^"]+)" alt="([^"]*)" /></p>')
+
+
+def number_figures(body: str) -> str:
+    """Each image paragraph becomes a numbered figure whose caption is the image's alt text."""
+    count = 0
+
+    def figure(match: re.Match) -> str:
+        nonlocal count
+        count += 1
+        src, alt = match.groups()
+        return f'<figure><img src="{src}" alt="{alt}" /><figcaption><b>Figure {count}.</b> {alt}</figcaption></figure>'
+
+    return FIGURE.sub(figure, body)
+
+
 def render(markdown_path: Path) -> str:
     md = MarkdownIt("commonmark", {"html": False}).enable("table")
-    body = md.render(markdown_path.read_text(encoding="utf-8"))
+    text = markdown_path.read_text(encoding="utf-8")
+    body = number_figures(md.render(text))
+    # Chrome writes the document title into the PDF's metadata.
+    title = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), "NeuroForecast technical report")
     base = markdown_path.parent.resolve().as_uri() + "/"
-    return f"<!doctype html><html lang='en'><head><meta charset='utf-8'><base href='{base}'><style>{CSS}</style></head><body>{body}</body></html>"
+    return (f"<!doctype html><html lang='en'><head><meta charset='utf-8'><title>{html.escape(title)}</title>"
+            f"<base href='{base}'><style>{CSS}</style></head><body>{body}</body></html>")
 
 
 def main() -> None:

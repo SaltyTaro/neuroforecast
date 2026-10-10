@@ -1,0 +1,18 @@
+{
+  "locked_utc": "2026-10-07T17:07:08.471190+00:00",
+  "protocol_sha256": "034a5bd7309e5afe9f87393759f712f0904703dd0c2cec2231cebefc0fa48349",
+  "prepared_manifest_sha256": "9e533493adc14d9d89b4b2cc606c7c920877f6cc5fcaaf3b7351c6a39292dea8",
+  "code": {
+    "neuroforecast_v3_data.py": "22a2f8761c7b635126ed227b72bdd66ef47773e45509120e5e39704509ee263f",
+    "neuroforecast_v3_pct.py": "7f8ceb2c5d2e60caa928c6fb3ebd454afe2844cc14fabadef036cbb88c094ca1",
+    "neuroforecast_v3_run.py": "b8b8d72dd50a3aeea312cb675aa2bee4014a500dfd2d125060eab85d069adb96",
+    "neuroforecast_v3_analyze.py": "a23635dfb430f744edbb6a324da92aac23c8e266c60ce98d9327f3bf64809023",
+    "neuroforecast_v2.py": "7f7a4935d8606fefd84b66f1379b64f2fccf23b4fc1d783414525aae0f202550",
+    "external_nfa_intake.py": "35bc5e79183ea924066bcce7aec5d0df2532dad5888fc90b4ec4c7305193ab4f",
+    "neuroforecast_data.py": "dcb6910646c111adee45c4278177bf928cede4311238d07a9b5f132bc7782221",
+    "neuroforecast_gate.py": "9c25616ab76919434aed5fbb08526142dc50810d426e1cc6b777112e93ab4e7b",
+    "neuroforecast_representation.py": "af415c1887920644da985d94774961b895ffa823e43bf3c2728f51b8094cea7d",
+    "neuroforecast_benchmark.py": "37634dea12596666d6c582b099d8e7cf62cb7792a958f3b3845aa6dd90d10d41"
+  },
+  "outer_predictions_before_lock": 0
+}

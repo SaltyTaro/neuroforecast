@@ -1,0 +1,6 @@
+[Parallel(n_jobs=16)]: Using backend LokyBackend with 16 concurrent workers.
+[Parallel(n_jobs=16)]: Done  40 tasks      | elapsed:   13.6s
+[Parallel(n_jobs=16)]: Done 160 tasks      | elapsed:   44.9s
+[Parallel(n_jobs=16)]: Done 288 tasks      | elapsed:   53.8s
+[Parallel(n_jobs=16)]: Done 450 out of 450 | elapsed:  1.0min finished
+{"stage": "tabular", "candidates": ["persistence_day7", "control_reference", "v2_incumbent", "et_small_ctx", "et_full_ctx", "et_small_chem", "ridge_full_ctx", "lgbm_small_ctx", "lgbm_full_ctx", "mlp_full_ctx"], "splits": 45, "seconds": 62.15003690001322}

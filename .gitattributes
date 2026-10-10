@@ -14,3 +14,10 @@ evaluation/v2_prepared/** -text
 evaluation/v2_intake/** -text
 evaluation/v2_posthoc/** -text
 evaluation/v2_reference/** -text
+# The v3 model study's hash-locked code, protocol and evidence are stored exactly as locked (LF).
+tools/neuroforecast_v3_*.py -text
+experiments/neuroforecast_v3_protocol.json -text
+evaluation/v3/** -text
+# Example inputs whose SHA-256 the admission-record test fixtures record keep their exact bytes (CRLF).
+app/examples/v2/external_20160120_day5_day7.csv -text
+app/examples/v2/record_*_checked.json -text

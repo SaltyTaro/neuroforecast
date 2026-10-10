@@ -1,0 +1,30 @@
+{"candidate": "pct_no_context", "outer": 0, "level": "outer", "inner": -1, "elapsed": 159.6}
+{"candidate": "pct_no_context", "outer": 1, "level": "outer", "inner": -1, "elapsed": 315.8}
+{"candidate": "pct_no_context", "outer": 2, "level": "outer", "inner": -1, "elapsed": 472.4}
+{"candidate": "pct_no_context", "outer": 3, "level": "outer", "inner": -1, "elapsed": 620.0}
+{"candidate": "pct_no_context", "outer": 4, "level": "outer", "inner": -1, "elapsed": 784.1}
+{"candidate": "pct_no_context", "outer": 5, "level": "outer", "inner": -1, "elapsed": 946.3}
+{"candidate": "pct_no_context", "outer": 6, "level": "outer", "inner": -1, "elapsed": 1126.6}
+{"candidate": "pct_no_context", "outer": 7, "level": "outer", "inner": -1, "elapsed": 1273.0}
+{"candidate": "pct_no_context", "outer": 8, "level": "outer", "inner": -1, "elapsed": 1434.9}
+{"stage": "pct", "candidate": "pct_no_context", "seconds": 1438.6109069999948}
+{"candidate": "pct_no_relations", "outer": 0, "level": "outer", "inner": -1, "elapsed": 146.8}
+{"candidate": "pct_no_relations", "outer": 1, "level": "outer", "inner": -1, "elapsed": 300.9}
+{"candidate": "pct_no_relations", "outer": 2, "level": "outer", "inner": -1, "elapsed": 458.5}
+{"candidate": "pct_no_relations", "outer": 3, "level": "outer", "inner": -1, "elapsed": 605.3}
+{"candidate": "pct_no_relations", "outer": 4, "level": "outer", "inner": -1, "elapsed": 765.9}
+{"candidate": "pct_no_relations", "outer": 5, "level": "outer", "inner": -1, "elapsed": 927.8}
+{"candidate": "pct_no_relations", "outer": 6, "level": "outer", "inner": -1, "elapsed": 1103.7}
+{"candidate": "pct_no_relations", "outer": 7, "level": "outer", "inner": -1, "elapsed": 1249.7}
+{"candidate": "pct_no_relations", "outer": 8, "level": "outer", "inner": -1, "elapsed": 1408.2}
+{"stage": "pct", "candidate": "pct_no_relations", "seconds": 1411.8640212000173}
+{"candidate": "pct_no_aux", "outer": 0, "level": "outer", "inner": -1, "elapsed": 137.5}
+{"candidate": "pct_no_aux", "outer": 1, "level": "outer", "inner": -1, "elapsed": 273.2}
+{"candidate": "pct_no_aux", "outer": 2, "level": "outer", "inner": -1, "elapsed": 423.2}
+{"candidate": "pct_no_aux", "outer": 3, "level": "outer", "inner": -1, "elapsed": 558.8}
+{"candidate": "pct_no_aux", "outer": 4, "level": "outer", "inner": -1, "elapsed": 704.4}
+{"candidate": "pct_no_aux", "outer": 5, "level": "outer", "inner": -1, "elapsed": 864.6}
+{"candidate": "pct_no_aux", "outer": 6, "level": "outer", "inner": -1, "elapsed": 1014.9}
+{"candidate": "pct_no_aux", "outer": 7, "level": "outer", "inner": -1, "elapsed": 1166.5}
+{"candidate": "pct_no_aux", "outer": 8, "level": "outer", "inner": -1, "elapsed": 1301.6}
+{"stage": "pct", "candidate": "pct_no_aux", "seconds": 1305.2904646000243}

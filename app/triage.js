@@ -546,8 +546,8 @@ function asInteger(value, column) {
   return n;
 }
 
-/* Mirrors neuroforecast_triage_v2.normalize: days 5 and 7 only, both required. */
-export function prepareRowsV2(parsed, readouts) {
+/* Shared reader for the well-level schema: required columns, typed rows. */
+function wellRowsV2(parsed, readouts) {
   const required = ["date", "Plate.SN", "well", "DIV", "trt", "dose", "units", ...readouts];
   const absent = required.filter((column) => !parsed.header.includes(column));
   if (absent.length) {
@@ -575,7 +575,23 @@ export function prepareRowsV2(parsed, readouts) {
     return row;
   });
   if (!rows.length) throw new Error("The file has no recordings.");
+  return rows;
+}
 
+function auditRowsV2(rows) {
+  const units = new Set(rows.map((r) => r.units));
+  if (units.size !== 1 || !units.has("uM")) throw new Error(`Expected concentrations in uM, found ${[...units].join(", ")}.`);
+  const seen = new Set();
+  for (const r of rows) {
+    const key = `${r.date}|${r.plate}|${r.well}|${r.DIV}`;
+    if (seen.has(key)) throw new Error(`Duplicate recording for plate ${r.plate} well ${r.well} on day ${r.DIV}. Audit duplicates before triage.`);
+    seen.add(key);
+  }
+}
+
+/* Mirrors neuroforecast_triage_v2.normalize: days 5 and 7 only, both required. */
+export function prepareRowsV2(parsed, readouts) {
+  const rows = wellRowsV2(parsed, readouts);
   const days = new Set(rows.map((r) => r.DIV));
   const other = [...days].filter((d) => !V2_DAYS.includes(d)).sort((a, b) => a - b);
   if (other.length) {
@@ -585,14 +601,15 @@ export function prepareRowsV2(parsed, readouts) {
   if (!days.has(5) || !days.has(7)) {
     throw new Error(`The v2 model needs both day-5 and day-7 recordings; this file has day-${[...days][0]} recordings only.`);
   }
-  const units = new Set(rows.map((r) => r.units));
-  if (units.size !== 1 || !units.has("uM")) throw new Error(`Expected concentrations in uM, found ${[...units].join(", ")}.`);
-  const seen = new Set();
-  for (const r of rows) {
-    const key = `${r.date}|${r.plate}|${r.well}|${r.DIV}`;
-    if (seen.has(key)) throw new Error(`Duplicate recording for plate ${r.plate} well ${r.well} on day ${r.DIV}. Audit duplicates before triage.`);
-    seen.add(key);
-  }
+  auditRowsV2(rows);
+  return { rows };
+}
+
+/* Mirrors neuroforecast_triage_v2.normalize_day12: the day-12 rows of a later file, read only for the check. */
+export function prepareRowsDay12(parsed, readouts) {
+  const rows = wellRowsV2(parsed, readouts).filter((r) => r.DIV === 12);
+  if (!rows.length) throw new Error("The day-12 file holds no day-12 recordings.");
+  auditRowsV2(rows);
   return { rows };
 }
 
@@ -630,6 +647,37 @@ function observedDayV2(rows, day, constants) {
     }
     summary.normalized = Math.log2(pdMean(relative));
     out.set(key, summary);
+  }
+  return out;
+}
+
+/* The sealed test's day-12 truth: neuroforecast_data.build_targets (finite targets only) and
+   neuroforecast_gate.outcome_quality (per case, the lowest day-12 control median of its wells' plates).
+   The profile mirrors neuroforecast_v3_data.twin_targets at day 12. Never an input to a forecast. */
+export const DAY12_USABLE_MIN = 5;
+
+export function day12TruthV2(rows, constants) {
+  const late = rows.filter((r) => r.DIV === 12);
+  const observed = observedDayV2(late, 12, constants);
+  const controlNs = new Map();
+  for (const row of late) if (row.dose === 0) push(controlNs, plateKey(row), row.values["ns.n"]);
+  const plateMedian = new Map([...controlNs].map(([key, values]) => [key, pdMedian(values)]));
+  const reference = new Map();
+  for (const row of late) {
+    if (!treated(row)) continue;
+    const m = plateMedian.has(plateKey(row)) ? plateMedian.get(plateKey(row)) : NaN;
+    const key = caseKey(row);
+    const prior = reference.has(key) ? reference.get(key) : NaN;
+    reference.set(key, Number.isNaN(prior) ? m : Number.isNaN(m) ? prior : Math.min(prior, m));
+  }
+  const out = new Map();
+  for (const [key, s] of observed) {
+    if (!Number.isFinite(s.normalized)) continue;
+    const ref = reference.has(key) ? reference.get(key) : NaN;
+    const profile = { normalized_ns_d12: s.normalized };
+    for (const field of constants.readouts) profile[`contrast__${field}__d12`] = contrastV2(s.raw[field], s.control[field]);
+    out.set(key, { date: s.date, identity: s.identity, dose: s.dose, measured: s.normalized, reference: ref,
+      usable: ref >= DAY12_USABLE_MIN, profile });
   }
   return out;
 }

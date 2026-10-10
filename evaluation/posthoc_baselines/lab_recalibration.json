@@ -1,0 +1,174 @@
+{
+  "status": "post hoc, descriptive; the external set was already scored once",
+  "rule": {
+    "min_history_batches": 2,
+    "history": "expanding (primary); last 6 batches (secondary)",
+    "scale": "split-conformal quantile of |measured - forecast| / difficulty over the history's scored conditions"
+  },
+  "levels": {
+    "0.8": {
+      "shipped_scale": 1.5063963748385074,
+      "expanding": {
+        "batches_evaluated": 22,
+        "conditions_evaluated": 901,
+        "shipped": {
+          "nominal": 0.8,
+          "pooled": 0.6936736958934517,
+          "batch_mean": 0.7051531801531802,
+          "worst_fifth": 0.3375,
+          "share_of_batches_within_0.1": 0.5909090909090909,
+          "mean_width": 1.8881482201277382
+        },
+        "lab": {
+          "nominal": 0.8,
+          "pooled": 0.8501664816870145,
+          "batch_mean": 0.8591824841824841,
+          "worst_fifth": 0.5529761904761905,
+          "share_of_batches_within_0.1": 0.7727272727272727,
+          "mean_width": 3.0559399003380943
+        },
+        "oracle_constant_same_width": {
+          "factor": 1.618485173865933,
+          "nominal": 0.8,
+          "pooled": 0.8623751387347391,
+          "batch_mean": 0.8731268731268731,
+          "worst_fifth": 0.6476190476190476,
+          "share_of_batches_within_0.1": 0.8636363636363636,
+          "mean_width": 3.0559399003380947
+        },
+        "lab_scale_first": 0.9987363382038825,
+        "lab_scale_last": 1.97289548559191,
+        "lab_scale_range": [
+          0.9987363382038825,
+          2.8893512372554695
+        ]
+      },
+      "last_6_batches": {
+        "batches_evaluated": 22,
+        "conditions_evaluated": 901,
+        "shipped": {
+          "nominal": 0.8,
+          "pooled": 0.6936736958934517,
+          "batch_mean": 0.7051531801531802,
+          "worst_fifth": 0.3375,
+          "share_of_batches_within_0.1": 0.5909090909090909,
+          "mean_width": 1.8881482201277382
+        },
+        "lab": {
+          "nominal": 0.8,
+          "pooled": 0.8013318534961155,
+          "batch_mean": 0.8091824841824843,
+          "worst_fifth": 0.5321428571428571,
+          "share_of_batches_within_0.1": 0.7272727272727273,
+          "mean_width": 2.6798200360249913
+        },
+        "oracle_constant_same_width": {
+          "factor": 1.4192847825493777,
+          "nominal": 0.8,
+          "pooled": 0.8157602663706992,
+          "batch_mean": 0.8278554778554779,
+          "worst_fifth": 0.5761904761904761,
+          "share_of_batches_within_0.1": 0.7272727272727273,
+          "mean_width": 2.6798200360249913
+        },
+        "lab_scale_first": 0.9987363382038825,
+        "lab_scale_last": 1.1602811147607361,
+        "lab_scale_range": [
+          0.9987363382038825,
+          2.931144974444284
+        ]
+      },
+      "oracle_constant_nominal": {
+        "factor": 1.316680073603452,
+        "nominal": 0.8,
+        "pooled": 0.8013318534961155,
+        "batch_mean": 0.8144189144189145,
+        "worst_fifth": 0.5428571428571428,
+        "share_of_batches_within_0.1": 0.7272727272727273,
+        "mean_width": 2.4860871374520177
+      }
+    },
+    "0.9": {
+      "shipped_scale": 2.0698617384777385,
+      "expanding": {
+        "batches_evaluated": 22,
+        "conditions_evaluated": 901,
+        "shipped": {
+          "nominal": 0.9,
+          "pooled": 0.806881243063263,
+          "batch_mean": 0.8201714951714951,
+          "worst_fifth": 0.5529761904761905,
+          "share_of_batches_within_0.1": 0.6818181818181818,
+          "mean_width": 2.594407303878586
+        },
+        "lab": {
+          "nominal": 0.9,
+          "pooled": 0.9278579356270811,
+          "batch_mean": 0.932034632034632,
+          "worst_fifth": 0.7178571428571429,
+          "share_of_batches_within_0.1": 0.9545454545454546,
+          "mean_width": 4.041183847039361
+        },
+        "oracle_constant_same_width": {
+          "factor": 1.5576520467691688,
+          "nominal": 0.9,
+          "pooled": 0.9311875693673696,
+          "batch_mean": 0.9375541125541126,
+          "worst_fifth": 0.7946428571428572,
+          "share_of_batches_within_0.1": 0.9090909090909091,
+          "mean_width": 4.041183847039361
+        },
+        "lab_scale_first": 1.2863309746704614,
+        "lab_scale_last": 2.888929525890086,
+        "lab_scale_range": [
+          1.2863309746704614,
+          3.8259107394384566
+        ]
+      },
+      "last_6_batches": {
+        "batches_evaluated": 22,
+        "conditions_evaluated": 901,
+        "shipped": {
+          "nominal": 0.9,
+          "pooled": 0.806881243063263,
+          "batch_mean": 0.8201714951714951,
+          "worst_fifth": 0.5529761904761905,
+          "share_of_batches_within_0.1": 0.6818181818181818,
+          "mean_width": 2.594407303878586
+        },
+        "lab": {
+          "nominal": 0.9,
+          "pooled": 0.9034406215316315,
+          "batch_mean": 0.9075757575757575,
+          "worst_fifth": 0.7,
+          "share_of_batches_within_0.1": 0.9090909090909091,
+          "mean_width": 3.5121071218431354
+        },
+        "oracle_constant_same_width": {
+          "factor": 1.3537223382745673,
+          "nominal": 0.9,
+          "pooled": 0.8901220865704772,
+          "batch_mean": 0.9007409257409258,
+          "worst_fifth": 0.6886904761904762,
+          "share_of_batches_within_0.1": 0.8181818181818182,
+          "mean_width": 3.5121071218431354
+        },
+        "lab_scale_first": 1.2863309746704614,
+        "lab_scale_last": 1.5488874988724262,
+        "lab_scale_range": [
+          1.2863309746704614,
+          3.843113110642959
+        ]
+      },
+      "oracle_constant_nominal": {
+        "factor": 1.4065148710032789,
+        "nominal": 0.9,
+        "pooled": 0.9012208657047724,
+        "batch_mean": 0.911130536130536,
+        "worst_fifth": 0.7196428571428571,
+        "share_of_batches_within_0.1": 0.8181818181818182,
+        "mean_width": 3.649072454344754
+      }
+    }
+  }
+}

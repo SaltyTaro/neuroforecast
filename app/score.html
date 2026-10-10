@@ -1,0 +1,246 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%232a78d6%27/%3E%3Ccircle cx=%275%27 cy=%278%27 r=%271.6%27 fill=%27white%27/%3E%3Ccircle cx=%2711%27 cy=%278%27 r=%271.6%27 fill=%27white%27/%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NeuroForecast Harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --s1:#fcfcfd; --s2:#f9f9fb; --s3:#f0f0f3; --s4:#e8e8ec; --s6:#d9d9e0; --s7:#cdced6;
+    --ink:#1c2024; --ink-2:#60646c;
+    --line:#0000000f; --line-2:#00000022;
+    --accent:#0d74ce; --accent-solid:#0090ff; --accent-wash:#e6f4fe;
+    --ok:#0e7c66; --caution:#a25a00; --caution-wash:#fbeedc; --alert:#a32a22; --alert-wash:#fbe9e7;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --hair:1px;
+    color-scheme:light;
+  }
+  @media (min-resolution:192dpi){ :root{ --hair:.5px } }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --s1:#111113; --s2:#18191b; --s3:#212225; --s4:#272a2d; --s6:#363a3f; --s7:#43484e;
+      --ink:#edeef0; --ink-2:#b0b4ba;
+      --line:#ffffff0d; --line-2:#ffffff1f;
+      --accent:#70b8ff; --accent-solid:#0090ff; --accent-wash:#0d2847;
+      --ok:#3fae95; --caution:#d79338; --caution-wash:#2e2415; --alert:#e0706a; --alert-wash:#301b1a;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --s1:#111113; --s2:#18191b; --s3:#212225; --s4:#272a2d; --s6:#363a3f; --s7:#43484e;
+    --ink:#edeef0; --ink-2:#b0b4ba;
+    --line:#ffffff0d; --line-2:#ffffff1f;
+    --accent:#70b8ff; --accent-solid:#0090ff; --accent-wash:#0d2847;
+    --ok:#3fae95; --caution:#d79338; --caution-wash:#2e2415; --alert:#e0706a; --alert-wash:#301b1a;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--s2);color:var(--ink);font-family:var(--sans);font-size:13px;line-height:1.5;
+    font-variant-numeric:lining-nums tabular-nums slashed-zero;-webkit-font-smoothing:antialiased}
+  h1,h2{margin:0;font-weight:590;letter-spacing:-.012em;text-wrap:balance}
+  h1{font-size:15px}
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);font-family:var(--mono);font-weight:500}
+  p{margin:0}
+  a{color:var(--accent)}
+  .run{background:var(--s1);border-bottom:var(--hair) solid var(--line-2)}
+  .run-in{max-width:1100px;margin:0 auto;padding:12px 16px}
+  .run-top{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
+  .sub{font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+  .seg{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+  button,label.file,a.btn{font:inherit;font-size:12px;font-weight:510;font-family:var(--mono);background:transparent;color:var(--ink-2);
+    border:var(--hair) solid var(--line-2);border-radius:5px;padding:3px 9px;cursor:pointer;text-decoration:none}
+  button:hover,label.file:hover,a.btn:hover{color:var(--ink);background:var(--s3)}
+  button:focus-visible,label.file:focus-within,a.btn:focus-visible{outline:2px solid var(--accent-solid);outline-offset:1px}
+  input[type=file]{position:absolute;width:1px;height:1px;opacity:0}
+  main{max-width:1100px;margin:0 auto;padding:18px 16px 56px;display:flex;flex-direction:column;gap:24px}
+  .block{display:flex;flex-direction:column;gap:9px}
+  .cap{color:var(--ink-2);font-size:12px;max-width:80ch}
+  .kpi{display:flex;flex-wrap:wrap;gap:10px 28px;font-family:var(--mono)}
+  .kpi div{display:flex;flex-direction:column}
+  .kpi b{font-size:20px;font-weight:500;color:var(--ink)}
+  .kpi span{font-size:11px;color:var(--ink-2)}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:12px}
+  th,td{text-align:left;padding:5px 9px;white-space:nowrap;border-bottom:var(--hair) solid var(--line)}
+  thead th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);font-weight:500;border-bottom:var(--hair) solid var(--line-2)}
+  td.n{font-family:var(--mono);text-align:right}
+  td.good{color:var(--ok)} td.bad{color:var(--alert)}
+  tr.ref td{font-weight:600}
+  svg text{font-family:var(--mono);font-size:9.5px;fill:var(--ink-2)}
+  #chart{display:block;width:100%;max-width:1068px;height:auto}
+  .legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--mono);font-size:10px;color:var(--ink-2);align-items:center}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+  .err{border-left:2px solid var(--alert);background:var(--alert-wash);color:var(--alert);padding:9px 12px;border-radius:0 4px 4px 0;font-size:12px}
+  .note{border-left:2px solid var(--caution);background:var(--caution-wash);padding:9px 12px;border-radius:0 4px 4px 0;font-size:12px;max-width:90ch}
+  footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-2)}
+</style>
+
+<header class="run">
+  <div class="run-in">
+    <div class="run-top">
+      <div><h1>NeuroForecast Harness</h1> <span class="sub">score a day-12 forecast on 41 held-out culture batches</span></div>
+      <div class="seg">
+        <button id="example">score the v2 example</button>
+        <label class="file"><input type="file" id="upload" accept=".csv,text/csv"> open predictions CSV</label>
+        <a class="btn" href="../evaluation/harness/folds.csv" download>folds.csv</a>
+        <a class="btn" href="./">back to the tool</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="block">
+    <h2>What this scores</h2>
+    <p class="cap">Every usable condition of the 41 public EPA network-formation-assay batches (2,243 conditions, 243 chemicals),
+      on the reference split: whole culture batches held out, and every chemical tested on them purged from training. Folds
+      still mix years: trained only on the other period, the same model errs about 10% more (report §6.3). Labels are public,
+      so a score here is self-reported: a shared yardstick, not a blind leaderboard. Upload a CSV with <code>case_id</code> and <code>prediction</code> (log2 day-12 network
+      spikes relative to same-plate controls), and optionally <code>low</code> and <code>high</code> for an 80% interval.
+      Case IDs, inputs and folds are in the repository (<code>evaluation/v3/prepared/</code>, <code>evaluation/harness/folds.csv</code>).
+      Nothing is uploaded: scoring runs in this page.</p>
+    <div class="note" id="study"></div>
+  </section>
+
+  <div id="error" class="err" hidden></div>
+
+  <section class="block" id="result" hidden>
+    <h2 id="result-head">Result</h2>
+    <div class="kpi" id="kpi"></div>
+    <div class="tablewrap"><table id="against"><thead></thead><tbody></tbody></table></div>
+    <p class="cap">Error is date-macro MAE: absolute error averaged over doses within a chemical, then over chemicals within a
+      batch, then equally over batches. Intervals are batch-paired bootstraps (10,000 resamples) of your error minus the
+      baseline's; below zero means you are better. The Python scorer (<code>tools/score_predictions.py</code>) gives the same
+      errors and batch counts; its bootstrap uses a different random stream, so intervals can differ in the third decimal.</p>
+    <div id="intervals"></div>
+  </section>
+
+  <section class="block" id="per-batch" hidden>
+    <h2>Every batch</h2>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--accent-solid)"></span>your forecast</span>
+      <span><span class="dot" style="background:#eb6834"></span>carry day 7 forward</span>
+      <span><span class="dot" style="background:var(--s7)"></span>calibrated day-7 curve</span>
+    </div>
+    <svg id="chart"></svg>
+    <p class="cap">One column per held-out batch, sorted by your error. The spread between batches is the batch effect a split
+      that shares batches would hide.</p>
+  </section>
+</main>
+
+<footer>EPA network formation assay, refinement release (USEPA/CompTox-DNT-NFA-Refinement, commit 01adf3e). Rat cortical cultures on
+  microelectrode arrays. <a href="https://github.com/SaltyTaro/neuroforecast">github.com/SaltyTaro/neuroforecast</a></footer>
+
+<script type="module">
+import { loadBenchmark, scoreForecast } from "./score.js";
+
+const el = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+const f3 = (x) => (Number.isFinite(x) ? x.toFixed(3) : "—");
+const signed = (x) => (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(3);
+const NAMES = { carry_forward: "carry day 7 forward", calibrated_day7: "calibrated day-7 curve", v2: "v2 (shipped)",
+  v2_plus_transformer: "v2 + transformer average" };
+let cases = null;
+
+async function text(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+  return response.text();
+}
+
+async function boot() {
+  try {
+    cases = loadBenchmark(await text("../evaluation/v3/prepared/cases.csv"), await text("../evaluation/harness/reference_predictions.csv"));
+    study(JSON.parse(await text("../evaluation/harness/split_study/summary.json")));
+  } catch (error) {
+    fail("Could not load the benchmark: " + error.message);
+    return;
+  }
+  el("example").addEventListener("click", async () => run(await text("../examples/harness/v2_reference_predictions.csv"), "the v2 example"));
+  el("upload").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    file.text().then((t) => run(t, file.name));
+    event.target.value = "";
+  });
+  if (location.hash === "#example") el("example").click();
+}
+
+function study(s) {
+  const d = s.designs, et = "extra_trees_v2";
+  const pct = (x) => `${Math.round(100 * x)}%`;
+  el("study").innerHTML = `<b>Why the split matters.</b> In a study whose protocol was public before it ran (after a disclosed probe), the same Extra Trees
+    model scored ${f3(d.random_condition.date_macro_mae[et])} with random conditions held out, ${f3(d.chemical.date_macro_mae[et])}
+    with chemicals held out, and ${f3(d.batch_chemical.date_macro_mae[et])} here: weaker splits understate
+    the error by ${pct(d.random_condition.optimism[et])} and ${pct(d.chemical.optimism[et])}. Their 80% intervals covered
+    ${f3(d.random_condition.transfer_coverage[et]["0.8"].pooled)} and ${f3(d.chemical.transfer_coverage[et]["0.8"].pooled)} of
+    outcomes on new batches. Score your model here before you report it.`;
+}
+
+function fail(message) {
+  el("error").textContent = message;
+  el("error").hidden = false;
+}
+
+function run(predictions, source) {
+  el("error").hidden = true;
+  let r;
+  try {
+    r = scoreForecast(cases, predictions);
+  } catch (error) {
+    fail(`${source}: ${error.message}`);
+    el("result").hidden = el("per-batch").hidden = true;
+    return;
+  }
+  el("result").hidden = el("per-batch").hidden = false;
+  el("result-head").textContent = `Result: ${source}`;
+  el("kpi").innerHTML = [
+    [f3(r.date_macro_mae), "your date-macro MAE"], [String(r.batches), "batches"], [String(r.conditions), "conditions"],
+    [f3(r.worst_batch_mae), "worst batch"],
+  ].map(([v, k]) => `<div><b>${v}</b><span>${k}</span></div>`).join("");
+  el("against").tHead.innerHTML = "<tr><th>Baseline</th><th>its MAE</th><th>your difference</th><th>95% interval</th><th>batches you win</th></tr>";
+  el("against").tBodies[0].innerHTML = Object.entries(r.against).map(([name, a]) => {
+    const cls = a.high < 0 ? "good" : a.low > 0 ? "bad" : "";
+    return `<tr><td>${NAMES[name]}</td><td class="n">${f3(a.date_macro_mae)}</td><td class="n ${cls}">${signed(a.difference)}</td>`
+      + `<td class="n">[${signed(a.low)}, ${signed(a.high)}]</td><td class="n">${a.batches_better} of ${a.batches}</td></tr>`;
+  }).join("");
+  const c = r.intervals;
+  el("intervals").innerHTML = c ? `<div class="kpi">${[
+    [f3(c.pooled), "coverage, all conditions"], [f3(c.batch_mean), "coverage, batch mean"],
+    [f3(c.worst_fifth), "coverage, worst fifth of batches"], [`${Math.round(100 * c["share_of_batches_within_0.1"])}%`, "batches covering at least 70%"],
+    [c.mean_width.toFixed(2), "mean width"],
+  ].map(([v, k]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>` : '<p class="cap">No <code>low</code>/<code>high</code> columns: interval coverage not scored.</p>';
+  chart(r);
+}
+
+function chart(r) {
+  const yours = r.per_batch, carry = r.against.carry_forward.per_batch, curve = r.against.calibrated_day7.per_batch;
+  const dates = Object.keys(yours).sort((a, b) => yours[a] - yours[b]);
+  const W = 1068, H = 260, P = { t: 12, r: 12, b: 40, l: 40 };
+  const top = Math.max(...dates.flatMap((d) => [yours[d], carry[d], curve[d]]));
+  const hi = Math.ceil(top * 2) / 2;
+  const x = (i) => P.l + ((i + 0.5) / dates.length) * (W - P.l - P.r);
+  const y = (v) => H - P.b - (v / hi) * (H - P.t - P.b);
+  let g = "";
+  for (let v = 0; v <= hi + 1e-9; v += 0.5) {
+    g += `<line x1="${P.l}" y1="${y(v)}" x2="${W - P.r}" y2="${y(v)}" stroke="var(--line)"></line>`;
+    g += `<text x="${P.l - 5}" y="${y(v) + 3}" text-anchor="end">${v.toFixed(1)}</text>`;
+  }
+  dates.forEach((d, i) => {
+    const label = `${d}: you ${f3(yours[d])}, carry-forward ${f3(carry[d])}, calibrated curve ${f3(curve[d])}`;
+    g += `<line x1="${x(i)}" y1="${y(Math.min(yours[d], carry[d], curve[d]))}" x2="${x(i)}" y2="${y(Math.max(yours[d], carry[d], curve[d]))}" stroke="var(--s6)"></line>`;
+    g += `<circle cx="${x(i)}" cy="${y(curve[d])}" r="3" fill="var(--s7)"><title>${label}</title></circle>`;
+    g += `<circle cx="${x(i)}" cy="${y(carry[d])}" r="3" fill="#eb6834"><title>${label}</title></circle>`;
+    g += `<circle cx="${x(i)}" cy="${y(yours[d])}" r="3.6" fill="var(--accent-solid)"><title>${label}</title></circle>`;
+    if (i % 4 === 0) g += `<text x="${x(i)}" y="${H - P.b + 14}" text-anchor="middle">${esc(d)}</text>`;
+  });
+  g += `<text transform="translate(11 ${(P.t + H - P.b) / 2}) rotate(-90)" text-anchor="middle">batch MAE (log2)</text>`;
+  g += `<text x="${(P.l + W - P.r) / 2}" y="${H - 6}" text-anchor="middle">held-out batch (sorted by your error)</text>`;
+  el("chart").outerHTML = `<svg id="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Per-batch error">${g}</svg>`;
+}
+
+boot();
+</script>

@@ -1,0 +1,284 @@
+{
+  "name": "NeuroForecast v3 development study",
+  "version": "1.0",
+  "written": "2026-10-07",
+  "status": "LOCKED by lock_v3.json (protocol SHA-256 recorded there) before any outer-fold prediction existed",
+  "disclosure": [
+    "Both earlier sealed tests are spent: the 3-date reserve (scored 2026-09-21) and the 28-date external set (scored 2026-09-27). The author has read outcomes on all 45 dates.",
+    "This is therefore a development comparison under nested, chemical-purged, batch-grouped cross-validation. It is not a sealed test, and no v3 number may be described as one.",
+    "Engineering checks before the lock (code runs, losses fall, training length, model width) used only inner folds of outer fold 0. No outer-fold prediction of any v3 candidate existed before the lock.",
+    "Pre-lock engineering checks, all on the 4 inner folds of outer fold 0 (date-macro MAE on its usable cases; persistence 0.981, v2 recipe 0.745, Extra Trees + batch context 0.752, + dose-series context 0.745): PCT 1 seed: d64/L2 0.791, d128/L3 0.764 then 0.783 on a rerun (seed noise ~0.02), + condition features 0.760, d128/L4/200 epochs 0.748, + aux weight 1.0 0.749; 3 seeds: L4 0.772, L4 + aux 1.0 0.753 and 0.747 on a rerun (GPU nondeterminism, removed before the lock), with weight averaging (EMA) 0.750 (not used); a 50/50 blend of the last PCT with the v2 recipe scored 0.713. The ens_v2_pct candidate was declared before that blend was computed.",
+    "TabPFN uses the v2 weights (Hollmann et al., Nature 2025), which download without a licence login; later TabPFN versions require an interactive licence acceptance that was not performed."
+  ],
+  "seed": 20261007,
+  "data": {
+    "source": "USEPA/CompTox-DNT-NFA-Refinement @01adf3e, All_DIV_Data.Rdata (re-processing of the same recordings as the EPA archive; no cv.time/cv.network; adds mi)",
+    "dates": "all 45 (17 archive dates + 28 external dates)",
+    "case": "date/identity/dose, identity resolved to DSSTox as in v2; eligibility exactly as v2 (at least two replicate wells with finite day-5 and day-7 reference values, finite day-12 target)",
+    "target": "v2 target: day-12 log2 replicate-mean (ns.n+1)/(same-plate day-12 control median ns.n+1)",
+    "usable": "day-12 plate control median ns.n >= 5 (v2 rule); every score is on usable cases",
+    "inputs_tabular": "the v2 day-5/day-7 feature table plus batch-context descriptors (neuroforecast_v3_data.CONTEXT) and dose-series descriptors of the same batch and chemical (neuroforecast_v3_run.CHEMICAL), all from days 5 and 7 only",
+    "inputs_pct": "per-well day-5 and day-7 readouts of every well of the test batch (controls and treated), well position; no identity, date or plate label",
+    "labels_pct": "condition target; condition-level day-9/day-12 profile (twin); per-well day-9/day-12 readouts (auxiliary). Labels exist only for training dates and never for purged chemicals"
+  },
+  "evaluation": {
+    "outer": "9 folds; the 45 sorted dates interleaved (date i -> fold i mod 9)",
+    "inner": "within each outer training set, 4 folds of the sorted training dates interleaved",
+    "purge": "at both levels, every condition (and every PCT label) of any chemical present in the held-out dates is removed from training",
+    "metric": "date-macro MAE on usable cases: absolute error averaged within chemical, then over chemicals within a date, then over dates (as since v1)",
+    "comparison": "paired bootstrap over dates of per-date loss differences, 10000 resamples, seed above"
+  },
+  "incumbent": "v2_incumbent",
+  "candidates": {
+    "persistence_day7": {
+      "kind": "persistence"
+    },
+    "control_reference": {
+      "kind": "control"
+    },
+    "v2_incumbent": {
+      "kind": "extra_trees",
+      "columns": "small",
+      "note": "the shipped v2 recipe (small activity/coordination Extra Trees, frozen hyperparameters)"
+    },
+    "et_small_ctx": {
+      "kind": "extra_trees",
+      "columns": "small_ctx"
+    },
+    "et_full_ctx": {
+      "kind": "extra_trees",
+      "columns": "full_ctx"
+    },
+    "et_small_chem": {
+      "kind": "extra_trees",
+      "columns": "small_chem",
+      "note": "v2 columns plus dose-series descriptors from the same batch and chemical (days 5 and 7)"
+    },
+    "ridge_full_ctx": {
+      "kind": "ridge",
+      "columns": "full_ctx",
+      "alpha": 30.0,
+      "residual": true
+    },
+    "lgbm_small_ctx": {
+      "kind": "lightgbm",
+      "columns": "small_ctx",
+      "residual": true,
+      "params": {
+        "n_estimators": 400,
+        "learning_rate": 0.03,
+        "num_leaves": 15,
+        "min_child_samples": 20,
+        "subsample": 0.8,
+        "subsample_freq": 1,
+        "colsample_bytree": 0.8,
+        "reg_lambda": 1.0,
+        "objective": "l1"
+      }
+    },
+    "lgbm_full_ctx": {
+      "kind": "lightgbm",
+      "columns": "full_ctx",
+      "residual": true,
+      "params": {
+        "n_estimators": 400,
+        "learning_rate": 0.03,
+        "num_leaves": 15,
+        "min_child_samples": 20,
+        "subsample": 0.8,
+        "subsample_freq": 1,
+        "colsample_bytree": 0.8,
+        "reg_lambda": 1.0,
+        "objective": "l1"
+      }
+    },
+    "mlp_full_ctx": {
+      "kind": "mlp",
+      "columns": "full_ctx",
+      "residual": true,
+      "params": {
+        "hidden_layer_sizes": [
+          64,
+          64
+        ],
+        "alpha": 0.001,
+        "learning_rate_init": 0.001,
+        "max_iter": 500,
+        "early_stopping": true,
+        "validation_fraction": 0.15,
+        "n_iter_no_change": 20
+      }
+    },
+    "tabpfn_small_ctx": {
+      "kind": "tabpfn",
+      "columns": "small_ctx",
+      "residual": false,
+      "model_version": "v2",
+      "params": {
+        "n_estimators": 8
+      }
+    },
+    "tabpfn_full_ctx": {
+      "kind": "tabpfn",
+      "columns": "full_ctx",
+      "residual": false,
+      "model_version": "v2",
+      "params": {
+        "n_estimators": 8
+      }
+    },
+    "pct": {
+      "kind": "pct",
+      "seeds_inner": 5,
+      "seeds_outer": 5,
+      "params": {
+        "d": 128,
+        "layers": 4,
+        "heads": 4,
+        "dropout": 0.2,
+        "epochs": 200,
+        "lr": 0.001,
+        "weight_decay": 0.01,
+        "batch_dates": 4,
+        "keep_plate": 0.85,
+        "drop_well": 0.1,
+        "cond_features": "small",
+        "aux_weight": 1.0,
+        "twin_weight": 0.25,
+        "ema": 0.0,
+        "context": true,
+        "relational": true
+      },
+      "note": "plate-context transformer; 5-seed ensemble at both levels so inner and outer scores are comparable"
+    },
+    "pct_no_context": {
+      "kind": "pct",
+      "selectable": false,
+      "seeds_inner": 0,
+      "seeds_outer": 5,
+      "ablation_of": "pct",
+      "params": {
+        "d": 128,
+        "layers": 4,
+        "heads": 4,
+        "dropout": 0.2,
+        "epochs": 200,
+        "lr": 0.001,
+        "weight_decay": 0.01,
+        "batch_dates": 4,
+        "keep_plate": 0.85,
+        "drop_well": 0.1,
+        "cond_features": "small",
+        "aux_weight": 1.0,
+        "twin_weight": 0.25,
+        "ema": 0.0,
+        "context": false,
+        "relational": true
+      }
+    },
+    "pct_no_relations": {
+      "kind": "pct",
+      "selectable": false,
+      "seeds_inner": 0,
+      "seeds_outer": 5,
+      "ablation_of": "pct",
+      "params": {
+        "d": 128,
+        "layers": 4,
+        "heads": 4,
+        "dropout": 0.2,
+        "epochs": 200,
+        "lr": 0.001,
+        "weight_decay": 0.01,
+        "batch_dates": 4,
+        "keep_plate": 0.85,
+        "drop_well": 0.1,
+        "cond_features": "small",
+        "aux_weight": 1.0,
+        "twin_weight": 0.25,
+        "ema": 0.0,
+        "context": true,
+        "relational": false
+      }
+    },
+    "pct_no_aux": {
+      "kind": "pct",
+      "selectable": false,
+      "seeds_inner": 0,
+      "seeds_outer": 5,
+      "ablation_of": "pct",
+      "params": {
+        "d": 128,
+        "layers": 4,
+        "heads": 4,
+        "dropout": 0.2,
+        "epochs": 200,
+        "lr": 0.001,
+        "weight_decay": 0.01,
+        "batch_dates": 4,
+        "keep_plate": 0.85,
+        "drop_well": 0.1,
+        "cond_features": "small",
+        "aux_weight": 0.0,
+        "twin_weight": 0.0,
+        "ema": 0.0,
+        "context": true,
+        "relational": true
+      }
+    },
+    "ens_v2_pct": {
+      "kind": "ensemble",
+      "members": [
+        "v2_incumbent",
+        "pct"
+      ]
+    },
+    "ens_tab": {
+      "kind": "ensemble",
+      "members": [
+        "v2_incumbent",
+        "lgbm_small_ctx",
+        "tabpfn_small_ctx"
+      ]
+    },
+    "ens_all": {
+      "kind": "ensemble",
+      "members": [
+        "v2_incumbent",
+        "lgbm_small_ctx",
+        "tabpfn_small_ctx",
+        "pct"
+      ]
+    }
+  },
+  "selection": {
+    "nested": "in each outer fold, the selectable candidate with the lowest inner date-macro MAE (ties: protocol order) supplies that fold's outer predictions; the pooled result is the nested v3 estimate",
+    "final_pick": "the selectable candidate with the lowest outer date-macro MAE over all 45 dates; its own outer score is post-selection and descriptive only",
+    "ablations": "pct_no_context, pct_no_relations and pct_no_aux are reported, never selected"
+  },
+  "uncertainty": {
+    "sigma": "Extra Trees on |inner out-of-fold residual| of the product (v2 sigma columns + context, plus quantile spread and seed spread when the product is a PCT); cross-fitted over the inner folds for calibration scores",
+    "baseline_method": "pooled_scaled: split-conformal quantile of |residual|/sigma over all calibration cases (the v2 method)",
+    "primary_method": "date_scaled: the same scores, each calibration case weighted 1/(cases on its date), so every culture batch counts equally (batch-level exchangeability)",
+    "secondary": "pooled_cqr and date_cqr: conformalized PCT quantiles (0.1/0.9)",
+    "success": "date-averaged outer coverage within 0.77-0.83 at nominal 0.80 and within 0.87-0.93 at nominal 0.90"
+  },
+  "trust": "AURC (mean retained MAE over retention 50-100%) of sigma, extremity, predicted change and day-7 magnitude; abstention declines the top 20% of sigma",
+  "warning": "early-quiet (|day-7|<0.5) conditions with |day-12 target|>=1, 20% budget per date: products' |predicted change| against highest dose and |day-7|",
+  "twin": "condition-level day-9/day-12 relative activity and control contrast of all 17 readouts; PCT twin head against carrying the day-7 value forward; date-macro MAE on usable cases",
+  "swap_rule": {
+    "description": "v3 replaces v2 in the shipped tool only if every check passes; otherwise v2 stays shipped and v3 is reported as a development finding",
+    "min_relative_gain": 0.05,
+    "min_date_share": 0.55,
+    "max_trust_aurc_increase": 0.02,
+    "checks": [
+      "nested v3 date-macro MAE <= 0.95 x incumbent",
+      "paired date-bootstrap 95% interval of (nested v3 - incumbent) entirely below 0",
+      "nested v3 better on at least 55% of dates with usable cases",
+      "final pick's sigma AURC <= 1.02 x incumbent's",
+      "final pick is not the incumbent"
+    ],
+    "deployment": "a swapped model must be ported to the browser app and agree with Python within 1e-4 on every outer prediction"
+  },
+  "reproducibility": "PCT runs with torch.use_deterministic_algorithms(True) and CUBLAS_WORKSPACE_CONFIG=:4096:8: reruns are bit-identical on the same GPU, driver and package versions (venv_freeze.txt). Extra Trees, ridge, LightGBM and MLP are single-threaded and seeded."
+}
